@@ -1,0 +1,2 @@
+rootProject.name = "ViewPagerFun"
+include ':app'
