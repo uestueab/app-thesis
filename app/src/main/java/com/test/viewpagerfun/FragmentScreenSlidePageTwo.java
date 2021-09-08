@@ -1,5 +1,6 @@
 package com.test.viewpagerfun;
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.annotation.Nullable;
@@ -20,7 +21,7 @@ public class FragmentScreenSlidePageTwo extends Fragment {
     private SharedViewModel model;
 
     private TextView tv_question;
-    private Button btn_back;
+    private Button btn_next;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -42,7 +43,7 @@ public class FragmentScreenSlidePageTwo extends Fragment {
         model = new ViewModelProvider(requireActivity()).get(SharedViewModel.class);
 
         tv_question = getView().findViewById(R.id.tv_question);
-        btn_back = getView().findViewById(R.id.btn_back);
+        btn_next = getView().findViewById(R.id.btn_next);
 
         //Update the UI.
         model.getNote().observe(getViewLifecycleOwner(), item -> {
@@ -51,7 +52,7 @@ public class FragmentScreenSlidePageTwo extends Fragment {
 
 
         //Move to next Item
-        btn_back.setOnClickListener(new View.OnClickListener() {
+        btn_next.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 //show the next note, if one exists
@@ -59,8 +60,10 @@ public class FragmentScreenSlidePageTwo extends Fragment {
                     ((ReviewActivity) getActivity()).previous_fragment();
                     tv_question.setText("");
 
-                } else {    //all notes are passed, do something..
-                    Toast.makeText(getActivity(), "Review ended", Toast.LENGTH_SHORT).show();
+                } else {
+                    // all items passed, quit by moving to another activity
+                    Intent intent = new Intent(getActivity(), StartingScreenActivity.class);
+                    startActivity(intent);
                 }
             }
         });

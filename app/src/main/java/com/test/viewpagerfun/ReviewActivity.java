@@ -37,6 +37,7 @@ public class ReviewActivity extends FragmentActivity {
         viewPager = findViewById(R.id.pager);
         // use button navigation, instead of gesture swiping to next fragment
         viewPager.setUserInputEnabled(false);
+        viewPager.setOrientation(ViewPager2.ORIENTATION_HORIZONTAL);
 
         pagerAdapter = new ScreenSlidePagerAdapter(this);
         viewPager.setAdapter(pagerAdapter);

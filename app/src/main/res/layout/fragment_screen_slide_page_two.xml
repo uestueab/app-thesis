@@ -9,12 +9,10 @@
     <androidx.cardview.widget.CardView
         android:id="@+id/cardView"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="140dp"
         android:layout_marginTop="12dp"
         android:padding="8dp"
         app:cardBackgroundColor="#EDEDED"
-        app:cardCornerRadius="4dp"
-        app:cardUseCompatPadding="true"
         app:layout_constraintTop_toTopOf="parent">
 
         <RelativeLayout
@@ -33,31 +31,77 @@
                 android:shadowDx="-1"
                 android:shadowDy="-1"
                 android:shadowRadius="1"
-                android:textSize="28sp" />
+                android:textSize="32sp" />
+
+            <Button
+                android:id="@+id/btn_next"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/tv_question"
+                android:layout_alignParentEnd="true"
+                android:background="@null"
+                android:text="NEXT" />
         </RelativeLayout>
-
     </androidx.cardview.widget.CardView>
-
 
     <TextView
         android:id="@+id/tv_voc_meaning"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="5dp"
-
         android:background="#EDEDED"
-
         android:gravity="center"
         android:text="Vocabulary Meaning"
         app:layout_constraintTop_toBottomOf="@id/cardView" />
 
-    <Button
-        android:id="@+id/btn_back"
+    <TextView
+        android:id="@+id/tv_answerResult"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="#00ff00"
+        android:gravity="center"
+        app:layout_constraintTop_toBottomOf="@id/tv_voc_meaning" />
+
+    <TextView
+        android:id="@+id/tv_answerBlock"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:background="@null"
-        android:text="BACK"
-        app:layout_constraintBottom_toTopOf="@id/tv_voc_meaning"
-        app:layout_constraintEnd_toEndOf="@id/tv_voc_meaning" />
+        android:layout_marginTop="12dp"
+        android:background="#EDEDED"
+        android:padding="14dp"
+        android:text="TEXT"
+        android:textSize="18sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tv_answerResult" />
+
+    <TextView
+        android:id="@+id/tv_answerMeaningField"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="8dp"
+        android:text="Meaning:"
+        app:layout_constraintStart_toEndOf="@id/tv_answerBlock"
+        app:layout_constraintTop_toTopOf="@id/tv_answerBlock" />
+
+    <TextView
+        android:id="@+id/tv_answerMeaning"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
+        android:text="TEST"
+        app:layout_constraintStart_toStartOf="@id/tv_answerMeaningField"
+        app:layout_constraintTop_toBottomOf="@id/tv_answerMeaningField" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:background="#EDEDED"
+        android:drawableLeft="@drawable/play_sound"
+        android:gravity="left|center"
+        android:padding="6dp"
+        android:text="PLAY"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@id/tv_answerMeaningField" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
