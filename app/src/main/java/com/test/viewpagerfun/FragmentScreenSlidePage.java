@@ -97,6 +97,7 @@ public class FragmentScreenSlidePage extends Fragment {
                     ((ReviewActivity)getActivity()).nextFragment();
                     //removes glichty effect on fragment switch
                     tv_note.setText("");
+                    et_reviewAnswer.setText("");
                 }else {
                     v.performHapticFeedback(HapticFeedbackConstants.LONG_PRESS);
                     vibrateOnError();
@@ -125,7 +126,9 @@ public class FragmentScreenSlidePage extends Fragment {
         v.vibrate(ve, audioAttributes);
     }
 
+    //focus on the given edittext and popup the keyboard
     private void focusOnInputArea(EditText et){
+        //put the runnable at the end of the event queue
         et_reviewAnswer.post(new Runnable() {
             @Override
             public void run() {
@@ -133,10 +136,11 @@ public class FragmentScreenSlidePage extends Fragment {
                 et.setFocusable(true);
                 et.requestFocus();
                 InputMethodManager imm = (InputMethodManager) requireActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
-                imm.toggleSoftInput(InputMethodManager.SHOW_FORCED, 0);
+                imm.toggleSoftInput(InputMethodManager.SHOW_IMPLICIT,  InputMethodManager.HIDE_NOT_ALWAYS);
             }
         });
     }
+
 
     private void observePosition() {
         model.getPosition()

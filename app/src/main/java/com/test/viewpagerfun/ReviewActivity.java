@@ -8,7 +8,9 @@ import androidx.viewpager2.adapter.FragmentStateAdapter;
 import androidx.viewpager2.widget.ViewPager2;
 
 import android.bluetooth.le.ScanSettings;
+import android.content.Intent;
 import android.os.Bundle;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -37,10 +39,21 @@ public class ReviewActivity extends FragmentActivity {
         viewPager = findViewById(R.id.pager);
         // use button navigation, instead of gesture swiping to next fragment
         viewPager.setUserInputEnabled(false);
-        viewPager.setOrientation(ViewPager2.ORIENTATION_HORIZONTAL);
 
         pagerAdapter = new ScreenSlidePagerAdapter(this);
         viewPager.setAdapter(pagerAdapter);
+        viewPager.registerOnPageChangeCallback(new ViewPager2.OnPageChangeCallback() {
+            /**
+             * This method will be invoked when a new page becomes selected. Animation is not
+             * necessarily complete.
+             *
+             * @param position Position index of the new selected page.
+             */
+            @Override
+            public void onPageSelected(int position) {
+                super.onPageSelected(position);
+            }
+        });
 
         notes.add( Note.builder().question("test1").build() );
         notes.add( Note.builder().question("test2").build() );
@@ -53,21 +66,9 @@ public class ReviewActivity extends FragmentActivity {
 
     }
 
-
-
-    private Note getNextNote(){
-        Note currentNote = null;
-        if(noteCounter < noteCountTotal){
-            currentNote = notes.get(noteCounter);
-            noteCounter++;
-        } else {
-            finish();
-        }
-        return currentNote;
-    }
-
     public void nextFragment () { viewPager.setCurrentItem(viewPager.getCurrentItem()+1); }
-    public void previous_fragment() { viewPager.setCurrentItem(viewPager.getCurrentItem()-1); }
+    public void previous_fragment() { viewPager.setCurrentItem(viewPager.getCurrentItem()-1,false); }
+
 
     @Override
     public void onBackPressed() {
@@ -76,8 +77,13 @@ public class ReviewActivity extends FragmentActivity {
             // Back button. This calls finish() on this activity and pops the back stack.
             super.onBackPressed();
         } else {
-            // Otherwise, select the previous step.
-            viewPager.setCurrentItem(viewPager.getCurrentItem() - 1);
+            /* The line below makes it possible for the user to re-enter the review!
+             * This is not what we want. Rather make an intent to go back to the starting screen..
+             *
+             *  viewPager.setCurrentItem(viewPager.getCurrentItem() - 1);
+             */
+            Intent intent = new Intent(this,StartingScreenActivity.class);
+            startActivity(intent);
         }
     }
 

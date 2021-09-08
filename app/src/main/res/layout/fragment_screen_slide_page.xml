@@ -74,10 +74,9 @@
         android:ellipsize="end"
         android:gravity="center"
 
-
         android:hint="Your response"
-        android:inputType="textAutoComplete"
         android:textAlignment="center"
+        android:singleLine="true"
         android:textCursorDrawable="@drawable/color_cursor"
         android:textSize="16sp"
         app:layout_constraintEnd_toEndOf="parent"
@@ -86,5 +85,8 @@
         app:layout_constraintTop_toTopOf="@id/tv_voc_meaning">
     </EditText>
 
+<!-- ATTENTION: The snippet below disables completions for some reason...
+    android:inputType="textAutoComplete"
+-->
 
 </androidx.constraintlayout.widget.ConstraintLayout>
