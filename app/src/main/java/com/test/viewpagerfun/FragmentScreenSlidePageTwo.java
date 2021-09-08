@@ -2,7 +2,6 @@ package com.test.viewpagerfun;
 
 import android.os.Bundle;
 
-import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
@@ -57,7 +56,9 @@ public class FragmentScreenSlidePageTwo extends Fragment {
             public void onClick(View v) {
                 //show the next note, if one exists
                 if (model.hasNextNote()) {
-                    ((MainActivity) getActivity()).previous_fragment();
+                    ((ReviewActivity) getActivity()).previous_fragment();
+                    tv_question.setText("");
+
                 } else {    //all notes are passed, do something..
                     Toast.makeText(getActivity(), "Review ended", Toast.LENGTH_SHORT).show();
                 }

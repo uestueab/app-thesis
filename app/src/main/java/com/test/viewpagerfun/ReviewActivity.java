@@ -14,7 +14,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-public class MainActivity extends FragmentActivity {
+public class ReviewActivity extends FragmentActivity {
 
     //number of fragments
     private static final int NUM_PAGES = 2;
