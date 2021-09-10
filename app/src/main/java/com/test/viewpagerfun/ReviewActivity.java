@@ -18,8 +18,6 @@ import java.util.List;
 
 public class ReviewActivity extends FragmentActivity {
 
-    //number of fragments
-    private static final int NUM_PAGES = 2;
     // make use of animations, when moving to next fragment
     private ViewPager2 viewPager;
     // The pager adapter, which provides the pages to the view pager widget.
@@ -87,31 +85,4 @@ public class ReviewActivity extends FragmentActivity {
         }
     }
 
-    // pager adapter that represents NUM_PAGES ScreenSlidePageFragment objects, in sequence.
-    private class ScreenSlidePagerAdapter extends FragmentStateAdapter {
-        public ScreenSlidePagerAdapter(FragmentActivity fa) {
-            super(fa);
-        }
-
-        @Override
-        public Fragment createFragment(int position) {
-            Fragment fragment = null;
-            switch (position){
-                case 0:
-                    fragment = new FragmentScreenSlidePage();
-                    break;
-                case 1:
-                    fragment = new FragmentScreenSlidePageTwo();
-                    break;
-            }
-            assert fragment != null;
-            return fragment;
-        }
-
-
-        @Override
-        public int getItemCount() {
-            return NUM_PAGES;
-        }
-    }
 }
