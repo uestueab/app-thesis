@@ -45,6 +45,7 @@ public class FragmentScreenSlidePage extends Fragment {
         super.onCreate(savedInstanceState);
     }
 
+    //inflate the layout
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -69,11 +70,18 @@ public class FragmentScreenSlidePage extends Fragment {
 
         model = new ViewModelProvider(requireActivity()).get(SharedViewModel.class);
         // Update the UI.
-        model.getNote().observe(getViewLifecycleOwner(), item -> {
-            tv_note.setText(item.getTitle());
+        model.getNotes().observe(getViewLifecycleOwner(), item -> {
+            tv_note.setText(item.get(model.getPosition().getValue()).getTitle());
         });
-
         answerSubmitted();
+        observePosition();
+    }
+
+    /*  User submits an answer:
+     *  - allow submitting with enter key on keyboard.
+     *  - check if field is empty and handle correct answer..
+     */
+    private void answerSubmitted(){
         et_reviewAnswer.setOnEditorActionListener(new EditText.OnEditorActionListener() {
             @Override
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
@@ -85,10 +93,6 @@ public class FragmentScreenSlidePage extends Fragment {
             }
         });
 
-        observePosition();
-    }
-
-    private void answerSubmitted(){
         btn_submit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

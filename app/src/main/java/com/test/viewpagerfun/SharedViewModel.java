@@ -13,27 +13,36 @@ import com.test.viewpagerfun.model.entity.Note;
 
 import java.util.List;
 
-public class SharedViewModel extends ViewModel {
-    private final MutableLiveData<List<Note>> notesList = new MutableLiveData<>();
+public class SharedViewModel extends AndroidViewModel {
+
+    private NoteRepository repository;
+
+    private final LiveData<List<Note>> notes;
     private MutableLiveData<Integer>  position = new MutableLiveData<>(0);
 
 
-    public void setNotesList(List<Note> notes){
-        notesList.setValue(notes);
+    public SharedViewModel(Application application){
+        super(application);
+        repository = new NoteRepository(application);
+        notes = repository.getAllNotesLiveData();
     }
 
-    // Position: Geter and Setter
+    public LiveData<List<Note>> getNotes() {
+        return notes;
+    }
+
+    // Position: Getter and Setter
     public MutableLiveData<Integer> getPosition(){ return position; }
     public void setPosition(int x){ position.setValue(x);}
 
     public LiveData<Note> getNote() {
-        Note noteAtCurrentPosition = notesList.getValue().get(position.getValue());
+        Note noteAtCurrentPosition = notes.getValue().get(position.getValue());
         return new MutableLiveData<>(noteAtCurrentPosition);
     }
 
     public boolean hasNextNote() {
         Integer currentPosition = position.getValue();
-        Integer lastItemIndex = notesList.getValue().size()-1;
+        Integer lastItemIndex = notes.getValue().size()-1;
 
         if (currentPosition < lastItemIndex){
             // Increment our position. Makes it possible to load next note when called before getNote()

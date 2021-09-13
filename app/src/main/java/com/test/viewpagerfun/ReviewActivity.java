@@ -40,12 +40,7 @@ public class ReviewActivity extends FragmentActivity {
         viewPager.setAdapter(pagerAdapter);
 
 
-        SharedViewModel model = new ViewModelProvider(this).get(SharedViewModel.class);
-        Intent intent = getIntent();
-        List<Note> notes = (List<Note>) intent.getSerializableExtra("notes");
-
-        model.setNotesList(notes);
-
+     SharedViewModel model = new ViewModelProvider(this).get(SharedViewModel.class);
     }
 
     public void nextFragment () { viewPager.setCurrentItem(viewPager.getCurrentItem()+1); }

@@ -55,11 +55,7 @@ public class StartingScreenActivity extends AppCompatActivity {
     }
 
     private void startReview(){
-//        Bundle bundle = new Bundle();
-//        bundle.putSerializable("notes", (Serializable) notes);
-//
         Intent intent = new Intent(StartingScreenActivity.this, ReviewActivity.class);
-//        intent.putExtras(bundle);
         startActivity(intent);
     }
 }
