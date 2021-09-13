@@ -63,16 +63,20 @@ public class FragmentScreenSlidePage extends Fragment {
     public void onResume() {
         super.onResume();
 
+        //get view component references.
         tv_note = (TextView) getView().findViewById(R.id.tv_question);
         btn_submit = (Button) getView().findViewById(R.id.btn_submit);
         et_reviewAnswer = (EditText) getView().findViewById(R.id.et_reviewAnswer);
+
         focusOnInputArea(et_reviewAnswer);
 
+        //get the SharedViewModel which is scoped to the underlying activity.
         model = new ViewModelProvider(requireActivity()).get(SharedViewModel.class);
         // Update the UI.
         model.getNotes().observe(getViewLifecycleOwner(), item -> {
             tv_note.setText(item.get(model.getPosition().getValue()).getTitle());
         });
+
         answerSubmitted();
         observePosition();
     }

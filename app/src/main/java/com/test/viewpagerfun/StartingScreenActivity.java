@@ -20,7 +20,7 @@ import java.util.List;
 
 public class StartingScreenActivity extends AppCompatActivity {
 
-    private NoteRepository repository;
+    private StartingScreenViewModel model;
 
     private TextView tv_reviewItemCount;
     private Button btnStartReview;
@@ -33,7 +33,7 @@ public class StartingScreenActivity extends AppCompatActivity {
         tv_reviewItemCount = findViewById(R.id.tv_reviewItemCount);
         btnStartReview = findViewById(R.id.btn_startReview);
 
-        loadReviews();
+        showReviewItemCount();
 
         btnStartReview.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -45,11 +45,11 @@ public class StartingScreenActivity extends AppCompatActivity {
 
     }
 
-    private void loadReviews(){
-        if(repository == null) {
-            repository = new NoteRepository(getApplication());
-            repository.getAllNotesLiveData().observe(this, list -> {
-                tv_reviewItemCount.setText("Review: " + list.size());
+    private void showReviewItemCount(){
+        if(model == null){
+            model = new ViewModelProvider(this).get(StartingScreenViewModel.class);
+            model.getNotes().observe(this, item -> {
+                tv_reviewItemCount.setText("Review: " + item.size());
             });
         }
     }

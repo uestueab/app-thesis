@@ -10,17 +10,13 @@ import com.test.viewpagerfun.model.entity.Note;
 
 import java.util.List;
 
-
-
 public class NoteRepository {
     private NoteDao noteDao;
-    private LiveData<List<Note>> allNotesLiveData;
-    private List<Note> allNotes;
+    private LiveData<List<Note>> allNotes;
 
     public NoteRepository(Application application) {
         NoteDatabase database = NoteDatabase.getInstance(application);
         noteDao = database.noteDao();
-        allNotesLiveData = noteDao.getAllNotesLiveData();
         allNotes = noteDao.getAllNotes();
     }
 
@@ -40,11 +36,8 @@ public class NoteRepository {
         new DeleteAllNotesAsyncTask(noteDao).execute();
     }
 
-    public List<Note> getAllNotes() {
+    public LiveData<List<Note>> getAllNotes() {
         return allNotes;
-    }
-    public LiveData<List<Note>> getAllNotesLiveData() {
-        return allNotesLiveData;
     }
 
     private static class InsertNoteAsyncTask extends AsyncTask<Note, Void, Void> {

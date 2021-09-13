@@ -25,7 +25,6 @@ public abstract class NoteDatabase extends RoomDatabase {
             instance = Room.databaseBuilder(context.getApplicationContext(),
                     NoteDatabase.class, "note_database")
                     .fallbackToDestructiveMigration()
-                    .allowMainThreadQueries()
                     .addCallback(roomCallback)
                     .build();
         }
@@ -54,7 +53,7 @@ public abstract class NoteDatabase extends RoomDatabase {
                         .title("Debug").description("lombok").priority(10).build());
 
             noteDao.insert(Note.builder().title("coca cola").description("Test").priority(10).build());
-            noteDao.insert(Note.builder().title("weichamer").description("Test").priority(10).build());
+            noteDao.insert(Note.builder().title("weichmacher").description("Test").priority(10).build());
             noteDao.insert(Note.builder().title("kirche").description("Test").priority(10).build());
             noteDao.insert(Note.builder().title("licht").description("Test").priority(10).build());
             noteDao.insert(Note.builder().title("cameleon").description("Test").priority(10).build());

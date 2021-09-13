@@ -24,7 +24,7 @@ public class SharedViewModel extends AndroidViewModel {
     public SharedViewModel(Application application){
         super(application);
         repository = new NoteRepository(application);
-        notes = repository.getAllNotesLiveData();
+        notes = repository.getAllNotes();
     }
 
     public LiveData<List<Note>> getNotes() {
