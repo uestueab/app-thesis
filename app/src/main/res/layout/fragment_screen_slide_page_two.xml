@@ -34,7 +34,7 @@
                 android:textSize="32sp" />
 
             <Button
-                android:id="@+id/btn_next"
+                android:id="@+id/btn_nextTop"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/tv_question"
@@ -103,5 +103,16 @@
         android:text="PLAY"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="@id/tv_answerMeaningField" />
+
+    <Button
+        android:id="@+id/btn_nextBottom"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_marginBottom="10dp"
+        android:background="@null"
+        android:text="NEXT"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

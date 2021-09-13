@@ -3,6 +3,7 @@ package com.test.viewpagerfun;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
+import androidx.lifecycle.MediatorLiveData;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.viewpager2.adapter.FragmentStateAdapter;
 import androidx.viewpager2.widget.ViewPager2;
@@ -11,6 +12,8 @@ import android.bluetooth.le.ScanSettings;
 import android.content.Intent;
 import android.os.Bundle;
 import android.widget.Toast;
+
+import com.test.viewpagerfun.model.entity.Note;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -22,11 +25,6 @@ public class ReviewActivity extends FragmentActivity {
     private ViewPager2 viewPager;
     // The pager adapter, which provides the pages to the view pager widget.
     private FragmentStateAdapter pagerAdapter;
-
-    private List<Note> notes = new ArrayList<>();
-    private int noteCountTotal;
-    private int noteCounter;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,26 +38,12 @@ public class ReviewActivity extends FragmentActivity {
 
         pagerAdapter = new ScreenSlidePagerAdapter(this);
         viewPager.setAdapter(pagerAdapter);
-        viewPager.registerOnPageChangeCallback(new ViewPager2.OnPageChangeCallback() {
-            /**
-             * This method will be invoked when a new page becomes selected. Animation is not
-             * necessarily complete.
-             *
-             * @param position Position index of the new selected page.
-             */
-            @Override
-            public void onPageSelected(int position) {
-                super.onPageSelected(position);
-            }
-        });
 
-        notes.add( Note.builder().question("test1").build() );
-        notes.add( Note.builder().question("test2").build() );
-        notes.add( Note.builder().question("test3").build() );
-        notes.add( Note.builder().question("test4").build() );
-        notes.add( Note.builder().question("test5").build() );
 
         SharedViewModel model = new ViewModelProvider(this).get(SharedViewModel.class);
+        Intent intent = getIntent();
+        List<Note> notes = (List<Note>) intent.getSerializableExtra("notes");
+
         model.setNotesList(notes);
 
     }

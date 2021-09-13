@@ -1,17 +1,19 @@
 package com.test.viewpagerfun;
 
-import android.util.Log;
+import android.app.Application;
 
+import androidx.annotation.NonNull;
+import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
-import androidx.lifecycle.Transformations;
 import androidx.lifecycle.ViewModel;
 
-import java.util.ArrayList;
+import com.test.viewpagerfun.model.datasource.NoteRepository;
+import com.test.viewpagerfun.model.entity.Note;
+
 import java.util.List;
 
 public class SharedViewModel extends ViewModel {
-
     private final MutableLiveData<List<Note>> notesList = new MutableLiveData<>();
     private MutableLiveData<Integer>  position = new MutableLiveData<>(0);
 
@@ -41,7 +43,6 @@ public class SharedViewModel extends ViewModel {
             return false;
         }
     }
-
 }
 
 

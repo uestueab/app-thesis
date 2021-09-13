@@ -68,10 +68,9 @@ public class FragmentScreenSlidePage extends Fragment {
         focusOnInputArea(et_reviewAnswer);
 
         model = new ViewModelProvider(requireActivity()).get(SharedViewModel.class);
-        observePosition();
+        // Update the UI.
         model.getNote().observe(getViewLifecycleOwner(), item -> {
-            // Update the UI.
-            tv_note.setText(item.getQuestion());
+            tv_note.setText(item.getTitle());
         });
 
         answerSubmitted();

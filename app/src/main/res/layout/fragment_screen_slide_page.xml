@@ -31,7 +31,7 @@
                 android:shadowDx="-1"
                 android:shadowDy="-1"
                 android:shadowRadius="1"
-                android:textSize="28sp" />
+                android:textSize="32sp" />
 
             <Button
                 android:id="@+id/btn_submit"
@@ -75,18 +75,17 @@
         android:gravity="center"
 
         android:hint="Your response"
-        android:textAlignment="center"
         android:singleLine="true"
+        android:textAlignment="center"
         android:textCursorDrawable="@drawable/color_cursor"
         android:textSize="16sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@id/tv_voc_meaning">
-    </EditText>
+        app:layout_constraintTop_toTopOf="@id/tv_voc_meaning"></EditText>
 
-<!-- ATTENTION: The snippet below disables completions for some reason...
-    android:inputType="textAutoComplete"
--->
+    <!-- ATTENTION: The snippet below disables completions for some reason...
+        android:inputType="textAutoComplete"
+    -->
 
 </androidx.constraintlayout.widget.ConstraintLayout>

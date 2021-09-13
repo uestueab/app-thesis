@@ -21,7 +21,8 @@ public class FragmentScreenSlidePageTwo extends Fragment {
     private SharedViewModel model;
 
     private TextView tv_question;
-    private Button btn_next;
+    private Button btn_nextTop;
+    private Button btn_nextBottom;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -43,16 +44,23 @@ public class FragmentScreenSlidePageTwo extends Fragment {
         model = new ViewModelProvider(requireActivity()).get(SharedViewModel.class);
 
         tv_question = getView().findViewById(R.id.tv_question);
-        btn_next = getView().findViewById(R.id.btn_next);
+        btn_nextTop = getView().findViewById(R.id.btn_nextTop);
+        btn_nextBottom = getView().findViewById(R.id.btn_nextBottom);
+        btn_nextBottom.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                btn_nextTop.performClick();
+            }
+        });
 
         //Update the UI.
         model.getNote().observe(getViewLifecycleOwner(), item -> {
-            tv_question.setText(item.getQuestion());
+            tv_question.setText(item.getTitle());
         });
 
 
         //Move to next Item
-        btn_next.setOnClickListener(new View.OnClickListener() {
+        btn_nextTop.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 //show the next note, if one exists
