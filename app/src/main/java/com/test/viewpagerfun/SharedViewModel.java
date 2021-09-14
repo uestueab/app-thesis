@@ -11,6 +11,7 @@ import androidx.lifecycle.ViewModel;
 import com.test.viewpagerfun.model.datasource.NoteRepository;
 import com.test.viewpagerfun.model.entity.Note;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class SharedViewModel extends AndroidViewModel {
@@ -19,12 +20,14 @@ public class SharedViewModel extends AndroidViewModel {
 
     private final LiveData<List<Note>> notes;
     private MutableLiveData<Integer>  position = new MutableLiveData<>(0);
+    private List<Note> remainingNotes;
 
 
     public SharedViewModel(Application application){
         super(application);
         repository = new NoteRepository(application);
         notes = repository.getAllNotes();
+        remainingNotes = new ArrayList<>();
     }
 
     public LiveData<List<Note>> getNotes() {
@@ -40,6 +43,10 @@ public class SharedViewModel extends AndroidViewModel {
         return new MutableLiveData<>(noteAtCurrentPosition);
     }
 
+    public Note getNoteAtPosition(int position) {
+        return notes.getValue().get(position);
+    }
+
     public boolean hasNextNote() {
         Integer currentPosition = position.getValue();
         Integer lastItemIndex = notes.getValue().size()-1;
@@ -51,6 +58,17 @@ public class SharedViewModel extends AndroidViewModel {
         }else{
             return false;
         }
+    }
+
+    //get those notes which have not been reviewed by the user
+    public List<Note> getRemainingNotes(){
+        if(remainingNotes.size() == 0){
+            for (int i=position.getValue(); i<notes.getValue().size(); i++){
+                remainingNotes.add(getNoteAtPosition(i));
+            }
+        }
+        return remainingNotes;
+
     }
 }
 

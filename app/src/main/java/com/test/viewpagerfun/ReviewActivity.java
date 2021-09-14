@@ -21,10 +21,12 @@ import java.util.List;
 
 public class ReviewActivity extends FragmentActivity {
 
+    public static final String EXTRA_REMAINING_REVIEWS = "extra_remaining_reviews";
+
     // make use of animations, when moving to next fragment
     private ViewPager2 viewPager;
-    // The pager adapter, which provides the pages to the view pager widget.
-    private FragmentStateAdapter pagerAdapter;
+
+    private SharedViewModel model;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,11 +38,12 @@ public class ReviewActivity extends FragmentActivity {
         // use button navigation, instead of gesture swiping to next fragment
         viewPager.setUserInputEnabled(false);
 
-        pagerAdapter = new ScreenSlidePagerAdapter(this);
+        // The pager adapter, which provides the pages to the view pager widget.
+        FragmentStateAdapter pagerAdapter = new ScreenSlidePagerAdapter(this);
         viewPager.setAdapter(pagerAdapter);
 
 
-     SharedViewModel model = new ViewModelProvider(this).get(SharedViewModel.class);
+        model = new ViewModelProvider(this).get(SharedViewModel.class);
     }
 
     public void nextFragment () { viewPager.setCurrentItem(viewPager.getCurrentItem()+1); }
@@ -49,19 +52,16 @@ public class ReviewActivity extends FragmentActivity {
 
     @Override
     public void onBackPressed() {
-        if (viewPager.getCurrentItem() == 0) {
-            // If the user is currently looking at the first step, allow the system to handle the
-            // Back button. This calls finish() on this activity and pops the back stack.
-            super.onBackPressed();
-        } else {
-            /* The line below makes it possible for the user to re-enter the review!
-             * This is not what we want. Rather make an intent to go back to the starting screen..
-             *
-             *  viewPager.setCurrentItem(viewPager.getCurrentItem() - 1);
-             */
-            Intent intent = new Intent(this,StartingScreenActivity.class);
-            startActivity(intent);
-        }
-    }
+            Intent intent = new Intent();
+            List<Note> remainingNotes = model.getRemainingNotes();
 
+            /* Check if the back button was pressed on a fragment other than the review input fragment.
+             * That means the review item has lapsed/passed! So remove it from the list.
+             */
+            if(viewPager.getCurrentItem() != 0)
+                remainingNotes.remove(0);
+            intent.putExtra(EXTRA_REMAINING_REVIEWS, remainingNotes.size());
+            setResult(RESULT_OK,intent);
+            finish();
+    }
 }
