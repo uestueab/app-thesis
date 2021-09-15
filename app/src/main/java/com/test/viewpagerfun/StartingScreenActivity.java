@@ -10,14 +10,21 @@ import androidx.lifecycle.ViewModelProvider;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
+
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
+import com.test.viewpagerfun.model.entity.Note;
+
+import java.lang.reflect.Type;
+import java.util.List;
 
 public class StartingScreenActivity extends AppCompatActivity {
-
-    private static final int REQUEST_CODE_REVIEW = 1;
 
     private StartingScreenViewModel model;
 
@@ -43,10 +50,18 @@ public class StartingScreenActivity extends AppCompatActivity {
                     public void onActivityResult(ActivityResult result) {
                         if (result.getResultCode() == Activity.RESULT_OK) {
                             // There are no request codes
-                            Intent data =  result.getData();
-                            int position = data.getIntExtra(ReviewActivity.EXTRA_REMAINING_REVIEWS,0);
-                            tv_reviewItemCount.setText("Position: " + position);
+                            Intent intent =  result.getData();
+                            Bundle bundle = intent.getBundleExtra(ReviewActivity.EXTRA_REMAINING_REVIEWS);
+                            List<Note> notes = (List<Note>) bundle.getSerializable("notes");
+                            tv_reviewItemCount.setText("Position: " + notes.size());
 
+
+                            SharedPreferences mPrefs = getSharedPreferences("prefs", MODE_PRIVATE);
+                            SharedPreferences.Editor prefsEditor = mPrefs.edit();
+                            Gson gson = new Gson();
+                            String json = gson.toJson(notes);
+                            prefsEditor.putString("REMAINING_NOTES", json);
+                            prefsEditor.apply();
                         }
                     }
                 });

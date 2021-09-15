@@ -22,11 +22,18 @@ public class SharedViewModel extends AndroidViewModel {
     private MutableLiveData<Integer>  position = new MutableLiveData<>(0);
     private List<Note> remainingNotes;
 
-
+    //constructor for loading from database
     public SharedViewModel(Application application){
         super(application);
         repository = new NoteRepository(application);
         notes = repository.getAllNotes();
+        remainingNotes = new ArrayList<>();
+    }
+
+    //constructor for storing remaining notes from a previous review
+    public SharedViewModel(Application application, List<Note> previousNotes){
+        super(application);
+        notes = new MutableLiveData<>(previousNotes);
         remainingNotes = new ArrayList<>();
     }
 

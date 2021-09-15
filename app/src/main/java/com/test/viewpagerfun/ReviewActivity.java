@@ -10,11 +10,16 @@ import androidx.viewpager2.widget.ViewPager2;
 
 import android.bluetooth.le.ScanSettings;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.widget.Toast;
 
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import com.test.viewpagerfun.model.entity.Note;
 
+import java.io.Serializable;
+import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -42,8 +47,7 @@ public class ReviewActivity extends FragmentActivity {
         FragmentStateAdapter pagerAdapter = new ScreenSlidePagerAdapter(this);
         viewPager.setAdapter(pagerAdapter);
 
-
-        model = new ViewModelProvider(this).get(SharedViewModel.class);
+        resumeReview();
     }
 
     public void nextFragment () { viewPager.setCurrentItem(viewPager.getCurrentItem()+1); }
@@ -60,8 +64,34 @@ public class ReviewActivity extends FragmentActivity {
              */
             if(viewPager.getCurrentItem() != 0)
                 remainingNotes.remove(0);
-            intent.putExtra(EXTRA_REMAINING_REVIEWS, remainingNotes.size());
+
+            Bundle bundle = new Bundle();
+            bundle.putSerializable("notes", (Serializable) remainingNotes);
+
+            intent.putExtra(EXTRA_REMAINING_REVIEWS, bundle);
             setResult(RESULT_OK,intent);
             finish();
     }
+
+    private void resumeReview(){
+        SharedPreferences prefs = getSharedPreferences("prefs",MODE_PRIVATE);
+
+        Gson gson = new Gson();
+        String json = prefs.getString("REMAINING_NOTES", "");
+        Type type = new TypeToken<List<Note>>(){}.getType();
+        List<Note> previousNotes = gson.fromJson(json, type);
+
+
+        /* - If no notes from a previous review exist. Load new review items from database
+         * - Else restore review with remaining items.
+         */
+        if(previousNotes == null){
+            //The ViewModelFactory makes it possible to call different constructors for the viewmodel.
+            model = new ViewModelProvider(this, new SharedViewModelFactory(getApplication())).get(SharedViewModel.class);
+        }else{
+            model = new ViewModelProvider(this, new SharedViewModelFactory(getApplication(), previousNotes
+                    )).get(SharedViewModel.class);
+        }
+    }
+
 }
