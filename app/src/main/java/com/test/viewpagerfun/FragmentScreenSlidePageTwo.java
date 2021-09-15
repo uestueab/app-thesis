@@ -74,8 +74,7 @@ public class FragmentScreenSlidePageTwo extends Fragment {
                     SharedPreferences preferences = getActivity().getSharedPreferences("prefs", MODE_PRIVATE);
                     preferences.edit().remove("REMAINING_NOTES").apply();
 
-                    model.setPosition(0);
-
+//                    model.setPosition(0);
 
 
                     Intent intent = new Intent(getActivity(), StartingScreenActivity.class);

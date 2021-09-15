@@ -148,7 +148,6 @@ public class FragmentScreenSlidePage extends Fragment {
         });
     }
 
-
     private void observePosition() {
         model.getPosition()
                 .observe(getViewLifecycleOwner(), new Observer<Integer>() {

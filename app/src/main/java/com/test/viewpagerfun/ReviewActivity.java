@@ -67,7 +67,7 @@ public class ReviewActivity extends FragmentActivity {
         /* - If no notes from a previous review exist. Load new review items from database
          * - Else restore review with remaining items.
          */
-        if(previousNotes == null){
+        if(previousNotes == null || previousNotes.size() == 0){
             //The ViewModelFactory makes it possible to call different constructors for the viewmodel.
             model = new ViewModelProvider(this, new SharedViewModelFactory(getApplication())).get(SharedViewModel.class);
         }else{

@@ -92,7 +92,7 @@ public class StartingScreenActivity extends AppCompatActivity {
         Type type = new TypeToken<List<Note>>(){}.getType();
         List<Note> previousNotes = gson.fromJson(json, type);
 
-        if(previousNotes == null){
+        if(previousNotes == null || previousNotes.size() == 0){
             model = new ViewModelProvider(this).get(StartingScreenViewModel.class);
             model.getNotes().observe(this, item -> {
                 tv_reviewItemCount.setText("Review: " + item.size());
