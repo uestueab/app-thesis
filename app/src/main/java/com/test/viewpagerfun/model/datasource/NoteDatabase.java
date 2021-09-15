@@ -48,16 +48,10 @@ public abstract class NoteDatabase extends RoomDatabase {
 
         @Override
         protected Void doInBackground(Void... voids) {
-            for (int i=0; i<5; i++)
-                noteDao.insert(Note.builder()
-                        .title("Debug").description("lombok").priority(10).build());
-
+            noteDao.insert(Note.builder().title("debug").description("Test").priority(10).build());
             noteDao.insert(Note.builder().title("coca cola").description("Test").priority(10).build());
-            noteDao.insert(Note.builder().title("weichmacher").description("Test").priority(10).build());
             noteDao.insert(Note.builder().title("kirche").description("Test").priority(10).build());
             noteDao.insert(Note.builder().title("licht").description("Test").priority(10).build());
-            noteDao.insert(Note.builder().title("cameleon").description("Test").priority(10).build());
-            noteDao.insert(Note.builder().title("cool app").description("Test").priority(10).build());
             noteDao.insert(Note.builder().title("oxidation").description("Test").priority(10).build());
 
 //            noteDao.insertNoteWithMetaData(new Note("Note", "with status", 10),

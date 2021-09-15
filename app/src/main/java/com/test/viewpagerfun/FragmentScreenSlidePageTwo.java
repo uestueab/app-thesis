@@ -1,6 +1,7 @@
 package com.test.viewpagerfun;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 
 import androidx.annotation.Nullable;
@@ -13,7 +14,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
-import android.widget.Toast;
+
+
+import static android.content.Context.MODE_PRIVATE;
 
 
 public class FragmentScreenSlidePageTwo extends Fragment {
@@ -67,9 +70,10 @@ public class FragmentScreenSlidePageTwo extends Fragment {
                 if (model.hasNextNote()) {
                     ((ReviewActivity) getActivity()).previous_fragment();
                     tv_question.setText("");
+                } else { // all items passed, quit by moving to another activity
+                    SharedPreferences preferences = getActivity().getSharedPreferences("prefs", MODE_PRIVATE);
+                    preferences.edit().remove("REMAINING_NOTES").apply();
 
-                } else {
-                    // all items passed, quit by moving to another activity
                     Intent intent = new Intent(getActivity(), StartingScreenActivity.class);
                     startActivity(intent);
                 }
@@ -81,11 +85,11 @@ public class FragmentScreenSlidePageTwo extends Fragment {
     //observes changes of position from current fragment
     private void observePosition() {
         model.getPosition()
-             .observe(getViewLifecycleOwner(), new Observer<Integer>() {
+                .observe(getViewLifecycleOwner(), new Observer<Integer>() {
                     @Override
                     public void onChanged(@Nullable Integer integer) {
                     }
-             });
+                });
     }
-
 }
+

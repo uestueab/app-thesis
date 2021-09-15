@@ -53,6 +53,25 @@ public class ReviewActivity extends FragmentActivity {
     public void nextFragment () { viewPager.setCurrentItem(viewPager.getCurrentItem()+1); }
     public void previous_fragment() { viewPager.setCurrentItem(viewPager.getCurrentItem()-1,false); }
 
+    private void resumeReview(){
+        SharedPreferences prefs = getSharedPreferences("prefs",MODE_PRIVATE);
+
+        Gson gson = new Gson();
+        String json = prefs.getString("REMAINING_NOTES", "");
+        Type type = new TypeToken<List<Note>>(){}.getType();
+        List<Note> previousNotes = gson.fromJson(json, type);
+
+        /* - If no notes from a previous review exist. Load new review items from database
+         * - Else restore review with remaining items.
+         */
+        if(previousNotes == null){
+            //The ViewModelFactory makes it possible to call different constructors for the viewmodel.
+            model = new ViewModelProvider(this, new SharedViewModelFactory(getApplication())).get(SharedViewModel.class);
+        }else{
+            model = new ViewModelProvider(this, new SharedViewModelFactory(getApplication(), previousNotes
+            )).get(SharedViewModel.class);
+        }
+    }
 
     @Override
     public void onBackPressed() {
@@ -73,25 +92,6 @@ public class ReviewActivity extends FragmentActivity {
             finish();
     }
 
-    private void resumeReview(){
-        SharedPreferences prefs = getSharedPreferences("prefs",MODE_PRIVATE);
 
-        Gson gson = new Gson();
-        String json = prefs.getString("REMAINING_NOTES", "");
-        Type type = new TypeToken<List<Note>>(){}.getType();
-        List<Note> previousNotes = gson.fromJson(json, type);
-
-
-        /* - If no notes from a previous review exist. Load new review items from database
-         * - Else restore review with remaining items.
-         */
-        if(previousNotes == null){
-            //The ViewModelFactory makes it possible to call different constructors for the viewmodel.
-            model = new ViewModelProvider(this, new SharedViewModelFactory(getApplication())).get(SharedViewModel.class);
-        }else{
-            model = new ViewModelProvider(this, new SharedViewModelFactory(getApplication(), previousNotes
-                    )).get(SharedViewModel.class);
-        }
-    }
 
 }
