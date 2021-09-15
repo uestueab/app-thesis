@@ -12,6 +12,7 @@ import android.bluetooth.le.ScanSettings;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.Toast;
 
 import com.google.gson.Gson;
@@ -25,6 +26,8 @@ import java.util.Collections;
 import java.util.List;
 
 public class ReviewActivity extends FragmentActivity {
+
+    private final String TAG = this.getClass().getSimpleName();
 
     public static final String EXTRA_REMAINING_REVIEWS = "extra_remaining_reviews";
 
@@ -90,6 +93,29 @@ public class ReviewActivity extends FragmentActivity {
             intent.putExtra(EXTRA_REMAINING_REVIEWS, bundle);
             setResult(RESULT_OK,intent);
             finish();
+    }
+
+    /* Things to be done, when the activity loses foreground state
+     * basically:
+     *              - putting app in the background
+     *              - moving to another activity through intent.
+     */
+    @Override
+    protected void onPause() {
+        super.onPause();
+
+        List<Note> remainingNotes = model.getRemainingNotes();
+
+        if(viewPager.getCurrentItem() != 0)
+            remainingNotes.remove(0);
+
+        SharedPreferences mPrefs = getSharedPreferences("prefs", MODE_PRIVATE);
+        SharedPreferences.Editor prefsEditor = mPrefs.edit();
+        Gson gson = new Gson();
+        String json = gson.toJson(remainingNotes);
+        prefsEditor.putString("REMAINING_NOTES", json);
+        prefsEditor.apply();
+
     }
 
 

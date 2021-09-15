@@ -41,7 +41,7 @@ public class SharedViewModel extends AndroidViewModel {
         return notes;
     }
 
-    // Position: Getter and Setter
+    // Getter and Setter for position
     public MutableLiveData<Integer> getPosition(){ return position; }
     public void setPosition(int x){ position.setValue(x);}
 
@@ -60,7 +60,7 @@ public class SharedViewModel extends AndroidViewModel {
 
         if (currentPosition < lastItemIndex){
             // Increment our position. Makes it possible to load next note when called before getNote()
-            getPosition().setValue(++currentPosition);
+            setPosition(++currentPosition);
             return true;
         }else{
             return false;

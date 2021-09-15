@@ -53,7 +53,7 @@ public class StartingScreenActivity extends AppCompatActivity {
                     @Override
                     public void onActivityResult(ActivityResult result) {
                         if (result.getResultCode() == Activity.RESULT_OK) {
-                            // There are no request codes
+
                             Intent intent =  result.getData();
                             Bundle bundle = intent.getBundleExtra(ReviewActivity.EXTRA_REMAINING_REVIEWS);
                             List<Note> notes = (List<Note>) bundle.getSerializable("notes");
