@@ -71,11 +71,7 @@ public class FragmentScreenSlidePageTwo extends Fragment {
                     ((ReviewActivity) getActivity()).previous_fragment();
                     tv_question.setText("");
                 } else { // all items passed, quit by moving to another activity
-                    SharedPreferences preferences = getActivity().getSharedPreferences("prefs", MODE_PRIVATE);
-                    preferences.edit().remove("REMAINING_NOTES").apply();
-
-//                    model.setPosition(0);
-
+                    new PrefManager<>(getActivity()).remove("REMAINING_NOTES");
 
                     Intent intent = new Intent(getActivity(), StartingScreenActivity.class);
                     startActivity(intent);

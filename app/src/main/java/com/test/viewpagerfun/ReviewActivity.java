@@ -53,16 +53,10 @@ public class ReviewActivity extends FragmentActivity {
         resumeReview();
     }
 
-    public void nextFragment () { viewPager.setCurrentItem(viewPager.getCurrentItem()+1); }
-    public void previous_fragment() { viewPager.setCurrentItem(viewPager.getCurrentItem()-1,false); }
-
     private void resumeReview(){
-        SharedPreferences prefs = getSharedPreferences("prefs",MODE_PRIVATE);
+        List<Note> previousNotes = new PrefManager<Note>(getApplicationContext())
+                .getList("REMAINING_NOTES");
 
-        Gson gson = new Gson();
-        String json = prefs.getString("REMAINING_NOTES", "");
-        Type type = new TypeToken<List<Note>>(){}.getType();
-        List<Note> previousNotes = gson.fromJson(json, type);
 
         /* - If no notes from a previous review exist. Load new review items from database
          * - Else restore review with remaining items.
@@ -75,6 +69,9 @@ public class ReviewActivity extends FragmentActivity {
             )).get(SharedViewModel.class);
         }
     }
+
+    public void nextFragment () { viewPager.setCurrentItem(viewPager.getCurrentItem()+1); }
+    public void previous_fragment() { viewPager.setCurrentItem(viewPager.getCurrentItem()-1,false); }
 
     @Override
     public void onBackPressed() {
@@ -96,9 +93,11 @@ public class ReviewActivity extends FragmentActivity {
     }
 
     /* Things to be done, when the activity loses foreground state
-     * basically:
-     *              - putting app in the background
-     *              - moving to another activity through intent.
+     * basically, when:
+     *                      - putting app in the background
+     *                      - moving to another activity through intent.
+     *
+     * do: save current progress in the review session.
      */
     @Override
     protected void onPause() {
@@ -109,15 +108,6 @@ public class ReviewActivity extends FragmentActivity {
         if(viewPager.getCurrentItem() != 0)
             remainingNotes.remove(0);
 
-        SharedPreferences mPrefs = getSharedPreferences("prefs", MODE_PRIVATE);
-        SharedPreferences.Editor prefsEditor = mPrefs.edit();
-        Gson gson = new Gson();
-        String json = gson.toJson(remainingNotes);
-        prefsEditor.putString("REMAINING_NOTES", json);
-        prefsEditor.apply();
-
+        new PrefManager<Note>(getApplicationContext()).setList("REMAINING_NOTES",remainingNotes);
     }
-
-
-
 }

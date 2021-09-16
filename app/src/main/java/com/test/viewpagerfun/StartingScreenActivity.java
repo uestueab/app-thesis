@@ -22,7 +22,10 @@ import com.google.gson.reflect.TypeToken;
 import com.test.viewpagerfun.model.entity.Note;
 
 import java.lang.reflect.Type;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 public class StartingScreenActivity extends AppCompatActivity {
@@ -42,7 +45,6 @@ public class StartingScreenActivity extends AppCompatActivity {
 
         showReviewItemCount();
 
-
         /* Getting a result from an activity. This replaces startActivityForResult!
          * More specifically, this gets triggered when ReviewActivity sends back remaining notes
          * whenever the back button was pressed.
@@ -59,15 +61,9 @@ public class StartingScreenActivity extends AppCompatActivity {
                             List<Note> notes = (List<Note>) bundle.getSerializable("notes");
 
                             if(notes.size() > 0) {
-                                SharedPreferences mPrefs = getSharedPreferences("prefs", MODE_PRIVATE);
-                                SharedPreferences.Editor prefsEditor = mPrefs.edit();
-                                Gson gson = new Gson();
-                                String json = gson.toJson(notes);
-                                prefsEditor.putString("REMAINING_NOTES", json);
-                                prefsEditor.apply();
+                                new PrefManager<Note>(getApplicationContext()).setList("REMAINING_NOTES",notes);
                             }else{
-                                SharedPreferences preferences = getSharedPreferences("prefs", MODE_PRIVATE);
-                                preferences.edit().remove("REMAINING_NOTES").apply();
+                                new PrefManager<>(getApplication()).remove("REMAINING_NOTES");
                             }
                             tv_reviewItemCount.setText("Review: " + notes.size());
                         }
@@ -85,12 +81,9 @@ public class StartingScreenActivity extends AppCompatActivity {
     }
 
     private void showReviewItemCount(){
-        SharedPreferences prefs = getSharedPreferences("prefs",MODE_PRIVATE);
+        List<Note> previousNotes  = new PrefManager<Note>(getApplicationContext())
+                .getList("REMAINING_NOTES");
 
-        Gson gson = new Gson();
-        String json = prefs.getString("REMAINING_NOTES", "");
-        Type type = new TypeToken<List<Note>>(){}.getType();
-        List<Note> previousNotes = gson.fromJson(json, type);
 
         if(previousNotes == null || previousNotes.size() == 0){
             model = new ViewModelProvider(this).get(StartingScreenViewModel.class);
@@ -100,7 +93,6 @@ public class StartingScreenActivity extends AppCompatActivity {
         }else{
             tv_reviewItemCount.setText("Review: " + previousNotes.size());
         }
-
     }
 
 }
