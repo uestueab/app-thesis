@@ -13,27 +13,26 @@ import java.util.List;
 
 import static android.content.Context.MODE_PRIVATE;
 
-// Store and retrieve data from SharedPreferences in a more generic way.
+/**
+ * Manages the shared preferences. SharedPreferences are related to context.
+ * You can only reference it through a context. That's why a non-static approach (through constructor) was used.
+ */
 public class PrefManager<T> {
 
-    private final Context context;
     private final SharedPreferences prefs;
     private final SharedPreferences.Editor editor;
 
     @SuppressLint("CommitPrefEdits")
     public PrefManager(Context context) {
-        this.context = context;
         this.prefs = context.getSharedPreferences("prefs", MODE_PRIVATE);
         this.editor = prefs.edit();
     }
-
 
         /**
          * Set any type of shared preferences value
          * @param key of the shared preferences which the caller is desire to set
          * @param value types:
          *                     Boolean ,
-         *                     StringSet,
          *                     String,
          *                     Float,
          *                     Long,
@@ -61,7 +60,6 @@ public class PrefManager<T> {
 
             editor.apply();
         }
-
 
         /**
          * Get any type of value from the shared preference
@@ -102,16 +100,13 @@ public class PrefManager<T> {
         }
 
     /**
-     * @return set a list to the specified key in shared preference
-     *
-     * @param key key of shared preference.
-     * @param list list that holds items of same type as passed to the PrefManager.
+     * @return set list of notes to the specified key in shared preference
      */
-    public void setList(String key, List<T> list){
+    public void setNotes(String key, List<Note> list){
             Gson gson = new Gson();
 
             //prepare value
-            Type type = new TypeToken<List<T>>(){}.getType();
+            Type type = new TypeToken<List<Note>>(){}.getType();
             String json = gson.toJson(list,type);
 
             editor.putString(key, json);
@@ -119,14 +114,13 @@ public class PrefManager<T> {
         }
 
     /**
-     * @return get list that holds items of same type as passed to the PrefManager.
-     *
-     * @param key key of the shared preference
+     * @return get list of notes from shared preference
+     *@param key key of the shared preference
      */
-        public List<T> getList(String key){
+        public List<Note> getNotes(String key){
             Gson gson = new Gson();
             String json = prefs.getString(key, "");
-            Type type = new TypeToken<List<T>>(){}.getType();
+            Type type = new TypeToken<List<Note>>(){}.getType();
             return gson.fromJson(json, type);
         }
 

@@ -17,7 +17,6 @@ import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.WindowManager;
 import android.view.animation.CycleInterpolator;
 import android.view.animation.TranslateAnimation;
 import android.view.inputmethod.EditorInfo;
@@ -85,7 +84,7 @@ public class FragmentScreenSlidePage extends Fragment {
      *  - allow submitting with enter key on keyboard.
      *  - check if field is empty and handle correct answer..
      */
-    private void answerSubmitted(){
+    private void answerSubmitted() {
         et_reviewAnswer.setOnEditorActionListener(new EditText.OnEditorActionListener() {
             @Override
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
@@ -100,12 +99,12 @@ public class FragmentScreenSlidePage extends Fragment {
         btn_submit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (et_reviewAnswer.getText().toString().equals(tv_note.getText())){
-                    ((ReviewActivity)getActivity()).nextFragment();
+                if (et_reviewAnswer.getText().toString().equals(tv_note.getText())) {
+                    ((ReviewActivity) getActivity()).nextFragment();
                     //removes glichty effect on fragment switch
                     tv_note.setText("");
                     et_reviewAnswer.setText("");
-                }else {
+                } else {
                     v.performHapticFeedback(HapticFeedbackConstants.LONG_PRESS);
                     vibrateOnError();
                     et_reviewAnswer.startAnimation(shakeError());
@@ -122,7 +121,7 @@ public class FragmentScreenSlidePage extends Fragment {
         return shake;
     }
 
-    private void vibrateOnError(){
+    private void vibrateOnError() {
         Vibrator v = (Vibrator) getContext().getSystemService(VIBRATOR_SERVICE);
         AudioAttributes audioAttributes = new AudioAttributes.Builder()
                 .setContentType(AudioAttributes.CONTENT_TYPE_SONIFICATION)
@@ -134,7 +133,7 @@ public class FragmentScreenSlidePage extends Fragment {
     }
 
     //focus on the given edittext and popup the keyboard
-    private void focusOnInputArea(EditText et){
+    private void focusOnInputArea(EditText et) {
         //put the runnable at the end of the event queue
         et_reviewAnswer.post(new Runnable() {
             @Override
@@ -143,7 +142,7 @@ public class FragmentScreenSlidePage extends Fragment {
                 et.setFocusable(true);
                 et.requestFocus();
                 InputMethodManager imm = (InputMethodManager) requireActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
-                imm.toggleSoftInput(InputMethodManager.SHOW_IMPLICIT,  InputMethodManager.HIDE_NOT_ALWAYS);
+                imm.toggleSoftInput(InputMethodManager.SHOW_IMPLICIT, InputMethodManager.HIDE_NOT_ALWAYS);
             }
         });
     }

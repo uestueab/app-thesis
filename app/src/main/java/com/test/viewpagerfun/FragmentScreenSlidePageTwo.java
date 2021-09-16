@@ -62,13 +62,14 @@ public class FragmentScreenSlidePageTwo extends Fragment {
         });
 
 
-        //Move to next Item
+        //Decides finishing the review, or showing next item in queue.
         btn_nextTop.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //show the next note, if one exists
+                //let move to the review user input fragment if remaining notes exist
                 if (model.hasNextNote()) {
                     ((ReviewActivity) getActivity()).previous_fragment();
+                    //remove flicker
                     tv_question.setText("");
                 } else { // all items passed, quit by moving to another activity
                     new PrefManager<>(getActivity()).remove("REMAINING_NOTES");
@@ -89,6 +90,7 @@ public class FragmentScreenSlidePageTwo extends Fragment {
                     public void onChanged(@Nullable Integer integer) {
                     }
                 });
+
     }
 }
 

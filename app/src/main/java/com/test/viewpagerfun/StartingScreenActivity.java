@@ -4,29 +4,19 @@ import androidx.activity.result.ActivityResult;
 import androidx.activity.result.ActivityResultCallback;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.ViewModelProvider;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
 import com.test.viewpagerfun.model.entity.Note;
 
-import java.lang.reflect.Type;
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-import java.util.Optional;
 
 public class StartingScreenActivity extends AppCompatActivity {
 
@@ -56,13 +46,15 @@ public class StartingScreenActivity extends AppCompatActivity {
                     public void onActivityResult(ActivityResult result) {
                         if (result.getResultCode() == Activity.RESULT_OK) {
 
-                            Intent intent =  result.getData();
+                            Intent intent = result.getData();
                             Bundle bundle = intent.getBundleExtra(ReviewActivity.EXTRA_REMAINING_REVIEWS);
                             List<Note> notes = (List<Note>) bundle.getSerializable("notes");
 
-                            if(notes.size() > 0) {
-                                new PrefManager<Note>(getApplicationContext()).setList("REMAINING_NOTES",notes);
-                            }else{
+                            //persist any remaining items to sharedpreferences
+                            if (notes.size() > 0) {
+                                new PrefManager<>(getApplicationContext()).setNotes("REMAINING_NOTES", notes);
+                            } else {
+                                //or clear the key-value pair
                                 new PrefManager<>(getApplication()).remove("REMAINING_NOTES");
                             }
                             tv_reviewItemCount.setText("Review: " + notes.size());
@@ -80,17 +72,15 @@ public class StartingScreenActivity extends AppCompatActivity {
         });
     }
 
-    private void showReviewItemCount(){
-        List<Note> previousNotes  = new PrefManager<Note>(getApplicationContext())
-                .getList("REMAINING_NOTES");
+    private void showReviewItemCount() {
+        List<Note> previousNotes = new PrefManager<>(getApplicationContext()).getNotes("REMAINING_NOTES");
 
-
-        if(previousNotes == null || previousNotes.size() == 0){
+        if (previousNotes == null || previousNotes.size() == 0) {
             model = new ViewModelProvider(this).get(StartingScreenViewModel.class);
             model.getNotes().observe(this, item -> {
                 tv_reviewItemCount.setText("Review: " + item.size());
             });
-        }else{
+        } else {
             tv_reviewItemCount.setText("Review: " + previousNotes.size());
         }
     }
