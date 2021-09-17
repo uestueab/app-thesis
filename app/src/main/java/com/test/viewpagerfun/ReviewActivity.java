@@ -7,6 +7,7 @@ import androidx.viewpager2.widget.ViewPager2;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.widget.Toast;
 
 import com.test.viewpagerfun.model.entity.Note;
 import com.test.viewpagerfun.viewmodel.SharedViewModel;
@@ -23,6 +24,9 @@ public class ReviewActivity extends FragmentActivity {
     private ViewPager2 viewPager;
 
     private SharedViewModel model;
+
+    // register the time the back button was pressed
+    private long backPressedTime;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -68,21 +72,31 @@ public class ReviewActivity extends FragmentActivity {
 
     @Override
     public void onBackPressed() {
-        Intent intent = new Intent();
-        List<Note> remainingNotes = model.getRemainingNotes();
 
-        /* Check if the back button was pressed on a fragment other than the review input fragment.
-         * That means the review item has lapsed/passed! So remove it from the list.
+        /*  Avoid accidentally going out of review by hitting the back button.
+            Instead leave review only when back button was pressed in quick succession.
          */
-        if (viewPager.getCurrentItem() != 0)
-            remainingNotes.remove(0);
+        if (backPressedTime + 2000 > System.currentTimeMillis()) {
+            Intent intent = new Intent();
+            List<Note> remainingNotes = model.getRemainingNotes();
 
-        Bundle bundle = new Bundle();
-        bundle.putSerializable(BUNDLE_REMAINING_NOTES, (Serializable) remainingNotes);
+            /* Check if the back button was pressed on a fragment other than the review input fragment.
+             * That means the review item has lapsed/passed! So remove it from the list.
+             */
+            if (viewPager.getCurrentItem() != 0)
+                remainingNotes.remove(0);
 
-        intent.putExtra(EXTRA_REMAINING_REVIEWS, bundle);
-        setResult(RESULT_OK, intent);
-        finish();
+            Bundle bundle = new Bundle();
+            bundle.putSerializable(BUNDLE_REMAINING_NOTES, (Serializable) remainingNotes);
+
+            intent.putExtra(EXTRA_REMAINING_REVIEWS, bundle);
+            setResult(RESULT_OK, intent);
+            finish();
+        } else {
+            Toast.makeText(this, "Press back again to pause review", Toast.LENGTH_SHORT).show();
+        }
+
+        backPressedTime = System.currentTimeMillis();
     }
 
     /* Things to be done, when the activity loses foreground state
