@@ -15,6 +15,7 @@ import com.test.viewpagerfun.model.entity.Note;
 import com.test.viewpagerfun.viewmodel.StartingScreenViewModel;
 
 import java.util.List;
+import static com.test.viewpagerfun.constants.ConstantsHolder.*;
 
 public class StartingScreenActivity extends AppCompatActivity {
 
@@ -51,14 +52,15 @@ public class StartingScreenActivity extends AppCompatActivity {
 
     /*
      *  Display how many items need to be reviewed. Either:
-     *  - Remaining items from a previous session. (loaded from SharedPreferences)
      *  - New items. (loaded from the database)
+     *  - Remaining items from a previous session. (loaded from SharedPreferences)
      */
     private void showReviewItemCount() {
-        List<Note> previousNotes = new PrefManager<>(getApplicationContext()).getNotes("REMAINING_NOTES");
+        List<Note> previousNotes = new PrefManager<>(getApplicationContext()).getNotes(PREFS_REMAINING_NOTES);
 
         if (previousNotes == null || previousNotes.size() == 0) {
             StartingScreenViewModel model = new ViewModelProvider(this).get(StartingScreenViewModel.class);
+
             model.getNotes().observe(this, item -> {
                 binding.tvReviewItemCount.setText("Review: " + item.size());
             });

@@ -14,6 +14,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import static com.test.viewpagerfun.constants.ConstantsHolder.*;
 
 @Builder
 @Getter
@@ -37,9 +38,10 @@ public class NextReviewItemListener implements View.OnClickListener{
             ((ReviewActivity) activity).previous_fragment();
             //remove flicker
             binding.tvQuestion.setText("");
-        } else { // all items passed, quit by moving to another activity
-            new PrefManager<>(getActivity()).remove("REMAINING_NOTES");
+        } else {
+            new PrefManager<>(getActivity()).remove(PREFS_REMAINING_NOTES);
 
+            // all items passed, quit by moving to another activity
             Intent intent = new Intent(getActivity(), StartingScreenActivity.class);
             activity.startActivity(intent);
         }

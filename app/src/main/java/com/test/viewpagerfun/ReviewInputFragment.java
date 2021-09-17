@@ -73,11 +73,16 @@ public class ReviewInputFragment extends Fragment {
      */
     private void answerSubmitted() {
         binding.etReviewAnswer.setOnEditorActionListener(
-                SubmitWithKeyboardListener.builder().binding(binding).build()
+                SubmitWithKeyboardListener.builder()
+                        .binding(binding)
+                        .build()
         );
 
         binding.btnSubmit.setOnClickListener(
-                ReviewAnswerSubmittedListener.builder().activity(getActivity()).binding(binding).build()
+                ReviewAnswerSubmittedListener.builder()
+                        .activity(getActivity())
+                        .binding(binding)
+                        .build()
         );
     }
 

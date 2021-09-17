@@ -19,30 +19,38 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import static com.test.viewpagerfun.constants.ConstantsHolder.*;
 
 @Builder
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor
+/**
+ * callback to be made whenever the the back-button is pressed, basically:
+ * - get data from the intent of the review activity. These are the remaining review items.
+ * - store those remaining items in shared preferences, as to avoid unnecessary database calls.
+ */
 public class backToStartingScreenCallback implements ActivityResultCallback<ActivityResult> {
 
     private Context context;
     private ActivityStartingScreenBinding binding;
 
+    //unchecked casts can be ignored, since the bundle is guaranteed to return a List<Note>
+    @SuppressWarnings("unchecked")
     @Override
     public void onActivityResult(ActivityResult result) {
         if (result.getResultCode() == Activity.RESULT_OK) {
 
             Intent intent = result.getData();
-            Bundle bundle = intent.getBundleExtra(ReviewActivity.EXTRA_REMAINING_REVIEWS);
-            List<Note> notes = (List<Note>) bundle.getSerializable("notes");
+            Bundle bundle = intent.getBundleExtra(EXTRA_REMAINING_REVIEWS);
+            List<Note> notes = (List<Note>) bundle.getSerializable(BUNDLE_REMAINING_NOTES);
 
             //persist any remaining items to shared preferences
             if (notes.size() > 0) {
-                new PrefManager<>(getContext()).setNotes("REMAINING_NOTES", notes);
+                new PrefManager<>(getContext()).setNotes(PREFS_REMAINING_NOTES, notes);
             } else {
                 //or clear the key-value pair
-                new PrefManager<>(getContext()).remove("REMAINING_NOTES");
+                new PrefManager<>(getContext()).remove(PREFS_REMAINING_NOTES);
             }
             binding.tvReviewItemCount.setText("Review: " + notes.size());
         }

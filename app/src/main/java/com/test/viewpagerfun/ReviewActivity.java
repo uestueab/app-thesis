@@ -15,11 +15,9 @@ import com.test.viewpagerfun.viewmodel.SharedViewModelFactory;
 import java.io.Serializable;
 import java.util.List;
 
+import static com.test.viewpagerfun.constants.ConstantsHolder.*;
+
 public class ReviewActivity extends FragmentActivity {
-
-    private final String TAG = this.getClass().getSimpleName();
-
-    public static final String EXTRA_REMAINING_REVIEWS = "extra_remaining_reviews";
 
     // make use of animations, when moving to next fragment
     private ViewPager2 viewPager;
@@ -45,7 +43,7 @@ public class ReviewActivity extends FragmentActivity {
 
     private void resumeReview() {
         List<Note> previousNotes = new PrefManager<Note>(getApplicationContext())
-                .getNotes("REMAINING_NOTES");
+                .getNotes(PREFS_REMAINING_NOTES);
 
         /* - If no notes from a previous review exist. Load new review items from database
          * - Else restore review with remaining items.
@@ -64,6 +62,7 @@ public class ReviewActivity extends FragmentActivity {
     }
 
     public void previous_fragment() {
+        //setting smoothScroll to false disables viewpager animation.
         viewPager.setCurrentItem(viewPager.getCurrentItem() - 1, false);
     }
 
@@ -79,7 +78,7 @@ public class ReviewActivity extends FragmentActivity {
             remainingNotes.remove(0);
 
         Bundle bundle = new Bundle();
-        bundle.putSerializable("notes", (Serializable) remainingNotes);
+        bundle.putSerializable(BUNDLE_REMAINING_NOTES, (Serializable) remainingNotes);
 
         intent.putExtra(EXTRA_REMAINING_REVIEWS, bundle);
         setResult(RESULT_OK, intent);
@@ -102,6 +101,6 @@ public class ReviewActivity extends FragmentActivity {
         if (viewPager.getCurrentItem() != 0)
             remainingNotes.remove(0);
 
-        new PrefManager<>(getApplicationContext()).setNotes("REMAINING_NOTES", remainingNotes);
+        new PrefManager<>(getApplicationContext()).setNotes(PREFS_REMAINING_NOTES, remainingNotes);
     }
 }

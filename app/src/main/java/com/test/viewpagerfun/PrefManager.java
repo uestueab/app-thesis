@@ -13,6 +13,7 @@ import java.util.List;
 
 import static android.content.Context.MODE_PRIVATE;
 
+import static com.test.viewpagerfun.constants.ConstantsHolder.*;
 /**
  * Manages the shared preferences. SharedPreferences are related to context.
  * You can only reference it through a context. That's why a non-static approach (through constructor) was used.
@@ -24,7 +25,7 @@ public class PrefManager<T> {
 
     @SuppressLint("CommitPrefEdits")
     public PrefManager(Context context) {
-        this.prefs = context.getSharedPreferences("prefs", MODE_PRIVATE);
+        this.prefs = context.getSharedPreferences(PREFS_FILE, MODE_PRIVATE);
         this.editor = prefs.edit();
     }
 
