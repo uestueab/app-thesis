@@ -69,4 +69,8 @@ public class StartingScreenActivity extends AppCompatActivity {
         }
     }
 
+    @Override
+    public void onBackPressed() {
+    }
+
 }

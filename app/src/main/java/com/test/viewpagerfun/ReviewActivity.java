@@ -27,6 +27,7 @@ public class ReviewActivity extends FragmentActivity {
 
     // register the time the back button was pressed
     private long backPressedTime;
+    private Toast toast;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -93,7 +94,8 @@ public class ReviewActivity extends FragmentActivity {
             setResult(RESULT_OK, intent);
             finish();
         } else {
-            Toast.makeText(this, "Press back again to pause review", Toast.LENGTH_SHORT).show();
+            toast = Toast.makeText(this, "Press back again to pause review", Toast.LENGTH_SHORT);
+            toast.show();
         }
 
         backPressedTime = System.currentTimeMillis();
@@ -116,5 +118,8 @@ public class ReviewActivity extends FragmentActivity {
             remainingNotes.remove(0);
 
         new PrefManager<>(getApplicationContext()).setNotes(PREFS_REMAINING_NOTES, remainingNotes);
+
+        if(toast != null)
+            toast.cancel();
     }
 }
