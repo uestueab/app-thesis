@@ -3,6 +3,7 @@ package com.test.viewpagerfun.model.entity;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import androidx.annotation.NonNull;
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.Ignore;
@@ -44,6 +45,7 @@ public class Note implements Cloneable, Serializable {
     private float easinessFactor = 2.5f;
 
 
+    @NonNull
     @Override
     public Object clone() throws CloneNotSupportedException {
         return super.clone();

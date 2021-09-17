@@ -1,32 +1,27 @@
 package com.test.viewpagerfun;
 
 import android.content.Context;
-import android.media.AudioAttributes;
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
-import android.os.VibrationEffect;
-import android.os.Vibrator;
-import android.view.HapticFeedbackConstants;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.animation.CycleInterpolator;
-import android.view.animation.TranslateAnimation;
 import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.TextView;
 
-import com.test.viewpagerfun.databinding.FragmentScreenSlidePageBinding;
+import com.test.viewpagerfun.databinding.ReviewInputFragmentBinding;
+import com.test.viewpagerfun.listeners.onClick.ReviewAnswerSubmittedListener;
+import com.test.viewpagerfun.listeners.onEditorChange.SubmitWithKeyboardListener;
 import com.test.viewpagerfun.viewmodel.SharedViewModel;
-
-import static android.content.Context.VIBRATOR_SERVICE;
 
 public class ReviewInputFragment extends Fragment {
 
@@ -34,7 +29,7 @@ public class ReviewInputFragment extends Fragment {
     private SharedViewModel model;
 
     //view binding of fragment
-    private FragmentScreenSlidePageBinding binding;
+    private ReviewInputFragmentBinding binding;
 
 
     @Override
@@ -44,10 +39,10 @@ public class ReviewInputFragment extends Fragment {
 
     //inflate the layout
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
-        binding = FragmentScreenSlidePageBinding.inflate(inflater, container, false);
+        binding = ReviewInputFragmentBinding.inflate(inflater, container, false);
         return binding.getRoot();
     }
 
@@ -77,51 +72,15 @@ public class ReviewInputFragment extends Fragment {
      *  - check if field is empty and handle correct answer..
      */
     private void answerSubmitted() {
-        binding.etReviewAnswer.setOnEditorActionListener(new EditText.OnEditorActionListener() {
-            @Override
-            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
-                if (actionId == EditorInfo.IME_ACTION_DONE) {
-                    binding.btnSubmit.performClick();
-                    return true;
-                }
-                return false;
-            }
-        });
+        binding.etReviewAnswer.setOnEditorActionListener(
+                SubmitWithKeyboardListener.builder().binding(binding).build()
+        );
 
-        binding.btnSubmit.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (binding.etReviewAnswer.getText().toString().equals(binding.tvQuestion.getText())) {
-                    ((ReviewActivity) getActivity()).nextFragment();
-                    //removes glichty effect on fragment switch
-                    binding.tvQuestion.setText("");
-                    binding.etReviewAnswer.setText("");
-                } else {
-                    v.performHapticFeedback(HapticFeedbackConstants.LONG_PRESS);
-                    vibrateOnError();
-                    binding.etReviewAnswer.startAnimation(shakeError());
-                }
-            }
-        });
+        binding.btnSubmit.setOnClickListener(
+                ReviewAnswerSubmittedListener.builder().activity(getActivity()).binding(binding).build()
+        );
     }
 
-    private TranslateAnimation shakeError() {
-        TranslateAnimation shake = new TranslateAnimation(0, 20, 0, 0);
-        shake.setDuration(500);
-        shake.setInterpolator(new CycleInterpolator(4));
-        return shake;
-    }
-
-    private void vibrateOnError() {
-        Vibrator v = (Vibrator) getContext().getSystemService(VIBRATOR_SERVICE);
-        AudioAttributes audioAttributes = new AudioAttributes.Builder()
-                .setContentType(AudioAttributes.CONTENT_TYPE_SONIFICATION)
-                .setUsage(AudioAttributes.USAGE_ALARM)
-                .build();
-        VibrationEffect ve = VibrationEffect.createOneShot(100,
-                VibrationEffect.DEFAULT_AMPLITUDE);
-        v.vibrate(ve, audioAttributes);
-    }
 
     //focus on the given edittext and popup the keyboard
     private void focusOnInputArea(EditText et) {
