@@ -11,7 +11,6 @@ import androidx.lifecycle.ViewModelProvider;
 
 import android.os.VibrationEffect;
 import android.os.Vibrator;
-import android.util.Log;
 import android.view.HapticFeedbackConstants;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
@@ -21,23 +20,22 @@ import android.view.animation.CycleInterpolator;
 import android.view.animation.TranslateAnimation;
 import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import com.test.viewpagerfun.databinding.FragmentScreenSlidePageBinding;
+import com.test.viewpagerfun.viewmodel.SharedViewModel;
+
 import static android.content.Context.VIBRATOR_SERVICE;
 
-public class FragmentScreenSlidePage extends Fragment {
-
-    private static final String TAG = "FragmentScreenSlidePage";
+public class ReviewInputFragment extends Fragment {
 
     //make communication between fragments possible
     private SharedViewModel model;
 
-    //UI components
-    private TextView tv_note;
-    private EditText et_reviewAnswer;
-    private Button btn_submit;
+    //view binding of fragment
+    private FragmentScreenSlidePageBinding binding;
+
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -48,32 +46,26 @@ public class FragmentScreenSlidePage extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        Log.d(TAG, "onCreateView: ");
-        // Inflate the layout for this fragment
-        return (ViewGroup) inflater.inflate(R.layout.fragment_screen_slide_page,
-                container, false);
+
+        binding = FragmentScreenSlidePageBinding.inflate(inflater, container, false);
+        return binding.getRoot();
     }
 
     /* This is the only callback method being triggered when:
-     *  - switching from FragmentScreenSlidePageTwo to this fragment (back button)
+     *  - switching from ReviewDetailedResultFragment to this fragment (back button)
      *  - putting the app in background.
      */
     @Override
     public void onResume() {
         super.onResume();
 
-        //get view component references.
-        tv_note = (TextView) getView().findViewById(R.id.tv_question);
-        btn_submit = (Button) getView().findViewById(R.id.btn_submit);
-        et_reviewAnswer = (EditText) getView().findViewById(R.id.et_reviewAnswer);
-
-        focusOnInputArea(et_reviewAnswer);
+        focusOnInputArea(binding.etReviewAnswer);
 
         //get the SharedViewModel which is scoped to the underlying activity.
         model = new ViewModelProvider(requireActivity()).get(SharedViewModel.class);
         // Update the UI.
         model.getNotes().observe(getViewLifecycleOwner(), item -> {
-            tv_note.setText(item.get(model.getPosition().getValue()).getTitle());
+            binding.tvQuestion.setText(item.get(model.getPosition().getValue()).getTitle());
         });
 
         answerSubmitted();
@@ -85,30 +77,29 @@ public class FragmentScreenSlidePage extends Fragment {
      *  - check if field is empty and handle correct answer..
      */
     private void answerSubmitted() {
-        et_reviewAnswer.setOnEditorActionListener(new EditText.OnEditorActionListener() {
+        binding.etReviewAnswer.setOnEditorActionListener(new EditText.OnEditorActionListener() {
             @Override
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
                 if (actionId == EditorInfo.IME_ACTION_DONE) {
-                    btn_submit.performClick();
+                    binding.btnSubmit.performClick();
                     return true;
                 }
                 return false;
             }
         });
 
-        btn_submit.setOnClickListener(new View.OnClickListener() {
+        binding.btnSubmit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (et_reviewAnswer.getText().toString().equals(tv_note.getText())) {
+                if (binding.etReviewAnswer.getText().toString().equals(binding.tvQuestion.getText())) {
                     ((ReviewActivity) getActivity()).nextFragment();
                     //removes glichty effect on fragment switch
-                    tv_note.setText("");
-                    et_reviewAnswer.setText("");
+                    binding.tvQuestion.setText("");
+                    binding.etReviewAnswer.setText("");
                 } else {
                     v.performHapticFeedback(HapticFeedbackConstants.LONG_PRESS);
                     vibrateOnError();
-                    et_reviewAnswer.startAnimation(shakeError());
-
+                    binding.etReviewAnswer.startAnimation(shakeError());
                 }
             }
         });
@@ -135,7 +126,7 @@ public class FragmentScreenSlidePage extends Fragment {
     //focus on the given edittext and popup the keyboard
     private void focusOnInputArea(EditText et) {
         //put the runnable at the end of the event queue
-        et_reviewAnswer.post(new Runnable() {
+        binding.etReviewAnswer.post(new Runnable() {
             @Override
             public void run() {
                 et.isFocusableInTouchMode();
@@ -155,4 +146,12 @@ public class FragmentScreenSlidePage extends Fragment {
                     }
                 });
     }
+
+    //Fragments outlive their views. clean up any references to the binding class instance in the fragment
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        binding = null;
+    }
+
 }

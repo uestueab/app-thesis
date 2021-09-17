@@ -1,5 +1,6 @@
 package com.test.viewpagerfun;
 
+import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
 import androidx.viewpager2.adapter.FragmentStateAdapter;
@@ -14,15 +15,16 @@ public class ScreenSlidePagerAdapter extends FragmentStateAdapter {
         super(fa);
     }
 
+    @NonNull
     @Override
     public Fragment createFragment(int position) {
         Fragment fragment = null;
-        switch (position){
+        switch (position) {
             case 0:
-                fragment = new FragmentScreenSlidePage();
+                fragment = new ReviewInputFragment();
                 break;
             case 1:
-                fragment = new FragmentScreenSlidePageTwo();
+                fragment = new ReviewDetailedResultFragment();
                 break;
         }
         assert fragment != null;

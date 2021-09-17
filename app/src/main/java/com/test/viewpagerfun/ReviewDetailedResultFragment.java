@@ -1,7 +1,6 @@
 package com.test.viewpagerfun;
 
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 
 import androidx.annotation.Nullable;
@@ -9,23 +8,24 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
-import android.widget.TextView;
 
 
-import static android.content.Context.MODE_PRIVATE;
+import com.test.viewpagerfun.databinding.FragmentScreenSlidePageTwoBinding;
+import com.test.viewpagerfun.viewmodel.SharedViewModel;
 
 
-public class FragmentScreenSlidePageTwo extends Fragment {
+public class ReviewDetailedResultFragment extends Fragment {
 
+    private static  String TAG;
+
+    //make communication between fragments possible
     private SharedViewModel model;
-
-    private TextView tv_question;
-    private Button btn_nextTop;
-    private Button btn_nextBottom;
+    //view binding of fragment
+    private FragmentScreenSlidePageTwoBinding binding;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -35,42 +35,39 @@ public class FragmentScreenSlidePageTwo extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        return (ViewGroup) inflater.inflate(R.layout.fragment_screen_slide_page_two,
-                container, false);
+        binding = FragmentScreenSlidePageTwoBinding.inflate(inflater, container, false);
+        return binding.getRoot();
     }
 
     @Override
     public void onResume() {
         super.onResume();
 
+        Log.d(TAG, "onResume: ");
+
         model = new ViewModelProvider(requireActivity()).get(SharedViewModel.class);
 
-        tv_question = getView().findViewById(R.id.tv_question);
-        btn_nextTop = getView().findViewById(R.id.btn_nextTop);
-        btn_nextBottom = getView().findViewById(R.id.btn_nextBottom);
-        btn_nextBottom.setOnClickListener(new View.OnClickListener() {
+        binding.btnNextBottom.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                btn_nextTop.performClick();
+                binding.btnNextTop.performClick();
             }
         });
 
         //Update the UI.
         model.getNote().observe(getViewLifecycleOwner(), item -> {
-            tv_question.setText(item.getTitle());
+            binding.tvQuestion.setText(item.getTitle());
         });
 
-
         //Decides finishing the review, or showing next item in queue.
-        btn_nextTop.setOnClickListener(new View.OnClickListener() {
+        binding.btnNextTop.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 //let move to the review user input fragment if remaining notes exist
                 if (model.hasNextNote()) {
                     ((ReviewActivity) getActivity()).previous_fragment();
                     //remove flicker
-                    tv_question.setText("");
+                    binding.tvQuestion.setText("");
                 } else { // all items passed, quit by moving to another activity
                     new PrefManager<>(getActivity()).remove("REMAINING_NOTES");
 
@@ -90,7 +87,13 @@ public class FragmentScreenSlidePageTwo extends Fragment {
                     public void onChanged(@Nullable Integer integer) {
                     }
                 });
+    }
 
+    //Fragments outlive their views. clean up any references to the binding class instance in the fragment
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        binding = null;
     }
 }
 

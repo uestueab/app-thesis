@@ -1,4 +1,4 @@
-package com.test.viewpagerfun;
+package com.test.viewpagerfun.viewmodel;
 
 import android.app.Application;
 
@@ -16,8 +16,6 @@ import java.util.List;
 
 public class SharedViewModel extends AndroidViewModel {
 
-    private NoteRepository repository;
-
     private final LiveData<List<Note>> notes;
     private MutableLiveData<Integer> position = new MutableLiveData<>(0);
     private List<Note> remainingNotes;
@@ -25,7 +23,7 @@ public class SharedViewModel extends AndroidViewModel {
     //constructor for loading from database
     public SharedViewModel(Application application) {
         super(application);
-        repository = new NoteRepository(application);
+        NoteRepository repository = new NoteRepository(application);
         notes = repository.getAllNotes();
         remainingNotes = new ArrayList<>();
     }

@@ -1,4 +1,4 @@
-package com.test.viewpagerfun;
+package com.test.viewpagerfun.viewmodel;
 
 import android.app.Application;
 
@@ -13,13 +13,12 @@ import java.util.List;
 
 public class StartingScreenViewModel extends AndroidViewModel {
 
-    private NoteRepository repository;
     private final LiveData<List<Note>> notes;
 
 
     public StartingScreenViewModel(Application application){
         super(application);
-        repository = new NoteRepository(application);
+        NoteRepository repository = new NoteRepository(application);
         notes = repository.getAllNotes();
     }
 

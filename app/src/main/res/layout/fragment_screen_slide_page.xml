@@ -82,7 +82,8 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@id/tv_voc_meaning"></EditText>
+        app:layout_constraintTop_toTopOf="@id/tv_voc_meaning"
+        android:autofillHints="" />
 
     <!-- ATTENTION: The snippet below disables completions for some reason...
         android:inputType="textAutoComplete"

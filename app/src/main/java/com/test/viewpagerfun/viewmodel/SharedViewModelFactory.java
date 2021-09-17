@@ -1,4 +1,4 @@
-package com.test.viewpagerfun;
+package com.test.viewpagerfun.viewmodel;
 
 import android.app.Application;
 
@@ -28,6 +28,7 @@ public class SharedViewModelFactory extends ViewModelProvider.NewInstanceFactory
 
     @NonNull
     @Override
+    @SuppressWarnings("unchecked")
     public <T extends ViewModel> T create(@NonNull Class<T> modelClass) {
         if (modelClass == SharedViewModel.class) {
             if(remainingNotes == null)

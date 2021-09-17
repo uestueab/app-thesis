@@ -11,10 +11,10 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.Button;
-import android.widget.TextView;
 
+import com.test.viewpagerfun.databinding.ActivityStartingScreenBinding;
 import com.test.viewpagerfun.model.entity.Note;
+import com.test.viewpagerfun.viewmodel.StartingScreenViewModel;
 
 import java.util.List;
 
@@ -22,16 +22,13 @@ public class StartingScreenActivity extends AppCompatActivity {
 
     private StartingScreenViewModel model;
 
-    private TextView tv_reviewItemCount;
-    private Button btnStartReview;
+    private ActivityStartingScreenBinding binding;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_starting_screen);
-
-        tv_reviewItemCount = findViewById(R.id.tv_reviewItemCount);
-        btnStartReview = findViewById(R.id.btn_startReview);
+        binding = ActivityStartingScreenBinding.inflate(getLayoutInflater());
+        setContentView(binding.getRoot());
 
         showReviewItemCount();
 
@@ -57,13 +54,13 @@ public class StartingScreenActivity extends AppCompatActivity {
                                 //or clear the key-value pair
                                 new PrefManager<>(getApplication()).remove("REMAINING_NOTES");
                             }
-                            tv_reviewItemCount.setText("Review: " + notes.size());
+                            binding.tvReviewItemCount.setText("Review: " + notes.size());
                         }
                     }
                 });
 
         //launch the review
-        btnStartReview.setOnClickListener(new View.OnClickListener() {
+        binding.btnStartReview.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(StartingScreenActivity.this, ReviewActivity.class);
@@ -78,10 +75,10 @@ public class StartingScreenActivity extends AppCompatActivity {
         if (previousNotes == null || previousNotes.size() == 0) {
             model = new ViewModelProvider(this).get(StartingScreenViewModel.class);
             model.getNotes().observe(this, item -> {
-                tv_reviewItemCount.setText("Review: " + item.size());
+                binding.tvReviewItemCount.setText("Review: " + item.size());
             });
         } else {
-            tv_reviewItemCount.setText("Review: " + previousNotes.size());
+            binding.tvReviewItemCount.setText("Review: " + previousNotes.size());
         }
     }
 

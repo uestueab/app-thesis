@@ -9,6 +9,8 @@ import android.content.Intent;
 import android.os.Bundle;
 
 import com.test.viewpagerfun.model.entity.Note;
+import com.test.viewpagerfun.viewmodel.SharedViewModel;
+import com.test.viewpagerfun.viewmodel.SharedViewModelFactory;
 
 import java.io.Serializable;
 import java.util.List;
@@ -52,8 +54,8 @@ public class ReviewActivity extends FragmentActivity {
             //The ViewModelFactory makes it possible to call different constructors for the viewmodel.
             model = new ViewModelProvider(this, new SharedViewModelFactory(getApplication())).get(SharedViewModel.class);
         } else {
-            model = new ViewModelProvider(this, new SharedViewModelFactory(getApplication(), previousNotes
-            )).get(SharedViewModel.class);
+            model = new ViewModelProvider(this,
+                    new SharedViewModelFactory(getApplication(), previousNotes)).get(SharedViewModel.class);
         }
     }
 
