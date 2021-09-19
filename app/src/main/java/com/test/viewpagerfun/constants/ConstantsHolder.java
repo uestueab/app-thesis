@@ -37,5 +37,12 @@ public final class ConstantsHolder {
      */
     public static final String BUNDLE_REMAINING_NOTES = "BUNDLE_REMAINING_NOTES";
 
+    /*
+       OPTIMAL STRING ALIGNMENT DISTANCE (LEVENSHTEIN)
+     */
+
+    //denotes how big the distance between two strings is allowed. With distance being operations
+    //required to transform 'string a' to 'string b'.
+    public static final int MAX_ALLOWED_DISTANCE = 1;
 
 }

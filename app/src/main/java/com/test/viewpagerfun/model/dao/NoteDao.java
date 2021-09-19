@@ -28,7 +28,7 @@ public abstract class NoteDao {
     @Query("DELETE FROM note_table")
     public abstract void deleteAllNotes();
 
-    @Query("SELECT * FROM note_table ORDER BY title DESC")
+    @Query("SELECT * FROM note_table ORDER BY note_title DESC")
     public abstract LiveData<List<Note>> getAllNotes();
 
 }

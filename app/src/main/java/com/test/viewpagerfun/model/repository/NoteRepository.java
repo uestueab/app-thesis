@@ -1,4 +1,4 @@
-package com.test.viewpagerfun.model.datasource;
+package com.test.viewpagerfun.model.repository;
 
 import android.app.Application;
 import android.os.AsyncTask;
@@ -6,6 +6,7 @@ import android.os.AsyncTask;
 import androidx.lifecycle.LiveData;
 
 import com.test.viewpagerfun.model.dao.NoteDao;
+import com.test.viewpagerfun.model.database.NoteDatabase;
 import com.test.viewpagerfun.model.entity.Note;
 
 import java.util.List;

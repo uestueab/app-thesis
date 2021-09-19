@@ -4,9 +4,8 @@ import android.app.Application;
 
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
-import androidx.lifecycle.MutableLiveData;
 
-import com.test.viewpagerfun.model.datasource.NoteRepository;
+import com.test.viewpagerfun.model.repository.NoteRepository;
 import com.test.viewpagerfun.model.entity.Note;
 
 import java.util.List;

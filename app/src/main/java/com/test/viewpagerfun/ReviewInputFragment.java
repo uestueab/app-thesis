@@ -17,6 +17,7 @@ import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.test.viewpagerfun.databinding.ReviewInputFragmentBinding;
 import com.test.viewpagerfun.listeners.onClick.ReviewAnswerSubmittedListener;
@@ -60,7 +61,7 @@ public class ReviewInputFragment extends Fragment {
         model = new ViewModelProvider(requireActivity()).get(SharedViewModel.class);
         // Update the UI.
         model.getNotes().observe(getViewLifecycleOwner(), item -> {
-            binding.tvQuestion.setText(item.get(model.getPosition().getValue()).getTitle());
+            binding.tvQuestion.setText(item.get(model.getPosition().getValue()).getPrompt());
         });
 
         answerSubmitted();
@@ -81,6 +82,7 @@ public class ReviewInputFragment extends Fragment {
         binding.btnSubmit.setOnClickListener(
                 ReviewAnswerSubmittedListener.builder()
                         .activity(getActivity())
+                        .model(model)
                         .binding(binding)
                         .build()
         );

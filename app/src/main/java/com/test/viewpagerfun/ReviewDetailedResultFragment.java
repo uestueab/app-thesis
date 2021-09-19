@@ -43,7 +43,7 @@ public class ReviewDetailedResultFragment extends Fragment {
 
         //Update the UI.
         model.getNote().observe(getViewLifecycleOwner(), item -> {
-            binding.tvQuestion.setText(item.getTitle());
+            binding.tvQuestion.setText(item.getPrompt());
         });
 
         NextReviewItemListener nextReviewItemListener = NextReviewItemListener.builder()

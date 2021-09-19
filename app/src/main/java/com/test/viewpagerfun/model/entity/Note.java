@@ -13,6 +13,7 @@ import androidx.room.PrimaryKey;
 import com.test.viewpagerfun.toolbox.TimeProvider;
 
 import java.io.Serializable;
+import java.util.List;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -30,10 +31,17 @@ public class Note implements Cloneable, Serializable {
 
     @PrimaryKey(autoGenerate = true)
     private long noteId;
-    private String title;
-    private String description;
-    private int priority;
 
+    @ColumnInfo(name = "note_title")
+    private String prompt;              // represents the question. the input the user wants to learn
+    private String meaning;             // the meaning of the prompt in the language the user speaks.
+    private List<String> synonyms;      // treated as valid answers
+    private String mnemonic;            // represents a hint text, as specified by the user.
+
+
+    /*
+     * SM2-Algorithm based fields:
+     */
     private int consecutiveCorrectCount;
 
     @Builder.Default

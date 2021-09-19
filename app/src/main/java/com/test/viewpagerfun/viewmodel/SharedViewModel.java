@@ -2,13 +2,11 @@ package com.test.viewpagerfun.viewmodel;
 
 import android.app.Application;
 
-import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
-import androidx.lifecycle.ViewModel;
 
-import com.test.viewpagerfun.model.datasource.NoteRepository;
+import com.test.viewpagerfun.model.repository.NoteRepository;
 import com.test.viewpagerfun.model.entity.Note;
 
 import java.util.ArrayList;
