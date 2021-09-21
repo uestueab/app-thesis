@@ -12,15 +12,13 @@ import androidx.lifecycle.ViewModelProvider;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 
 import com.test.viewpagerfun.databinding.ReviewDetailedResultFragmentBinding;
 import com.test.viewpagerfun.listeners.onClick.NextReviewItemListener;
-import com.test.viewpagerfun.sm2.Review;
 import com.test.viewpagerfun.viewmodel.SharedViewModel;
 
-import java.util.List;
+import java.util.Collections;
 
 public class ReviewDetailedResultFragment extends Fragment {
 
@@ -48,7 +46,7 @@ public class ReviewDetailedResultFragment extends Fragment {
         model = new ViewModelProvider(requireActivity()).get(SharedViewModel.class);
 
         //Update the UI.
-        model.getReviewAtPosition().observe(getViewLifecycleOwner(), review -> {
+        model.getReview().observe(getViewLifecycleOwner(), review -> {
             binding.tvQuestion.setText(review.getNote().getPrompt());
             if(review.getQuality() < 2){
                 binding.tvAnswerResult.setBackgroundColor(Color.RED);
@@ -62,8 +60,11 @@ public class ReviewDetailedResultFragment extends Fragment {
             This causes the review to be finished only if all items have passed correctly.
          */
         model.getNotes().observe(getViewLifecycleOwner(), notes -> {
-            if (model.getReviewAtPosition().getValue().getQuality() < 2)
-                notes.add(model.getReviewAtPosition().getValue().getNote());
+            if (model.getReview().getValue().getQuality() < 2) {
+                notes.add(model.getNote());
+            }
+            notes.remove(0);
+            Collections.shuffle(notes);
         });
 
         //Decides finishing the review, or showing next item in queue.
@@ -76,16 +77,6 @@ public class ReviewDetailedResultFragment extends Fragment {
         binding.btnNextTop.setOnClickListener(nextReviewItemListener);
         binding.btnNextBottom.setOnClickListener(nextReviewItemListener);
 
-    }
-
-    //observes changes of position from current fragment
-    private void observePosition() {
-        model.getPosition()
-                .observe(getViewLifecycleOwner(), new Observer<Integer>() {
-                    @Override
-                    public void onChanged(@Nullable Integer integer) {
-                    }
-                });
     }
 
     //Fragments outlive their views. clean up any references to the binding class instance in the fragment

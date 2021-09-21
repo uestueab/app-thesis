@@ -49,7 +49,7 @@ public class ReviewAnswerSubmittedListener implements View.OnClickListener{
         String rawUserResponse = binding.etReviewAnswer.getText().toString();
         String response = StringProvider.toComparable(rawUserResponse);
 
-        Note note = model.getNoteAtPosition();
+        Note note = model.getNote();
         Review review;
 
         if (response.length() == 0) {
@@ -90,6 +90,8 @@ public class ReviewAnswerSubmittedListener implements View.OnClickListener{
 
         for(String meaning : meanings){
             int distance = Levenshtein.distance(response,meaning);
+            // how many operations it would take to make 'string1' equal to 'string2'.
+            // tolerance increases by one, each MIN_MISMATCH_LENGTH letters.
             int mismatchTolerance = (int) Math.floor(meaning.length() / MIN_MISMATCH_LENGTH);
 
             if(distance <= mismatchTolerance)
