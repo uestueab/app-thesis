@@ -49,25 +49,30 @@ public class ReviewAnswerSubmittedListener implements View.OnClickListener{
         String rawUserResponse = binding.etReviewAnswer.getText().toString();
         String response = StringProvider.toComparable(rawUserResponse);
 
-        Note note = model.getNoteAtPosition(model.getPosition().getValue());
+        Note note = model.getNoteAtPosition();
+        Review review;
 
         if (response.length() == 0) {
             v.performHapticFeedback(HapticFeedbackConstants.LONG_PRESS);
             vibrateOnError();
             binding.etReviewAnswer.startAnimation(shakeError());
-        } else if(isValidAnswer(response,note)){
 
-            Review review = new Review(note,3);
-            model.setReview(review);
-
-            ((ReviewActivity) getActivity()).nextFragment();
-            //removes glitch effect on fragment switch
-            binding.tvQuestion.setText("");
-            binding.etReviewAnswer.setText("");
-        }else{
-            Toast.makeText(getActivity(), "Answer was incorrect", Toast.LENGTH_SHORT).show();
-
+            return;
         }
+
+        if(isValidAnswer(response,note)){
+            review = new Review(note,3);
+        }else{
+            review = new Review(note,1);
+        }
+
+        // Note is now reviewed
+        model.setReview(review);
+
+        ((ReviewActivity) getActivity()).nextFragment();
+        //removes glitch effect on fragment switch
+        binding.tvQuestion.setText("");
+        binding.etReviewAnswer.setText("");
     }
 
     private boolean isValidAnswer(String response, Note note){

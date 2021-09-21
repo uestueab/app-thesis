@@ -1,5 +1,6 @@
 package com.test.viewpagerfun;
 
+import android.graphics.Color;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -49,7 +50,20 @@ public class ReviewDetailedResultFragment extends Fragment {
         //Update the UI.
         model.getReviewAtPosition().observe(getViewLifecycleOwner(), review -> {
             binding.tvQuestion.setText(review.getNote().getPrompt());
-            Toast.makeText(getContext(), String.valueOf(review.getQuality()), Toast.LENGTH_SHORT).show();
+            if(review.getQuality() < 2){
+                binding.tvAnswerResult.setBackgroundColor(Color.RED);
+            }
+            else{
+                binding.tvAnswerResult.setBackgroundColor(Color.GREEN);
+            }
+        });
+
+        /*  when a note fails during review add it on top of the list stack.
+            This causes the review to be finished only if all items have passed correctly.
+         */
+        model.getNotes().observe(getViewLifecycleOwner(), notes -> {
+            if (model.getReviewAtPosition().getValue().getQuality() < 2)
+                notes.add(model.getReviewAtPosition().getValue().getNote());
         });
 
         //Decides finishing the review, or showing next item in queue.
@@ -62,8 +76,6 @@ public class ReviewDetailedResultFragment extends Fragment {
         binding.btnNextTop.setOnClickListener(nextReviewItemListener);
         binding.btnNextBottom.setOnClickListener(nextReviewItemListener);
 
-        observePosition();
-        observeReviews();
     }
 
     //observes changes of position from current fragment
@@ -72,15 +84,6 @@ public class ReviewDetailedResultFragment extends Fragment {
                 .observe(getViewLifecycleOwner(), new Observer<Integer>() {
                     @Override
                     public void onChanged(@Nullable Integer integer) {
-                    }
-                });
-    }
-
-    private void observeReviews(){
-        model.getReviews()
-                .observe(getViewLifecycleOwner(), new Observer<List<Review>>() {
-                    @Override
-                    public void onChanged(List<Review> reviews) {
                     }
                 });
     }

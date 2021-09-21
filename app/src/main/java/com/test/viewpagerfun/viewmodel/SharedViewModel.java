@@ -15,12 +15,10 @@ import java.util.List;
 
 public class SharedViewModel extends AndroidViewModel {
 
-
     private final LiveData<List<Note>> notes;
+    private final List<Note> remainingNotes;
     private MutableLiveData<Integer> position = new MutableLiveData<>(0);
-    private List<Note> remainingNotes;
-
-    private MutableLiveData<List<Review>> reviews = new MutableLiveData<>(new ArrayList<>());
+    private final MutableLiveData<List<Review>> reviews = new MutableLiveData<>(new ArrayList<>());
 
     //constructor for loading from database
     public SharedViewModel(Application application) {
@@ -37,27 +35,26 @@ public class SharedViewModel extends AndroidViewModel {
         remainingNotes = new ArrayList<>();
     }
 
-    public LiveData<List<Note>> getNotes() {
-        return notes;
-    }
-
-    // Getter and Setter for position
+    // Position
     public MutableLiveData<Integer> getPosition() {
         return position;
     }
-
     public void setPosition(int x) {
         position.setValue(x);
     }
 
-    public LiveData<Note> getNote() {
+    // Notes List
+    public LiveData<List<Note>> getNotes() { return notes; }
+
+
+    //  Note (Only available if getNotes is observed!)
+    public LiveData<Note> getNoteLiveData() {
         Note noteAtCurrentPosition = notes.getValue().get(position.getValue());
         return new MutableLiveData<>(noteAtCurrentPosition);
     }
 
-    public Note getNoteAtPosition(int position) {
-        return notes.getValue().get(position);
-    }
+    public Note getNoteAtPosition() { return notes.getValue().get(position.getValue()); }
+    public Note getNoteAtPosition(int position) { return notes.getValue().get(position); }
 
     /**
      * @return Works like an iterator. Returns true if there are notes left to show.
@@ -86,6 +83,8 @@ public class SharedViewModel extends AndroidViewModel {
         return remainingNotes;
     }
 
+    // Review
+    public MutableLiveData<List<Review>> getReviews() { return reviews; }
     public void setReview(Review review){
         reviews.getValue().add(review);
     }
@@ -95,8 +94,6 @@ public class SharedViewModel extends AndroidViewModel {
         return new MutableLiveData<>(reviewAtCurrentPosition);
     }
 
-    // Getter and Setter for position
-    public MutableLiveData<List<Review>> getReviews() { return reviews; }
 }
 
 
