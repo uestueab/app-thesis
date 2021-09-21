@@ -22,7 +22,10 @@ import android.widget.Toast;
 import com.test.viewpagerfun.databinding.ReviewInputFragmentBinding;
 import com.test.viewpagerfun.listeners.onClick.ReviewAnswerSubmittedListener;
 import com.test.viewpagerfun.listeners.onEditorChange.SubmitWithKeyboardListener;
+import com.test.viewpagerfun.sm2.Review;
 import com.test.viewpagerfun.viewmodel.SharedViewModel;
+
+import java.util.List;
 
 public class ReviewInputFragment extends Fragment {
 
@@ -66,6 +69,7 @@ public class ReviewInputFragment extends Fragment {
 
         answerSubmitted();
         observePosition();
+        observeReviews();
     }
 
     /*  User submits an answer:
@@ -102,6 +106,15 @@ public class ReviewInputFragment extends Fragment {
                 imm.toggleSoftInput(InputMethodManager.SHOW_IMPLICIT, InputMethodManager.HIDE_NOT_ALWAYS);
             }
         });
+    }
+
+    private void observeReviews(){
+        model.getReviews()
+                .observe(getViewLifecycleOwner(), new Observer<List<Review>>() {
+                    @Override
+                    public void onChanged(List<Review> reviews) {
+                    }
+                });
     }
 
     private void observePosition() {

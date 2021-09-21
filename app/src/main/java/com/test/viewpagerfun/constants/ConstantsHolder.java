@@ -41,8 +41,7 @@ public final class ConstantsHolder {
        OPTIMAL STRING ALIGNMENT DISTANCE (LEVENSHTEIN)
      */
 
-    //denotes how big the distance between two strings is allowed. With distance being operations
-    //required to transform 'string a' to 'string b'.
-    public static final int MAX_ALLOWED_DISTANCE = 1;
+    //denotes how many mismatches are allowed every 'MIN_MISMATCH_LENGTH' characters
+    public static final float MIN_MISMATCH_LENGTH = 5;
 
 }

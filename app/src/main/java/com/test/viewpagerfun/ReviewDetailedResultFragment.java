@@ -11,11 +11,16 @@ import androidx.lifecycle.ViewModelProvider;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 
 import com.test.viewpagerfun.databinding.ReviewDetailedResultFragmentBinding;
 import com.test.viewpagerfun.listeners.onClick.NextReviewItemListener;
+import com.test.viewpagerfun.sm2.Review;
 import com.test.viewpagerfun.viewmodel.SharedViewModel;
+
+import java.util.List;
+
 public class ReviewDetailedResultFragment extends Fragment {
 
     //make communication between fragments possible
@@ -42,22 +47,23 @@ public class ReviewDetailedResultFragment extends Fragment {
         model = new ViewModelProvider(requireActivity()).get(SharedViewModel.class);
 
         //Update the UI.
-        model.getNote().observe(getViewLifecycleOwner(), item -> {
-            binding.tvQuestion.setText(item.getPrompt());
+        model.getReviewAtPosition().observe(getViewLifecycleOwner(), review -> {
+            binding.tvQuestion.setText(review.getNote().getPrompt());
+            Toast.makeText(getContext(), String.valueOf(review.getQuality()), Toast.LENGTH_SHORT).show();
         });
 
+        //Decides finishing the review, or showing next item in queue.
         NextReviewItemListener nextReviewItemListener = NextReviewItemListener.builder()
                 .activity(getActivity())
                 .model(model)
                 .binding(binding)
                 .build();
 
-
-        //Decides finishing the review, or showing next item in queue.
         binding.btnNextTop.setOnClickListener(nextReviewItemListener);
         binding.btnNextBottom.setOnClickListener(nextReviewItemListener);
 
         observePosition();
+        observeReviews();
     }
 
     //observes changes of position from current fragment
@@ -66,6 +72,15 @@ public class ReviewDetailedResultFragment extends Fragment {
                 .observe(getViewLifecycleOwner(), new Observer<Integer>() {
                     @Override
                     public void onChanged(@Nullable Integer integer) {
+                    }
+                });
+    }
+
+    private void observeReviews(){
+        model.getReviews()
+                .observe(getViewLifecycleOwner(), new Observer<List<Review>>() {
+                    @Override
+                    public void onChanged(List<Review> reviews) {
                     }
                 });
     }

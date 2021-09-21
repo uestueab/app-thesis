@@ -8,15 +8,19 @@ import androidx.lifecycle.MutableLiveData;
 
 import com.test.viewpagerfun.model.repository.NoteRepository;
 import com.test.viewpagerfun.model.entity.Note;
+import com.test.viewpagerfun.sm2.Review;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class SharedViewModel extends AndroidViewModel {
 
+
     private final LiveData<List<Note>> notes;
     private MutableLiveData<Integer> position = new MutableLiveData<>(0);
     private List<Note> remainingNotes;
+
+    private MutableLiveData<List<Review>> reviews = new MutableLiveData<>(new ArrayList<>());
 
     //constructor for loading from database
     public SharedViewModel(Application application) {
@@ -56,7 +60,6 @@ public class SharedViewModel extends AndroidViewModel {
     }
 
     /**
-     *
      * @return Works like an iterator. Returns true if there are notes left to show.
      * Returns false when reaching last livedata index.
      */
@@ -81,8 +84,19 @@ public class SharedViewModel extends AndroidViewModel {
             }
         }
         return remainingNotes;
-
     }
+
+    public void setReview(Review review){
+        reviews.getValue().add(review);
+    }
+
+    public LiveData<Review> getReviewAtPosition() {
+        Review reviewAtCurrentPosition = reviews.getValue().get(position.getValue());
+        return new MutableLiveData<>(reviewAtCurrentPosition);
+    }
+
+    // Getter and Setter for position
+    public MutableLiveData<List<Review>> getReviews() { return reviews; }
 }
 
 

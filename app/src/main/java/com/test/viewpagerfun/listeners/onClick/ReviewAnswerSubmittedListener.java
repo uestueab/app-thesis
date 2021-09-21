@@ -13,6 +13,7 @@ import android.widget.Toast;
 import com.test.viewpagerfun.ReviewActivity;
 import com.test.viewpagerfun.databinding.ReviewInputFragmentBinding;
 import com.test.viewpagerfun.model.entity.Note;
+import com.test.viewpagerfun.sm2.Review;
 import com.test.viewpagerfun.toolbox.Levenshtein;
 import com.test.viewpagerfun.toolbox.StringProvider;
 import com.test.viewpagerfun.viewmodel.SharedViewModel;
@@ -55,13 +56,17 @@ public class ReviewAnswerSubmittedListener implements View.OnClickListener{
             vibrateOnError();
             binding.etReviewAnswer.startAnimation(shakeError());
         } else if(isValidAnswer(response,note)){
+
+            Review review = new Review(note,3);
+            model.setReview(review);
+
             ((ReviewActivity) getActivity()).nextFragment();
             //removes glitch effect on fragment switch
             binding.tvQuestion.setText("");
             binding.etReviewAnswer.setText("");
         }else{
-            // TODO: 9/19/21 handle wrong answers
-            Toast.makeText(getActivity(), "answer was incorrect", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getActivity(), "Answer was incorrect", Toast.LENGTH_SHORT).show();
+
         }
     }
 
@@ -79,8 +84,10 @@ public class ReviewAnswerSubmittedListener implements View.OnClickListener{
         meanings.add(note.getMeaning());
 
         for(String meaning : meanings){
-            float distance = Levenshtein.distance(response,meaning);
-            if(distance <= MAX_ALLOWED_DISTANCE)
+            int distance = Levenshtein.distance(response,meaning);
+            int mismatchTolerance = (int) Math.floor(meaning.length() / MIN_MISMATCH_LENGTH);
+
+            if(distance <= mismatchTolerance)
                 return true;
         }
         return false;
