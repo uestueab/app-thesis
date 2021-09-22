@@ -14,8 +14,6 @@ import com.test.viewpagerfun.ReviewActivity;
 import com.test.viewpagerfun.databinding.ReviewInputFragmentBinding;
 import com.test.viewpagerfun.model.entity.Note;
 import com.test.viewpagerfun.sm2.Review;
-import com.test.viewpagerfun.sm2.Scheduler;
-import com.test.viewpagerfun.sm2.Session;
 import com.test.viewpagerfun.toolbox.Levenshtein;
 import com.test.viewpagerfun.toolbox.StringProvider;
 import com.test.viewpagerfun.viewmodel.SharedViewModel;
@@ -48,53 +46,37 @@ public class ReviewAnswerSubmittedListener implements View.OnClickListener{
     @Override
     public void onClick(View v) {
 
-        Scheduler scheduler = Scheduler.builder().build();
-        Session session = new Session();
-
         String rawUserResponse = binding.etReviewAnswer.getText().toString();
         String response = StringProvider.toComparable(rawUserResponse);
 
 <<<<<<< HEAD
-        Note note = model.getNote();
-        Review review;
+        Note note = model.getNoteAtPosition();
 =======
-        Note note = model.getNoteAtPosition(model.getPosition().getValue());
->>>>>>> parent of 61f6e84 (answer handling works)
+        Note note = model.getNote();
+>>>>>>> parent of a30fc9b (pre revert commit -m)
+        Review review;
 
         if (response.length() == 0) {
             v.performHapticFeedback(HapticFeedbackConstants.LONG_PRESS);
             vibrateOnError();
             binding.etReviewAnswer.startAnimation(shakeError());
-        } else if(isValidAnswer(response,note)){
 
-            Review review = new Review(note,3);
-            model.setReview(review);
+            return;
+        }
 
-            ((ReviewActivity) getActivity()).nextFragment();
-            //removes glitch effect on fragment switch
-            binding.tvQuestion.setText("");
-            binding.etReviewAnswer.setText("");
+        if(isValidAnswer(response,note)){
+            review = new Review(note,3);
         }else{
-            Toast.makeText(getActivity(), "Answer was incorrect", Toast.LENGTH_SHORT).show();
+            review = new Review(note,1);
+        }
 
-<<<<<<< HEAD
         // Note is now reviewed
         model.setReview(review);
-
-        // Apply SM2 to the reviewed note
-        session.applyReview(review);
-        scheduler.applySession(session);
-        // update note changes in the database
-        model.update(review.getNote());
-
 
         ((ReviewActivity) getActivity()).nextFragment();
         //removes glitch effect on fragment switch
         binding.tvQuestion.setText("");
         binding.etReviewAnswer.setText("");
-=======
-        }
->>>>>>> parent of 61f6e84 (answer handling works)
     }
 
     private boolean isValidAnswer(String response, Note note){
@@ -112,8 +94,6 @@ public class ReviewAnswerSubmittedListener implements View.OnClickListener{
 
         for(String meaning : meanings){
             int distance = Levenshtein.distance(response,meaning);
-            // how many operations it would take to make 'string1' equal to 'string2'.
-            // tolerance increases by one, each MIN_MISMATCH_LENGTH letters.
             int mismatchTolerance = (int) Math.floor(meaning.length() / MIN_MISMATCH_LENGTH);
 
             if(distance <= mismatchTolerance)
