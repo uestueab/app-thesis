@@ -15,16 +15,11 @@ import java.util.List;
 
 public class SharedViewModel extends AndroidViewModel {
 
-<<<<<<< HEAD
     private final NoteRepository repository;
-=======
->>>>>>> parent of 61f6e84 (answer handling works)
 
     private final LiveData<List<Note>> notes;
     private MutableLiveData<Integer> position = new MutableLiveData<>(0);
-    private List<Note> remainingNotes;
-
-    private MutableLiveData<List<Review>> reviews = new MutableLiveData<>(new ArrayList<>());
+    private final MutableLiveData<List<Review>> reviews = new MutableLiveData<>(new ArrayList<>());
 
     //constructor for loading from database
     public SharedViewModel(Application application) {
@@ -40,7 +35,6 @@ public class SharedViewModel extends AndroidViewModel {
         notes = new MutableLiveData<>(previousNotes);
     }
 
-<<<<<<< HEAD
     // Notes List
     public LiveData<List<Note>> getNotes() {
         return notes;
@@ -60,30 +54,6 @@ public class SharedViewModel extends AndroidViewModel {
         return notes.getValue().get(0);
     }
 
-=======
-    public LiveData<List<Note>> getNotes() {
-        return notes;
-    }
-
-    // Getter and Setter for position
-    public MutableLiveData<Integer> getPosition() {
-        return position;
-    }
-
-    public void setPosition(int x) {
-        position.setValue(x);
-    }
-
-    public LiveData<Note> getNote() {
-        Note noteAtCurrentPosition = notes.getValue().get(position.getValue());
-        return new MutableLiveData<>(noteAtCurrentPosition);
-    }
-
-    public Note getNoteAtPosition(int position) {
-        return notes.getValue().get(position);
-    }
-
->>>>>>> parent of 61f6e84 (answer handling works)
     /**
      * @return Works like an iterator. Returns true if there are notes left to show.
      * Returns false when reaching last livedata index.
@@ -97,7 +67,6 @@ public class SharedViewModel extends AndroidViewModel {
         reviews.getValue().add(review);
     }
 
-<<<<<<< HEAD
 
     // Review
     public LiveData<Review> getReview() {
@@ -113,18 +82,12 @@ public class SharedViewModel extends AndroidViewModel {
 
     public void update(Note note) {
         repository.update(note);
-=======
-    public void setReview(Review review){
-        reviews.getValue().add(review);
->>>>>>> parent of 61f6e84 (answer handling works)
     }
 
     public void delete(Note note) {
         repository.delete(note);
     }
 
-    // Getter and Setter for position
-    public MutableLiveData<List<Review>> getReviews() { return reviews; }
 }
 
 
