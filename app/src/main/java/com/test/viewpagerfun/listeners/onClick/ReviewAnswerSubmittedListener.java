@@ -14,8 +14,6 @@ import com.test.viewpagerfun.ReviewActivity;
 import com.test.viewpagerfun.databinding.ReviewInputFragmentBinding;
 import com.test.viewpagerfun.model.entity.Note;
 import com.test.viewpagerfun.sm2.Review;
-import com.test.viewpagerfun.sm2.Scheduler;
-import com.test.viewpagerfun.sm2.Session;
 import com.test.viewpagerfun.toolbox.Levenshtein;
 import com.test.viewpagerfun.toolbox.StringProvider;
 import com.test.viewpagerfun.viewmodel.SharedViewModel;
@@ -48,9 +46,6 @@ public class ReviewAnswerSubmittedListener implements View.OnClickListener{
     @Override
     public void onClick(View v) {
 
-        Scheduler scheduler = Scheduler.builder().build();
-        Session session = new Session();
-
         String rawUserResponse = binding.etReviewAnswer.getText().toString();
         String response = StringProvider.toComparable(rawUserResponse);
 
@@ -73,13 +68,6 @@ public class ReviewAnswerSubmittedListener implements View.OnClickListener{
 
         // Note is now reviewed
         model.setReview(review);
-
-        // Apply SM2 to the reviewed note
-        session.applyReview(review);
-        scheduler.applySession(session);
-        // update note changes in the database
-        model.update(review.getNote());
-
 
         ((ReviewActivity) getActivity()).nextFragment();
         //removes glitch effect on fragment switch

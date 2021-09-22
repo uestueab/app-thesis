@@ -16,8 +16,6 @@ import android.view.ViewGroup;
 
 import com.test.viewpagerfun.databinding.ReviewDetailedResultFragmentBinding;
 import com.test.viewpagerfun.listeners.onClick.NextReviewItemListener;
-import com.test.viewpagerfun.model.entity.Note;
-import com.test.viewpagerfun.sm2.Review;
 import com.test.viewpagerfun.viewmodel.SharedViewModel;
 
 import java.util.Collections;
@@ -48,27 +46,26 @@ public class ReviewDetailedResultFragment extends Fragment {
         model = new ViewModelProvider(requireActivity()).get(SharedViewModel.class);
 
         //Update the UI.
-        model.getNotes().observe(getViewLifecycleOwner(), notes -> {
-            Review review = model.getReview().getValue();
+        model.getReview().observe(getViewLifecycleOwner(), review -> {
             binding.tvQuestion.setText(review.getNote().getPrompt());
-
-            if(review.isFailedInSession())
+            if(review.getQuality() < 2){
                 binding.tvAnswerResult.setBackgroundColor(Color.RED);
-            else
+            }
+            else{
                 binding.tvAnswerResult.setBackgroundColor(Color.GREEN);
-
-            Note note = model.getNote();
-            notes.remove(0);
-
-            if (model.getReview().getValue().isFailedInSession()) {
-                notes.add(note);
-                Collections.shuffle(notes);
             }
         });
 
         /*  when a note fails during review add it on top of the list stack.
             This causes the review to be finished only if all items have passed correctly.
          */
+        model.getNotes().observe(getViewLifecycleOwner(), notes -> {
+            if (model.getReview().getValue().getQuality() < 2) {
+                notes.add(model.getNote());
+            }
+            notes.remove(0);
+            Collections.shuffle(notes);
+        });
 
         //Decides finishing the review, or showing next item in queue.
         NextReviewItemListener nextReviewItemListener = NextReviewItemListener.builder()

@@ -4,10 +4,10 @@ import java.util.*;
 
 public class Session {
 
-    private final List<Review> reviews = new ArrayList<>();
+    private List<Review> reviews = new ArrayList<>();
 
-    // determines if the review failed and wether it needs to be reviewed again.
-    public void applyReview(Review review) {
+    public void applyReview(Review review, int quality) {
+        review.setQuality(quality);
 
         if(review.getQuality() < 2){
             review.setFailedInSession(true);
@@ -15,6 +15,7 @@ public class Session {
 
         reviews.add(review);
     }
+
 
     public List<Review> getReviews() {
         return reviews;
