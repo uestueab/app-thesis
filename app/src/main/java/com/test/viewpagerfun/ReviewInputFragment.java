@@ -68,7 +68,6 @@ public class ReviewInputFragment extends Fragment {
         });
 
         answerSubmitted();
-
     }
 
     /*  User submits an answer:
