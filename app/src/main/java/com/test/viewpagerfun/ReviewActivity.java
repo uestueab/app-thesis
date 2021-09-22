@@ -84,8 +84,8 @@ public class ReviewActivity extends FragmentActivity {
             /* Check if the back button was pressed on a fragment other than the review input fragment.
              * That means the review item has lapsed/passed! So remove it from the list.
              */
-            if (viewPager.getCurrentItem() != 0)
-                remainingNotes.remove(0);
+//            if (viewPager.getCurrentItem() != 0)
+//                remainingNotes.remove(0);
 
             Bundle bundle = new Bundle();
             bundle.putSerializable(BUNDLE_REMAINING_NOTES, (Serializable) remainingNotes);
@@ -114,8 +114,8 @@ public class ReviewActivity extends FragmentActivity {
 
         List<Note> remainingNotes = model.getRemainingNotes();
 
-        if (viewPager.getCurrentItem() != 0)
-            remainingNotes.remove(0);
+//        if (viewPager.getCurrentItem() != 0)
+//            remainingNotes.remove(0);
 
         new PrefManager<>(getApplicationContext()).setNotes(PREFS_REMAINING_NOTES, remainingNotes);
 

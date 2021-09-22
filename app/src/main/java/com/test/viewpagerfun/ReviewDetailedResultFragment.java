@@ -59,32 +59,24 @@ public class ReviewDetailedResultFragment extends Fragment {
         /*  when a note fails during review add it on top of the list stack.
             This causes the review to be finished only if all items have passed correctly.
          */
-        model.getNotes().observe(getViewLifecycleOwner(),notes -> {
-        if (review.getScore() < 2)
-            notes.add(review.getNote());
-    });
+        model.getNotes().observe(getViewLifecycleOwner(), notes -> {
+            if (review.getScore() < 2)
+                notes.add(review.getNote());
+            notes.remove(0);
+        });
 
-    //Decides finishing the review, or showing next item in queue.
-    NextReviewItemListener nextReviewItemListener = NextReviewItemListener.builder()
-            .activity(getActivity())
-            .model(model)
-            .binding(binding)
-            .build();
+        //Decides finishing the review, or showing next item in queue.
+        NextReviewItemListener nextReviewItemListener = NextReviewItemListener.builder()
+                .activity(getActivity())
+                .model(model)
+                .binding(binding)
+                .build();
 
         binding.btnNextTop.setOnClickListener(nextReviewItemListener);
         binding.btnNextBottom.setOnClickListener(nextReviewItemListener);
 
-}
-
-    //observes changes of position from current fragment
-    private void observePosition() {
-        model.getPosition()
-                .observe(getViewLifecycleOwner(), new Observer<Integer>() {
-                    @Override
-                    public void onChanged(@Nullable Integer integer) {
-                    }
-                });
     }
+
 
     //Fragments outlive their views. clean up any references to the binding class instance in the fragment
     @Override

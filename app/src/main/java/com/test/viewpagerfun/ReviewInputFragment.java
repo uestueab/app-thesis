@@ -64,12 +64,10 @@ public class ReviewInputFragment extends Fragment {
         model = new ViewModelProvider(requireActivity()).get(SharedViewModel.class);
         // Update the UI.
         model.getNotes().observe(getViewLifecycleOwner(), notes -> {
-            binding.tvQuestion.setText(model.getNoteAtPosition().getPrompt());
+            binding.tvQuestion.setText(model.getNote().getPrompt());
         });
 
         answerSubmitted();
-
-        observePosition();
     }
 
     /*  User submits an answer:
@@ -107,14 +105,7 @@ public class ReviewInputFragment extends Fragment {
         });
     }
 
-    private void observePosition() {
-        model.getPosition()
-                .observe(getViewLifecycleOwner(), new Observer<Integer>() {
-                    @Override
-                    public void onChanged(@Nullable Integer integer) {
-                    }
-                });
-    }
+
 
     //Fragments outlive their views. clean up any references to the binding class instance in the fragment
     @Override

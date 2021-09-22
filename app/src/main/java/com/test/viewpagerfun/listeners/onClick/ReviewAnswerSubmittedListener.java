@@ -49,7 +49,7 @@ public class ReviewAnswerSubmittedListener implements View.OnClickListener{
         String rawUserResponse = binding.etReviewAnswer.getText().toString();
         String response = StringProvider.toComparable(rawUserResponse);
 
-        Note note = model.getNoteAtPosition();
+        Note note = model.getNote();
         Review review;
 
         if (response.length() == 0) {
@@ -68,6 +68,7 @@ public class ReviewAnswerSubmittedListener implements View.OnClickListener{
 
         // Note is now reviewed
         model.setMostRecentReview(review);
+        model.applyReview(review);
 
         ((ReviewActivity) getActivity()).nextFragment();
         //removes glitch effect on fragment switch
