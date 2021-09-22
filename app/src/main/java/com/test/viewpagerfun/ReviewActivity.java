@@ -114,6 +114,9 @@ public class ReviewActivity extends FragmentActivity {
 
         List<Note> remainingNotes = model.getRemainingNotes();
 
+        if (viewPager.getCurrentItem() != 0)
+            remainingNotes.remove(0);
+
         new PrefManager<>(getApplicationContext()).setNotes(PREFS_REMAINING_NOTES, remainingNotes);
 
         if(toast != null)
