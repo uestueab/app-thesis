@@ -54,23 +54,30 @@ public class ReviewAnswerSubmittedListener implements View.OnClickListener{
         String rawUserResponse = binding.etReviewAnswer.getText().toString();
         String response = StringProvider.toComparable(rawUserResponse);
 
+<<<<<<< HEAD
         Note note = model.getNote();
         Review review;
+=======
+        Note note = model.getNoteAtPosition(model.getPosition().getValue());
+>>>>>>> parent of 61f6e84 (answer handling works)
 
         if (response.length() == 0) {
             v.performHapticFeedback(HapticFeedbackConstants.LONG_PRESS);
             vibrateOnError();
             binding.etReviewAnswer.startAnimation(shakeError());
+        } else if(isValidAnswer(response,note)){
 
-            return;
-        }
+            Review review = new Review(note,3);
+            model.setReview(review);
 
-        if(isValidAnswer(response,note)){
-            review = new Review(note,3);
+            ((ReviewActivity) getActivity()).nextFragment();
+            //removes glitch effect on fragment switch
+            binding.tvQuestion.setText("");
+            binding.etReviewAnswer.setText("");
         }else{
-            review = new Review(note,1);
-        }
+            Toast.makeText(getActivity(), "Answer was incorrect", Toast.LENGTH_SHORT).show();
 
+<<<<<<< HEAD
         // Note is now reviewed
         model.setReview(review);
 
@@ -85,6 +92,9 @@ public class ReviewAnswerSubmittedListener implements View.OnClickListener{
         //removes glitch effect on fragment switch
         binding.tvQuestion.setText("");
         binding.etReviewAnswer.setText("");
+=======
+        }
+>>>>>>> parent of 61f6e84 (answer handling works)
     }
 
     private boolean isValidAnswer(String response, Note note){

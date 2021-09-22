@@ -1,6 +1,5 @@
 package com.test.viewpagerfun;
 
-import android.graphics.Color;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -51,6 +50,7 @@ public class ReviewDetailedResultFragment extends Fragment {
         model.getNotes().observe(getViewLifecycleOwner(), notes -> {
             Review review = model.getReview().getValue();
             binding.tvQuestion.setText(review.getNote().getPrompt());
+<<<<<<< HEAD
 
             if(review.isFailedInSession())
                 binding.tvAnswerResult.setBackgroundColor(Color.RED);
@@ -69,6 +69,10 @@ public class ReviewDetailedResultFragment extends Fragment {
         /*  when a note fails during review add it on top of the list stack.
             This causes the review to be finished only if all items have passed correctly.
          */
+=======
+            Toast.makeText(getContext(), String.valueOf(review.getQuality()), Toast.LENGTH_SHORT).show();
+        });
+>>>>>>> parent of 61f6e84 (answer handling works)
 
         //Decides finishing the review, or showing next item in queue.
         NextReviewItemListener nextReviewItemListener = NextReviewItemListener.builder()
@@ -80,8 +84,32 @@ public class ReviewDetailedResultFragment extends Fragment {
         binding.btnNextTop.setOnClickListener(nextReviewItemListener);
         binding.btnNextBottom.setOnClickListener(nextReviewItemListener);
 
+        observePosition();
+        observeReviews();
     }
 
+<<<<<<< HEAD
+=======
+    //observes changes of position from current fragment
+    private void observePosition() {
+        model.getPosition()
+                .observe(getViewLifecycleOwner(), new Observer<Integer>() {
+                    @Override
+                    public void onChanged(@Nullable Integer integer) {
+                    }
+                });
+    }
+
+    private void observeReviews(){
+        model.getReviews()
+                .observe(getViewLifecycleOwner(), new Observer<List<Review>>() {
+                    @Override
+                    public void onChanged(List<Review> reviews) {
+                    }
+                });
+    }
+
+>>>>>>> parent of 61f6e84 (answer handling works)
     //Fragments outlive their views. clean up any references to the binding class instance in the fragment
     @Override
     public void onDestroyView() {
