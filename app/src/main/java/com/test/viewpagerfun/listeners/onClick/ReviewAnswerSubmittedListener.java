@@ -67,7 +67,7 @@ public class ReviewAnswerSubmittedListener implements View.OnClickListener{
         }
 
         // Note is now reviewed
-        model.setReview(review);
+        model.setMostRecentReview(review);
 
         ((ReviewActivity) getActivity()).nextFragment();
         //removes glitch effect on fragment switch

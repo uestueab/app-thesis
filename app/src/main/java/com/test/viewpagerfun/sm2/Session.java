@@ -1,23 +1,24 @@
 package com.test.viewpagerfun.sm2;
 
+import com.test.viewpagerfun.model.entity.Note;
+
 import java.util.*;
 
+
 public class Session {
+    private Map<Note, SessionNoteStatistics> noteStatisticsMap = new HashMap<>();
 
-    private List<Review> reviews = new ArrayList<>();
+    public void applyReview(Review review) {
+        Note note = review.getNote();
+        SessionNoteStatistics noteStatistics = noteStatisticsMap.computeIfAbsent(note, k -> new SessionNoteStatistics());
+        noteStatistics.setMostRecentScore(review.getScore());
 
-    public void applyReview(Review review, int quality) {
-        review.setQuality(quality);
-
-        if(review.getQuality() < 2){
-            review.setFailedInSession(true);
+        if (review.getScore() < 2) {
+            noteStatistics.setLapsedDuringSession(true);
         }
-
-        reviews.add(review);
     }
 
-
-    public List<Review> getReviews() {
-        return reviews;
+    public Map<Note, SessionNoteStatistics> getNoteStatistics() {
+        return this.noteStatisticsMap;
     }
 }

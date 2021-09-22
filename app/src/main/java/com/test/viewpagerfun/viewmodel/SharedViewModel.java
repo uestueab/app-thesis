@@ -18,7 +18,7 @@ public class SharedViewModel extends AndroidViewModel {
     private final LiveData<List<Note>> notes;
     private final List<Note> remainingNotes;
     private MutableLiveData<Integer> position = new MutableLiveData<>(0);
-    private final MutableLiveData<List<Review>> reviews = new MutableLiveData<>(new ArrayList<>());
+    private final MutableLiveData<Review> reviews = new MutableLiveData<>();
 
     //constructor for loading from database
     public SharedViewModel(Application application) {
@@ -84,15 +84,10 @@ public class SharedViewModel extends AndroidViewModel {
     }
 
     // Review
-    public MutableLiveData<List<Review>> getReviews() { return reviews; }
-    public void setReview(Review review){
-        reviews.getValue().add(review);
-    }
+    public Review getMostRecentReview() { return reviews.getValue(); }
+    public void setMostRecentReview(Review review){ reviews.setValue(review); }
 
-    public LiveData<Review> getReviewAtPosition() {
-        Review reviewAtCurrentPosition = reviews.getValue().get(position.getValue());
-        return new MutableLiveData<>(reviewAtCurrentPosition);
-    }
+
 
 }
 

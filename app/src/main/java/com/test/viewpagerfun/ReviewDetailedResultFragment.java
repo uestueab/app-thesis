@@ -48,35 +48,33 @@ public class ReviewDetailedResultFragment extends Fragment {
         model = new ViewModelProvider(requireActivity()).get(SharedViewModel.class);
 
         //Update the UI.
-        model.getReviewAtPosition().observe(getViewLifecycleOwner(), review -> {
-            binding.tvQuestion.setText(review.getNote().getPrompt());
-            if(review.getQuality() < 2){
-                binding.tvAnswerResult.setBackgroundColor(Color.RED);
-            }
-            else{
-                binding.tvAnswerResult.setBackgroundColor(Color.GREEN);
-            }
-        });
+        Review review = model.getMostRecentReview();
+        binding.tvQuestion.setText(review.getNote().getPrompt());
+        if (review.getScore() < 2) {
+            binding.tvAnswerResult.setBackgroundColor(Color.RED);
+        } else {
+            binding.tvAnswerResult.setBackgroundColor(Color.GREEN);
+        }
 
         /*  when a note fails during review add it on top of the list stack.
             This causes the review to be finished only if all items have passed correctly.
          */
-        model.getNotes().observe(getViewLifecycleOwner(), notes -> {
-            if (model.getReviewAtPosition().getValue().getQuality() < 2)
-                notes.add(model.getReviewAtPosition().getValue().getNote());
-        });
+        model.getNotes().observe(getViewLifecycleOwner(),notes -> {
+        if (review.getScore() < 2)
+            notes.add(review.getNote());
+    });
 
-        //Decides finishing the review, or showing next item in queue.
-        NextReviewItemListener nextReviewItemListener = NextReviewItemListener.builder()
-                .activity(getActivity())
-                .model(model)
-                .binding(binding)
-                .build();
+    //Decides finishing the review, or showing next item in queue.
+    NextReviewItemListener nextReviewItemListener = NextReviewItemListener.builder()
+            .activity(getActivity())
+            .model(model)
+            .binding(binding)
+            .build();
 
         binding.btnNextTop.setOnClickListener(nextReviewItemListener);
         binding.btnNextBottom.setOnClickListener(nextReviewItemListener);
 
-    }
+}
 
     //observes changes of position from current fragment
     private void observePosition() {
