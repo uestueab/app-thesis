@@ -1,6 +1,5 @@
 package com.test.viewpagerfun;
 
-import android.graphics.Color;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -12,15 +11,15 @@ import androidx.lifecycle.ViewModelProvider;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 
 import com.test.viewpagerfun.databinding.ReviewDetailedResultFragmentBinding;
 import com.test.viewpagerfun.listeners.onClick.NextReviewItemListener;
+import com.test.viewpagerfun.model.entity.Note;
 import com.test.viewpagerfun.sm2.Review;
 import com.test.viewpagerfun.viewmodel.SharedViewModel;
 
-import java.util.List;
+import java.util.Collections;
 
 public class ReviewDetailedResultFragment extends Fragment {
 
@@ -48,31 +47,32 @@ public class ReviewDetailedResultFragment extends Fragment {
         model = new ViewModelProvider(requireActivity()).get(SharedViewModel.class);
 
         //Update the UI.
-        model.getReviewAtPosition().observe(getViewLifecycleOwner(), review -> {
+        model.getNotes().observe(getViewLifecycleOwner(), notes -> {
+            Review review = model.getReview().getValue();
             binding.tvQuestion.setText(review.getNote().getPrompt());
 <<<<<<< HEAD
-            if(review.getQuality() < 2){
-=======
 
             if(review.isFailedInSession())
->>>>>>> parent of a30fc9b (pre revert commit -m)
                 binding.tvAnswerResult.setBackgroundColor(Color.RED);
-            }
-            else{
+            else
                 binding.tvAnswerResult.setBackgroundColor(Color.GREEN);
+
+            Note note = model.getNote();
+            notes.remove(0);
+
+            if (model.getReview().getValue().isFailedInSession()) {
+                notes.add(note);
+                Collections.shuffle(notes);
             }
         });
 
         /*  when a note fails during review add it on top of the list stack.
             This causes the review to be finished only if all items have passed correctly.
          */
-<<<<<<< HEAD
-        model.getNotes().observe(getViewLifecycleOwner(), notes -> {
-            if (model.getReviewAtPosition().getValue().getQuality() < 2)
-                notes.add(model.getReviewAtPosition().getValue().getNote());
-        });
 =======
->>>>>>> parent of a30fc9b (pre revert commit -m)
+            Toast.makeText(getContext(), String.valueOf(review.getQuality()), Toast.LENGTH_SHORT).show();
+        });
+>>>>>>> parent of 61f6e84 (answer handling works)
 
         //Decides finishing the review, or showing next item in queue.
         NextReviewItemListener nextReviewItemListener = NextReviewItemListener.builder()
@@ -84,9 +84,12 @@ public class ReviewDetailedResultFragment extends Fragment {
         binding.btnNextTop.setOnClickListener(nextReviewItemListener);
         binding.btnNextBottom.setOnClickListener(nextReviewItemListener);
 
+        observePosition();
+        observeReviews();
     }
 
 <<<<<<< HEAD
+=======
     //observes changes of position from current fragment
     private void observePosition() {
         model.getPosition()
@@ -97,8 +100,16 @@ public class ReviewDetailedResultFragment extends Fragment {
                 });
     }
 
-=======
->>>>>>> parent of a30fc9b (pre revert commit -m)
+    private void observeReviews(){
+        model.getReviews()
+                .observe(getViewLifecycleOwner(), new Observer<List<Review>>() {
+                    @Override
+                    public void onChanged(List<Review> reviews) {
+                    }
+                });
+    }
+
+>>>>>>> parent of 61f6e84 (answer handling works)
     //Fragments outlive their views. clean up any references to the binding class instance in the fragment
     @Override
     public void onDestroyView() {

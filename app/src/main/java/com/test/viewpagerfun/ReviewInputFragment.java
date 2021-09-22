@@ -22,7 +22,6 @@ import android.widget.Toast;
 import com.test.viewpagerfun.databinding.ReviewInputFragmentBinding;
 import com.test.viewpagerfun.listeners.onClick.ReviewAnswerSubmittedListener;
 import com.test.viewpagerfun.listeners.onEditorChange.SubmitWithKeyboardListener;
-import com.test.viewpagerfun.model.entity.Note;
 import com.test.viewpagerfun.sm2.Review;
 import com.test.viewpagerfun.viewmodel.SharedViewModel;
 
@@ -35,6 +34,7 @@ public class ReviewInputFragment extends Fragment {
 
     //view binding of fragment
     private ReviewInputFragmentBinding binding;
+
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -63,16 +63,21 @@ public class ReviewInputFragment extends Fragment {
         //get the SharedViewModel which is scoped to the underlying activity.
         model = new ViewModelProvider(requireActivity()).get(SharedViewModel.class);
         // Update the UI.
+<<<<<<< HEAD
         model.getNotes().observe(getViewLifecycleOwner(), notes -> {
-            binding.tvQuestion.setText(model.getNoteAtPosition().getPrompt());
+            binding.tvQuestion.setText(model.getNote().getPrompt());
         });
 
         answerSubmitted();
-<<<<<<< HEAD
-
-        observePosition();
 =======
->>>>>>> parent of a30fc9b (pre revert commit -m)
+        model.getNotes().observe(getViewLifecycleOwner(), item -> {
+            binding.tvQuestion.setText(item.get(model.getPosition().getValue()).getPrompt());
+        });
+
+        answerSubmitted();
+        observePosition();
+        observeReviews();
+>>>>>>> parent of 61f6e84 (answer handling works)
     }
 
     /*  User submits an answer:
@@ -95,6 +100,7 @@ public class ReviewInputFragment extends Fragment {
         );
     }
 
+
     //focus on the given edittext and popup the keyboard
     private void focusOnInputArea(EditText et) {
         //put the runnable at the end of the event queue
@@ -111,6 +117,16 @@ public class ReviewInputFragment extends Fragment {
     }
 
 <<<<<<< HEAD
+=======
+    private void observeReviews(){
+        model.getReviews()
+                .observe(getViewLifecycleOwner(), new Observer<List<Review>>() {
+                    @Override
+                    public void onChanged(List<Review> reviews) {
+                    }
+                });
+    }
+
     private void observePosition() {
         model.getPosition()
                 .observe(getViewLifecycleOwner(), new Observer<Integer>() {
@@ -120,8 +136,7 @@ public class ReviewInputFragment extends Fragment {
                 });
     }
 
-=======
->>>>>>> parent of a30fc9b (pre revert commit -m)
+>>>>>>> parent of 61f6e84 (answer handling works)
     //Fragments outlive their views. clean up any references to the binding class instance in the fragment
     @Override
     public void onDestroyView() {
