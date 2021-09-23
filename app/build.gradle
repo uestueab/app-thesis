@@ -39,12 +39,16 @@ dependencies {
     //Lombok: for Builder,Getter,Setter
     compileOnly "org.projectlombok:lombok:1.18.20"
     annotationProcessor 'org.projectlombok:lombok:1.18.20'
-
     //Room database
     implementation("androidx.room:room-runtime:$room_version")
     annotationProcessor "androidx.room:room-compiler:$room_version"
-
+    //Write Lists to SharedPrefs
     implementation 'com.google.code.gson:gson:2.8.8'
+    //CardView
+    implementation("androidx.cardview:cardview:1.0.0")
+    //RecyclerViewSwipeDecorator
+    implementation 'com.github.xabaras:RecyclerViewSwipeDecorator:1.3'
+
 
     implementation 'androidx.appcompat:appcompat:1.3.1'
     implementation 'com.google.android.material:material:1.4.0'

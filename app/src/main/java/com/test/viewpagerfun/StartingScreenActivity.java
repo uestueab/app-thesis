@@ -1,7 +1,5 @@
 package com.test.viewpagerfun;
 
-import androidx.activity.result.ActivityResultLauncher;
-import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.ViewModelProvider;
 
@@ -12,9 +10,8 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.widget.Toast;
 
-import com.test.viewpagerfun.callbacks.backToStartingScreenCallback;
 import com.test.viewpagerfun.databinding.ActivityStartingScreenBinding;
-import com.test.viewpagerfun.listeners.onClick.StartReviewListener;
+import com.test.viewpagerfun.listeners.onClick.StartActivityListener;
 import com.test.viewpagerfun.model.entity.Note;
 import com.test.viewpagerfun.viewmodel.StartingScreenViewModel;
 
@@ -33,26 +30,12 @@ public class StartingScreenActivity extends AppCompatActivity {
 
         showReviewItemCount();
 
-        /* Getting a result from an activity. This replaces startActivityForResult!
-         * More specifically, this gets triggered when ReviewActivity sends back remaining notes
-         * whenever the back button was pressed.
-         */
-//        ActivityResultLauncher<Intent> reviewResultLauncher = registerForActivityResult(
-//                new ActivityResultContracts.StartActivityForResult(),
-//                backToStartingScreenCallback.builder()
-//                        .context(getApplicationContext())
-//                        .binding(binding)
-//                        .build()
-//        );
-
         //launch the review
         binding.btnStartReview.setOnClickListener(
-                StartReviewListener.builder()
+                StartActivityListener.builder()
                         .currentActivity(this)
                         .targetActivity(ReviewActivity.class)
                         .build());
-
-
     }
 
     /*
@@ -88,7 +71,8 @@ public class StartingScreenActivity extends AppCompatActivity {
                 Toast.makeText(this, "pressed: search_cards", Toast.LENGTH_SHORT).show();
                 return true;
             case R.id.delete_all_notes:
-                Toast.makeText(this, "pressed: delete_all_notes", Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(StartingScreenActivity.this, ManageNoteActivity.class);
+                startActivity(intent);
                 return true;
             default:
                 super.onOptionsItemSelected(item);

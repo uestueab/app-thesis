@@ -19,7 +19,7 @@ import lombok.NoArgsConstructor;
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor
-public class StartReviewListener implements View.OnClickListener {
+public class StartActivityListener implements View.OnClickListener {
 
     private Context currentActivity;
     private Class targetActivity;
