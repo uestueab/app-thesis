@@ -53,8 +53,23 @@ public class SharedViewModel extends AndroidViewModel {
     public void setMostRecentReview(Review review){ mostRecentReview.setValue(review); }
 
 
+    // Session
+    public Session getSession(){ return session.getValue();}
     public void applyReview(Review review){
         session.getValue().applyReview(review);
+    }
+
+    // Database
+    public void insert(Note note) {
+        repository.insert(note);
+    }
+
+    public void update(Note note) {
+        repository.update(note);
+    }
+
+    public void delete(Note note) {
+        repository.delete(note);
     }
 
 }

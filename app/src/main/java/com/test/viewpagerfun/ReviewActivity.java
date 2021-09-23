@@ -7,9 +7,12 @@ import androidx.viewpager2.widget.ViewPager2;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.Toast;
 
 import com.test.viewpagerfun.model.entity.Note;
+import com.test.viewpagerfun.sm2.Scheduler;
+import com.test.viewpagerfun.sm2.Session;
 import com.test.viewpagerfun.viewmodel.SharedViewModel;
 import com.test.viewpagerfun.viewmodel.SharedViewModelFactory;
 
@@ -19,6 +22,8 @@ import java.util.List;
 import static com.test.viewpagerfun.constants.ConstantsHolder.*;
 
 public class ReviewActivity extends FragmentActivity {
+
+    private final String TAG = this.getClass().getSimpleName();
 
     // make use of animations, when moving to next fragment
     private ViewPager2 viewPager;
@@ -74,12 +79,13 @@ public class ReviewActivity extends FragmentActivity {
     @Override
     public void onBackPressed() {
 
+        Log.d(TAG, "onBackPressed: ");
         /*  Avoid accidentally going out of review by hitting the back button.
             Instead leave review only when back button was pressed in quick succession.
          */
         if (backPressedTime + 2000 > System.currentTimeMillis()) {
-            Intent intent = new Intent();
-            List<Note> remainingNotes = model.getRemainingNotes();
+            Intent intent = new Intent(this, StartingScreenActivity.class);
+
 
             /* Check if the back button was pressed on a fragment other than the review input fragment.
              * That means the review item has lapsed/passed! So remove it from the list.
@@ -87,10 +93,10 @@ public class ReviewActivity extends FragmentActivity {
 //            if (viewPager.getCurrentItem() != 0)
 //                remainingNotes.remove(0);
 
-            Bundle bundle = new Bundle();
-            bundle.putSerializable(BUNDLE_REMAINING_NOTES, (Serializable) remainingNotes);
-
-            intent.putExtra(EXTRA_REMAINING_REVIEWS, bundle);
+//            Bundle bundle = new Bundle();
+//            bundle.putSerializable(BUNDLE_REMAINING_NOTES, (Serializable) remainingNotes);
+//
+//            intent.putExtra(EXTRA_REMAINING_REVIEWS, bundle);
             setResult(RESULT_OK, intent);
             finish();
         } else {
@@ -111,6 +117,15 @@ public class ReviewActivity extends FragmentActivity {
     @Override
     protected void onPause() {
         super.onPause();
+
+        Log.d(TAG, "onPause: ");
+
+//        Scheduler scheduler = Scheduler.builder().build();
+//        Session session = model.getSession();
+//        scheduler.applySession(session);
+//
+//        for (Note note : session.getNoteStatistics().keySet())
+//            model.update(note);
 
         List<Note> remainingNotes = model.getRemainingNotes();
 

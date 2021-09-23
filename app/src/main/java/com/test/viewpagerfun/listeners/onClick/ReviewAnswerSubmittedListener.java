@@ -82,11 +82,12 @@ public class ReviewAnswerSubmittedListener implements View.OnClickListener{
     }
 
     private boolean withinTolerance(String response, Note note){
-        List<String> meanings = note.getSynonyms();
-        //there can be notes without synonyms, in that case initialize a new arraylist.
-        if(meanings == null)
+        List<String> meanings;
+        List<String> synonyms = note.getSynonyms();
+        if(synonyms != null)
+             meanings = new ArrayList<>(synonyms);
+        else
             meanings = new ArrayList<>();
-        //list that contains all possible correct answers.
         meanings.add(note.getMeaning());
 
         for(String meaning : meanings){

@@ -20,6 +20,7 @@ import com.test.viewpagerfun.listeners.onClick.NextReviewItemListener;
 import com.test.viewpagerfun.sm2.Review;
 import com.test.viewpagerfun.viewmodel.SharedViewModel;
 
+import java.util.Collections;
 import java.util.List;
 
 public class ReviewDetailedResultFragment extends Fragment {
@@ -60,9 +61,13 @@ public class ReviewDetailedResultFragment extends Fragment {
             This causes the review to be finished only if all items have passed correctly.
          */
         model.getNotes().observe(getViewLifecycleOwner(), notes -> {
+            if(notes.size() > 0)
+                notes.remove(0);
+
             if (review.getScore() < 2)
                 notes.add(review.getNote());
-            notes.remove(0);
+                //Below could be a feature...
+                //Collections.shuffle(notes);
         });
 
         //Decides finishing the review, or showing next item in queue.
