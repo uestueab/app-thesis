@@ -23,11 +23,10 @@ public class StartReviewListener implements View.OnClickListener {
 
     private Context currentActivity;
     private Class targetActivity;
-    private ActivityResultLauncher<Intent> resultLauncher;
 
     @Override
     public void onClick(View v) {
         Intent intent = new Intent(getCurrentActivity(), getTargetActivity());
-        resultLauncher.launch(intent);
+        currentActivity.startActivity(intent);
     }
 }
