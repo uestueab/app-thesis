@@ -7,6 +7,7 @@ import androidx.lifecycle.ViewModelProvider;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 
 import com.test.viewpagerfun.callbacks.backToStartingScreenCallback;
 import com.test.viewpagerfun.databinding.ActivityStartingScreenBinding;
@@ -18,6 +19,8 @@ import java.util.List;
 import static com.test.viewpagerfun.constants.ConstantsHolder.*;
 
 public class StartingScreenActivity extends AppCompatActivity {
+    private final String TAG = this.getClass().getSimpleName();
+
     private ActivityStartingScreenBinding binding;
 
     @Override
@@ -26,7 +29,6 @@ public class StartingScreenActivity extends AppCompatActivity {
         binding = ActivityStartingScreenBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
-        showReviewItemCount();
 
         /* Getting a result from an activity. This replaces startActivityForResult!
          * More specifically, this gets triggered when ReviewActivity sends back remaining notes
@@ -47,6 +49,8 @@ public class StartingScreenActivity extends AppCompatActivity {
                         .targetActivity(ReviewActivity.class)
                         .resultLauncher(reviewResultLauncher)
                         .build());
+
+        showReviewItemCount();
     }
 
     /*
@@ -61,10 +65,10 @@ public class StartingScreenActivity extends AppCompatActivity {
             StartingScreenViewModel model = new ViewModelProvider(this).get(StartingScreenViewModel.class);
 
             model.getNotes().observe(this, item -> {
-                binding.tvReviewItemCount.setText("Review startingscreen if: " + item.size());
+                binding.tvReviewItemCount.setText("Review: " + item.size());
             });
         } else {
-            binding.tvReviewItemCount.setText("Review startingscreen else: " + previousNotes.size());
+            binding.tvReviewItemCount.setText("Review: " + previousNotes.size());
         }
     }
 
