@@ -40,10 +40,6 @@ public class backToStartingScreenCallback implements ActivityResultCallback<Acti
     @Override
     public void onActivityResult(ActivityResult result) {
         if (result.getResultCode() == Activity.RESULT_OK) {
-//
-//            Intent intent = result.getData();
-//            Bundle bundle = intent.getBundleExtra(EXTRA_REMAINING_REVIEWS);
-//            List<Note> notes = (List<Note>) bundle.getSerializable(BUNDLE_REMAINING_NOTES);
 
             List<Note> notes = new PrefManager<>(getContext()).getNotes(PREFS_REMAINING_NOTES);;
 
@@ -51,7 +47,6 @@ public class backToStartingScreenCallback implements ActivityResultCallback<Acti
             if (notes == null || notes.size() == 0) {
                 new PrefManager<>(getContext()).remove(PREFS_REMAINING_NOTES);
             }
-            binding.tvReviewItemCount.setText("Review: " + notes.size());
         }
     }
 

@@ -78,25 +78,14 @@ public class ReviewActivity extends FragmentActivity {
 
     @Override
     public void onBackPressed() {
-
-        Log.d(TAG, "onBackPressed: ");
         /*  Avoid accidentally going out of review by hitting the back button.
             Instead leave review only when back button was pressed in quick succession.
          */
         if (backPressedTime + 2000 > System.currentTimeMillis()) {
+            List<Note> remainingNotes = model.getRemainingNotes();
+            new PrefManager<>(getApplicationContext()).setNotes(PREFS_REMAINING_NOTES, remainingNotes);
+
             Intent intent = new Intent(this, StartingScreenActivity.class);
-
-
-            /* Check if the back button was pressed on a fragment other than the review input fragment.
-             * That means the review item has lapsed/passed! So remove it from the list.
-             */
-//            if (viewPager.getCurrentItem() != 0)
-//                remainingNotes.remove(0);
-
-//            Bundle bundle = new Bundle();
-//            bundle.putSerializable(BUNDLE_REMAINING_NOTES, (Serializable) remainingNotes);
-//
-//            intent.putExtra(EXTRA_REMAINING_REVIEWS, bundle);
             setResult(RESULT_OK, intent);
             finish();
         } else {
@@ -118,23 +107,15 @@ public class ReviewActivity extends FragmentActivity {
     protected void onPause() {
         super.onPause();
 
-        Log.d(TAG, "onPause: ");
+        Scheduler scheduler = Scheduler.builder().build();
+        Session session = model.getSession();
+        scheduler.applySession(session);
 
-//        Scheduler scheduler = Scheduler.builder().build();
-//        Session session = model.getSession();
-//        scheduler.applySession(session);
-//
-//        for (Note note : session.getNoteStatistics().keySet())
-//            model.update(note);
+        for (Note note : session.getNoteStatistics().keySet())
+            model.update(note);
 
-        List<Note> remainingNotes = model.getRemainingNotes();
 
-//        if (viewPager.getCurrentItem() != 0)
-//            remainingNotes.remove(0);
-
-        new PrefManager<>(getApplicationContext()).setNotes(PREFS_REMAINING_NOTES, remainingNotes);
-
-        if(toast != null)
+        if (toast != null)
             toast.cancel();
     }
 }

@@ -61,10 +61,10 @@ public class StartingScreenActivity extends AppCompatActivity {
             StartingScreenViewModel model = new ViewModelProvider(this).get(StartingScreenViewModel.class);
 
             model.getNotes().observe(this, item -> {
-                binding.tvReviewItemCount.setText("Review: " + item.size());
+                binding.tvReviewItemCount.setText("Review startingscreen if: " + item.size());
             });
         } else {
-            binding.tvReviewItemCount.setText("Review: " + previousNotes.size());
+            binding.tvReviewItemCount.setText("Review startingscreen else: " + previousNotes.size());
         }
     }
 
