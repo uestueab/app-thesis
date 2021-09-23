@@ -51,6 +51,7 @@ public class backToStartingScreenCallback implements ActivityResultCallback<Acti
             if (notes == null || notes.size() == 0) {
                 new PrefManager<>(getContext()).remove(PREFS_REMAINING_NOTES);
             }
+            binding.tvReviewItemCount.setText("Review: " + notes.size());
         }
     }
 

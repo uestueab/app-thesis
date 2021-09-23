@@ -7,6 +7,7 @@ import androidx.viewpager2.widget.ViewPager2;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.Log;
 import android.widget.Toast;
 
@@ -24,6 +25,7 @@ import static com.test.viewpagerfun.constants.ConstantsHolder.*;
 public class ReviewActivity extends FragmentActivity {
 
     private final String TAG = this.getClass().getSimpleName();
+    private Handler handler = new Handler();
 
     // make use of animations, when moving to next fragment
     private ViewPager2 viewPager;
@@ -97,7 +99,8 @@ public class ReviewActivity extends FragmentActivity {
 //            bundle.putSerializable(BUNDLE_REMAINING_NOTES, (Serializable) remainingNotes);
 //
 //            intent.putExtra(EXTRA_REMAINING_REVIEWS, bundle);
-            setResult(RESULT_OK, intent);
+//            setResult(intent);
+            startActivity(intent);
             finish();
         } else {
             toast = Toast.makeText(this, "Press back again to pause review", Toast.LENGTH_SHORT);
@@ -118,17 +121,20 @@ public class ReviewActivity extends FragmentActivity {
     protected void onPause() {
         super.onPause();
 
-        List<Note> remainingNotes = model.getRemainingNotes();
-        new PrefManager<>(getApplicationContext()).setNotes(PREFS_REMAINING_NOTES, remainingNotes);
-
-        Log.d(TAG, "onPause: ");
+        handler.post(new Runnable() {
+            @Override
+            public void run() {
+                List<Note> remainingNotes = model.getRemainingNotes();
+                new PrefManager<>(getApplicationContext()).setNotes(PREFS_REMAINING_NOTES, remainingNotes);
+            }
+        });
 
         Scheduler scheduler = Scheduler.builder().build();
         Session session = model.getSession();
         scheduler.applySession(session);
 
-//        for (Note note : session.getNoteStatistics().keySet())
-//            model.update(note);
+        for (Note note : session.getNoteStatistics().keySet())
+            model.update(note);
 
 
 //        if (viewPager.getCurrentItem() != 0)
