@@ -33,34 +33,29 @@ public class backToManageNoteCallback implements ActivityResultCallback<Activity
         if (result.getData() == null)
             requestCode = 0;
         else
-            requestCode = result.getData().getIntExtra(REQUEST_CODE,0);
+            requestCode = result.getData().getIntExtra(REQUEST_CODE, 0);
 
-        if(requestCode == ADD_NOTE_REQUEST && result.getResultCode() == Activity.RESULT_OK){
+        if (requestCode == ADD_NOTE_REQUEST && result.getResultCode() == Activity.RESULT_OK) {
             String title = result.getData().getStringExtra(EXTRA_TITLE);
-//            String description = data.getStringExtra(AddEditNoteActivity.EXTRA_DESCRIPTION);
-//            int priority = data.getIntExtra(AddEditNoteActivity.EXTRA_PRIORITY,1);
 
             Note note = Note.builder().prompt(title).build();
             viewModel.insert(note);
             Toast.makeText(getContext(), "Note saved", Toast.LENGTH_SHORT).show();
-        }else if(requestCode == EDIT_NOTE_REQUEST && result.getResultCode() == Activity.RESULT_OK){
+        } else if (requestCode == EDIT_NOTE_REQUEST && result.getResultCode() == Activity.RESULT_OK) {
             long id = result.getData().getLongExtra(EXTRA_ID, -1);
             //invalid id
-            if(id == -1){
+            if (id == -1) {
                 Toast.makeText(getContext(), "note can't be updated", Toast.LENGTH_SHORT).show();
                 return;
             }
 
             String title = result.getData().getStringExtra(EXTRA_TITLE);
-//            String description = data.getStringExtra(AddEditNoteActivity.EXTRA_DESCRIPTION);
-//            int priority = data.getIntExtra(AddEditNoteActivity.EXTRA_PRIORITY,1);
 
             Note note = Note.builder().noteId(id).prompt(title).build();
             viewModel.update(note);
 
             Toast.makeText(getContext(), "Note updated", Toast.LENGTH_LONG).show();
-        }
-        else{
+        } else {
             Toast.makeText(getContext(), "Note not saved", Toast.LENGTH_SHORT).show();
         }
     }

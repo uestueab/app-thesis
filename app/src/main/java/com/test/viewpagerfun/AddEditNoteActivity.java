@@ -38,11 +38,8 @@ public class AddEditNoteActivity extends AppCompatActivity {
         // showing the back button in action bar
         actionBar.setDisplayHomeAsUpEnabled(true);
 
-
         Intent intent = getIntent();
         requestCode = intent.getIntExtra(REQUEST_CODE,0);
-
-
 
         if(intent.hasExtra(EXTRA_ID)){
             setTitle("Edit Note");

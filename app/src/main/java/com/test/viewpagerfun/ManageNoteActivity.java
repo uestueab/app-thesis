@@ -31,10 +31,12 @@ import com.test.viewpagerfun.callbacks.SwipeRecyclerViewTouchHelper;
 import com.test.viewpagerfun.callbacks.backToManageNoteCallback;
 import com.test.viewpagerfun.databinding.ActivityManageNoteBinding;
 import com.test.viewpagerfun.listeners.onClick.AddNoteListener;
+import com.test.viewpagerfun.listeners.onQueryTextListener.SearchViewTextListener;
 import com.test.viewpagerfun.model.entity.Note;
 import com.test.viewpagerfun.toolbox.TimeProvider;
 import com.test.viewpagerfun.viewmodel.ManageNoteViewModel;
 
+import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -45,6 +47,8 @@ public class ManageNoteActivity extends AppCompatActivity {
     private ActivityManageNoteBinding binding;
 
     private ManageNoteViewModel noteViewModel;
+    private ActivityResultLauncher<Intent> addEditNoteResultLauncher;
+
     public static NoteAdapter adapter = null;
 
     @Override
@@ -70,7 +74,8 @@ public class ManageNoteActivity extends AppCompatActivity {
             }
         });
 
-        ActivityResultLauncher<Intent> addEditNoteResultLauncher = registerForActivityResult(
+        //Decides what to do when returning to this Activity
+        addEditNoteResultLauncher = registerForActivityResult(
                 new ActivityResultContracts.StartActivityForResult(),
                 backToManageNoteCallback.builder()
                         .context(this)
@@ -96,8 +101,6 @@ public class ManageNoteActivity extends AppCompatActivity {
             @Override
             public void onItemClick(Note note) { editNote(note); }
         });
-
-
     }
 
 
@@ -109,7 +112,7 @@ public class ManageNoteActivity extends AppCompatActivity {
 
         MenuItem actionSearch= menu.findItem( R.id.search_cards);
         final SearchView searchViewEditText = (SearchView) actionSearch.getActionView();
-        searchViewEditText.setQueryHint("search notes...");
+        searchViewEditText.setQueryHint("test");
         searchViewEditText.setOnSearchClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -130,35 +133,13 @@ public class ManageNoteActivity extends AppCompatActivity {
             }
         });
 
-        searchViewEditText.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
-            @Override
-            public boolean onQueryTextSubmit(String query) {
-                //when SearchView gets cleared.
-                if(query.equals("emptyQuery")){
-                    //makes sure notes exist in adapter field
-                    if(adapter.getNoteCount() == 0){
-                        return false;
-                    }
-                    List<Note> notesListFull = adapter.getNotes();
-                    //refresh screen with the full list again.
-                    adapter.submitList(notesListFull);
-                    return false;
-                }
+        // Whenever the text of the searchView changes
+        searchViewEditText.setOnQueryTextListener(SearchViewTextListener.builder()
+                .context(this)
+                .adapter(adapter)
+                .build()
+        );
 
-                if (!adapter.filter(query))
-                    Toast.makeText(ManageNoteActivity.this, "couldn't find note matching query", Toast.LENGTH_SHORT).show();
-
-                return false;
-            }
-
-            @Override
-            public boolean onQueryTextChange(String newText) {
-                if(TextUtils.isEmpty(newText)){
-                    this.onQueryTextSubmit("emptyQuery");
-                }
-                return false;
-            }
-        });
         return true;
     }
 
@@ -166,8 +147,8 @@ public class ManageNoteActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         switch(item.getItemId()){
             case R.id.delete_all_notes:
-                noteViewModel.deleteAllNotes();
-                Toast.makeText(this, "all notes deleted", Toast.LENGTH_SHORT).show();
+//                noteViewModel.deleteAllNotes();
+                Toast.makeText(this, "[fake]: all notes deleted", Toast.LENGTH_SHORT).show();
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
@@ -176,11 +157,16 @@ public class ManageNoteActivity extends AppCompatActivity {
 
     private void editNote(Note note){
         Intent intent = new Intent(ManageNoteActivity.this, AddEditNoteActivity.class);
+        Bundle bundle = new Bundle();
+        bundle.putSerializable(BUNDLE_EDIT_NOTE, (Serializable) note);
+        intent.putExtra(EXTRA_EDIT_NOTE,bundle);
 
-        intent.putExtra(EXTRA_ID, note.getNoteId());
-        intent.putExtra(EXTRA_TITLE, note.getPrompt());
+//        intent.putExtra(EXTRA_ID, note.getNoteId());
+//        intent.putExtra(EXTRA_TITLE, note.getPrompt());
 //        intent.putExtra(AddEditNoteActivity.EXTRA_DESCRIPTION, note.getDescription());
 //        intent.putExtra(AddEditNoteActivity.EXTRA_PRIORITY, note.getPriority());
-        startActivityForResult(intent,EDIT_NOTE_REQUEST);
+//        startActivityForResult(intent,EDIT_NOTE_REQUEST);
+        addEditNoteResultLauncher.launch(intent);
+
     }
 }

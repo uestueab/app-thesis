@@ -67,10 +67,7 @@ public class StartingScreenActivity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()){
-            case R.id.search_cards:
-                Toast.makeText(this, "pressed: search_cards", Toast.LENGTH_SHORT).show();
-                return true;
-            case R.id.delete_all_notes:
+            case R.id.menu_item_manage_notes:
                 Intent intent = new Intent(StartingScreenActivity.this, ManageNoteActivity.class);
                 startActivity(intent);
                 return true;

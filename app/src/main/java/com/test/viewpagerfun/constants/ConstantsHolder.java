@@ -30,15 +30,17 @@ public final class ConstantsHolder {
     public static final int ADD_NOTE_REQUEST = 1;
     public static final int EDIT_NOTE_REQUEST = 2;
 
+    public static final String EXTRA_EDIT_NOTE = "de.test.roomdatabaseexample.EXTRA_ID";
+
     public static final String EXTRA_ID = "de.test.roomdatabaseexample.EXTRA_ID";
     public static final String EXTRA_TITLE = "de.test.roomdatabaseexample.EXTRA_TITLE";
     public static final String EXTRA_DESCRIPTION = "de.test.roomdatabaseexample.EXTRA_DESCRIPTION";
-    public static final String EXTRA_PRIORITY = "de.test.roomdatabaseexample.EXTRA_PRIORITY";
 
     /*
        BUNDLE
      */
     public static final String BUNDLE_REMAINING_NOTES = "BUNDLE_REMAINING_NOTES";
+    public static final String BUNDLE_EDIT_NOTE = "BUNDLE_EDIT_NOTE";
 
     /*
        OPTIMAL STRING ALIGNMENT DISTANCE (LEVENSHTEIN)
