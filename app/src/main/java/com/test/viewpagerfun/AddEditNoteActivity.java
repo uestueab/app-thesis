@@ -1,8 +1,10 @@
 package com.test.viewpagerfun;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
@@ -12,65 +14,61 @@ import android.widget.EditText;
 import android.widget.NumberPicker;
 import android.widget.Toast;
 
+import com.test.viewpagerfun.databinding.ActivityAddNoteBinding;
+import com.test.viewpagerfun.databinding.ActivityManageNoteBinding;
+
+import static com.test.viewpagerfun.constants.ConstantsHolder.*;
+
 public class AddEditNoteActivity extends AppCompatActivity {
 
-    public static final String EXTRA_ID =
-            "de.test.roomdatabaseexample.EXTRA_ID";
-    public static final String EXTRA_TITLE =
-            "de.test.roomdatabaseexample.EXTRA_TITLE";
-    public static final String EXTRA_DESCRIPTION =
-            "de.test.roomdatabaseexample.EXTRA_DESCRIPTION";
-    public static final String EXTRA_PRIORITY =
-            "de.test.roomdatabaseexample.EXTRA_PRIORITY";
+    private int requestCode;
 
-    private EditText editTextTitle;
-    private EditText editTextDescription;
-    private NumberPicker numberPickerPriority;
+    private ActivityAddNoteBinding binding;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_add_note);
+        binding = ActivityAddNoteBinding.inflate(getLayoutInflater());
+        setContentView(binding.getRoot());
 
-        editTextTitle = findViewById(R.id.edit_text_title);
-        editTextDescription = findViewById(R.id.edit_text_description);
-        numberPickerPriority = findViewById(R.id.number_picker_priority);
+        // calling the action bar
+        ActionBar actionBar = getSupportActionBar();
+        // Customize the back button
+        actionBar.setHomeAsUpIndicator(R.drawable.ic_close);
+        // showing the back button in action bar
+        actionBar.setDisplayHomeAsUpEnabled(true);
 
-        numberPickerPriority.setMinValue(0);
-        numberPickerPriority.setMaxValue(10);
-
-        getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_close);
 
         Intent intent = getIntent();
+        requestCode = intent.getIntExtra(REQUEST_CODE,0);
+
+
+
         if(intent.hasExtra(EXTRA_ID)){
             setTitle("Edit Note");
-            editTextTitle.setText(intent.getStringExtra(EXTRA_TITLE));
-            editTextDescription.setText(intent.getStringExtra(EXTRA_DESCRIPTION));
-            numberPickerPriority.setValue(intent.getIntExtra(EXTRA_PRIORITY,1));
+            binding.editTextTitle.setText(intent.getStringExtra(EXTRA_TITLE));
+            binding.editTextDescription.setText(intent.getStringExtra(EXTRA_DESCRIPTION));
         }else{
             setTitle("Add Note");
         }
     }
 
     private void saveNote(){
-        String title = editTextTitle.getText().toString();
-        String description = editTextDescription.getText().toString();
-        int priority = numberPickerPriority.getValue();
-        
-        if(title.trim().isEmpty() || description.trim().isEmpty()){
-            Toast.makeText(this, "Please insert a title and description", Toast.LENGTH_SHORT).show();
+        String title = binding.editTextTitle.getText().toString();
+
+        if(title.trim().isEmpty()){
+            Toast.makeText(this, "Please insert a title", Toast.LENGTH_SHORT).show();
             return;
         }
         Intent data = new Intent();
         data.putExtra(EXTRA_TITLE,title);
-        data.putExtra(EXTRA_DESCRIPTION,description);
-        data.putExtra(EXTRA_PRIORITY,priority);
 
         long id = getIntent().getLongExtra(EXTRA_ID,-1);
         if(id != -1){
            data.putExtra(EXTRA_ID,id);
         }
 
+        data.putExtra(REQUEST_CODE, requestCode);
         setResult(RESULT_OK, data);
         finish();
     }

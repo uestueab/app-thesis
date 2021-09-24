@@ -19,7 +19,8 @@
         </activity>
         <activity android:name=".ReviewActivity"> </activity>
         <activity android:name=".ManageNoteActivity"> </activity>
-        <activity android:name=".AddEditNoteActivity"> </activity>
+        <activity android:name=".AddEditNoteActivity"
+            android:parentActivityName=".ManageNoteActivity"> </activity>
     </application>
 
 </manifest>

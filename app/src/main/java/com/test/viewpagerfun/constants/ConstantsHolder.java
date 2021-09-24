@@ -23,14 +23,17 @@ public final class ConstantsHolder {
     public static final String PREFS_FILE = "PREFS_FILE";
     public static final String PREFS_REMAINING_NOTES = "PREFS_REMAINING_NOTES";
 
-
     /*
-       EXTRA CONSTANTS, E.G: INTENT.PUTEXTRA(EXTRA_REMAINING_REVIEWS, BUNDLE);
+       EXTRA/REQUEST CONSTANTS, E.G: INTENT.PUTEXTRA(EXTRA_REMAINING_REVIEWS, BUNDLE);
      */
+    public static final String REQUEST_CODE = "REQUEST_CODE";
+    public static final int ADD_NOTE_REQUEST = 1;
+    public static final int EDIT_NOTE_REQUEST = 2;
 
-    // save remaining reviews.
-    public static final String EXTRA_REMAINING_REVIEWS = "EXTRA_REMAINING_REVIEWS";
-
+    public static final String EXTRA_ID = "de.test.roomdatabaseexample.EXTRA_ID";
+    public static final String EXTRA_TITLE = "de.test.roomdatabaseexample.EXTRA_TITLE";
+    public static final String EXTRA_DESCRIPTION = "de.test.roomdatabaseexample.EXTRA_DESCRIPTION";
+    public static final String EXTRA_PRIORITY = "de.test.roomdatabaseexample.EXTRA_PRIORITY";
 
     /*
        BUNDLE
