@@ -91,9 +91,9 @@ public class ManageNoteActivity extends AppCompatActivity {
                         .build()
         );
 
-        //Make the RecyclerView swipeable
+        //Make the RecyclerView react to swipes
         new ItemTouchHelper(new SwipeRecyclerViewTouchHelper(0, ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT,
-                adapter,noteViewModel,ManageNoteActivity.this)
+                adapter,noteViewModel,binding,this,addEditNoteResultLauncher)
         ).attachToRecyclerView(binding.recyclerView);
 
         //Edit note on click
@@ -112,7 +112,7 @@ public class ManageNoteActivity extends AppCompatActivity {
 
         MenuItem actionSearch= menu.findItem( R.id.search_cards);
         final SearchView searchViewEditText = (SearchView) actionSearch.getActionView();
-        searchViewEditText.setQueryHint("test");
+        searchViewEditText.setQueryHint("search notes...");
         searchViewEditText.setOnSearchClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -158,15 +158,10 @@ public class ManageNoteActivity extends AppCompatActivity {
     private void editNote(Note note){
         Intent intent = new Intent(ManageNoteActivity.this, AddEditNoteActivity.class);
         Bundle bundle = new Bundle();
+        bundle.putInt(REQUEST_CODE, EDIT_NOTE_REQUEST);
         bundle.putSerializable(BUNDLE_EDIT_NOTE, (Serializable) note);
         intent.putExtra(EXTRA_EDIT_NOTE,bundle);
 
-//        intent.putExtra(EXTRA_ID, note.getNoteId());
-//        intent.putExtra(EXTRA_TITLE, note.getPrompt());
-//        intent.putExtra(AddEditNoteActivity.EXTRA_DESCRIPTION, note.getDescription());
-//        intent.putExtra(AddEditNoteActivity.EXTRA_PRIORITY, note.getPriority());
-//        startActivityForResult(intent,EDIT_NOTE_REQUEST);
         addEditNoteResultLauncher.launch(intent);
-
     }
 }

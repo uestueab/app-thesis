@@ -6,6 +6,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.icu.util.BuddhistCalendar;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -16,14 +17,17 @@ import android.widget.Toast;
 
 import com.test.viewpagerfun.databinding.ActivityAddNoteBinding;
 import com.test.viewpagerfun.databinding.ActivityManageNoteBinding;
+import com.test.viewpagerfun.model.entity.Note;
+
+import java.io.Serializable;
 
 import static com.test.viewpagerfun.constants.ConstantsHolder.*;
 
 public class AddEditNoteActivity extends AppCompatActivity {
 
     private int requestCode;
-
     private ActivityAddNoteBinding binding;
+    private Note note;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,34 +43,56 @@ public class AddEditNoteActivity extends AppCompatActivity {
         actionBar.setDisplayHomeAsUpEnabled(true);
 
         Intent intent = getIntent();
-        requestCode = intent.getIntExtra(REQUEST_CODE,0);
 
-        if(intent.hasExtra(EXTRA_ID)){
+        if(intent.hasExtra(EXTRA_EDIT_NOTE)){
             setTitle("Edit Note");
-            binding.editTextTitle.setText(intent.getStringExtra(EXTRA_TITLE));
-            binding.editTextDescription.setText(intent.getStringExtra(EXTRA_DESCRIPTION));
+
+            Bundle bundle = intent.getBundleExtra(EXTRA_EDIT_NOTE);
+            note = (Note) bundle.getSerializable(BUNDLE_EDIT_NOTE);
+            requestCode = bundle.getInt(REQUEST_CODE,0);
+
+            binding.editTextTitle.setText(note.getPrompt());
+            binding.editTextDescription.setText(note.getMeaning());
         }else{
             setTitle("Add Note");
+            requestCode = ADD_NOTE_REQUEST;
         }
     }
 
     private void saveNote(){
+        //get input of edittext fields
         String title = binding.editTextTitle.getText().toString();
 
+        //restrict empty fields
         if(title.trim().isEmpty()){
             Toast.makeText(this, "Please insert a title", Toast.LENGTH_SHORT).show();
             return;
         }
-        Intent data = new Intent();
-        data.putExtra(EXTRA_TITLE,title);
 
-        long id = getIntent().getLongExtra(EXTRA_ID,-1);
-        if(id != -1){
-           data.putExtra(EXTRA_ID,id);
+        //set the new inputs the the note attributes
+        if(requestCode == ADD_NOTE_REQUEST){
+            note = Note.builder()
+                    .prompt(title)
+                    .build();
+        }else if(requestCode == EDIT_NOTE_REQUEST){
+            note.setPrompt(title);
         }
 
-        data.putExtra(REQUEST_CODE, requestCode);
-        setResult(RESULT_OK, data);
+        String extraKey = requestCode == ADD_NOTE_REQUEST ? EXTRA_ADD_NOTE : EXTRA_EDIT_NOTE;
+
+        //prepare intent and send note too
+        Intent intent = new Intent();
+        Bundle bundle = new Bundle();
+        bundle.putSerializable(BUNDLE_ADD_NOTE,(Serializable) note);
+        intent.putExtra(extraKey,bundle);
+
+//        long id = getIntent().getLongExtra(EXTRA_ID,-1);
+//        if(id != -1){
+//           intent.putExtra(EXTRA_ID,id);
+//        }
+
+        intent.putExtra(REQUEST_CODE, requestCode);
+        setResult(RESULT_OK, intent);
         finish();
     }
 

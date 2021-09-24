@@ -1,11 +1,13 @@
 package com.test.viewpagerfun.callbacks;
 
 import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
 import android.graphics.Canvas;
+import android.os.Bundle;
 import android.view.View;
+import android.widget.Toast;
 
+import androidx.activity.result.ActivityResultLauncher;
 import androidx.annotation.NonNull;
 import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.ItemTouchHelper;
@@ -20,6 +22,8 @@ import com.test.viewpagerfun.databinding.ActivityManageNoteBinding;
 import com.test.viewpagerfun.model.entity.Note;
 import com.test.viewpagerfun.viewmodel.ManageNoteViewModel;
 
+import java.io.Serializable;
+
 import it.xabaras.android.recyclerview.swipedecorator.RecyclerViewSwipeDecorator;
 
 import static com.test.viewpagerfun.constants.ConstantsHolder.*;
@@ -28,16 +32,19 @@ public class SwipeRecyclerViewTouchHelper extends ItemTouchHelper.SimpleCallback
 
     private NoteAdapter adapter;
     private ManageNoteViewModel noteViewModel;
-
     private ActivityManageNoteBinding binding;
     private Activity activity;
+    private ActivityResultLauncher<Intent> addEditNoteResultLauncher;
 
     public SwipeRecyclerViewTouchHelper(int dragDirs, int swipeDirs,
-                                        NoteAdapter adapter, ManageNoteViewModel noteViewModel, Activity activity) {
+                                        NoteAdapter adapter, ManageNoteViewModel noteViewModel, ActivityManageNoteBinding binding,
+                                        Activity activity, ActivityResultLauncher<Intent> addEditNoteResultLauncher) {
         super(dragDirs, swipeDirs);
         this.adapter = adapter;
         this.noteViewModel = noteViewModel;
+        this.binding = binding;
         this.activity = activity;
+        this.addEditNoteResultLauncher = addEditNoteResultLauncher;
     }
 
 
@@ -68,7 +75,7 @@ public class SwipeRecyclerViewTouchHelper extends ItemTouchHelper.SimpleCallback
                                 noteViewModel.insert(finalCloneNote);
                             }
                         }).show();
-//                        Toast.makeText(MainActivity.this, "Note deleted: "+ deletedNoteTitle, Toast.LENGTH_SHORT).show();
+                        Toast.makeText(activity, "Note deleted: "+ deletedNoteTitle, Toast.LENGTH_SHORT).show();
                 break;
             case ItemTouchHelper.RIGHT:
                 editNote(adapter.getNoteAt(position));
@@ -92,12 +99,11 @@ public class SwipeRecyclerViewTouchHelper extends ItemTouchHelper.SimpleCallback
     }
 
     private void editNote(Note note) {
-        Intent intent = new Intent(this.activity, AddEditNoteActivity.class);
+        Intent intent = new Intent(activity, AddEditNoteActivity.class);
+        Bundle bundle = new Bundle();
+        bundle.putSerializable(BUNDLE_EDIT_NOTE, (Serializable) note);
+        intent.putExtra(EXTRA_EDIT_NOTE,bundle);
 
-        intent.putExtra(EXTRA_ID, note.getNoteId());
-        intent.putExtra(EXTRA_TITLE, note.getPrompt());
-//        intent.putExtra(AddEditNoteActivity.EXTRA_DESCRIPTION, note.getDescription());
-//        intent.putExtra(AddEditNoteActivity.EXTRA_PRIORITY, note.getPriority());
-        this.activity.startActivityForResult(intent, EDIT_NOTE_REQUEST);
+        addEditNoteResultLauncher.launch(intent);
     }
 }
