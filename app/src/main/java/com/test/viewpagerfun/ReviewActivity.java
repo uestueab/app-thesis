@@ -17,7 +17,6 @@ import com.test.viewpagerfun.sm2.Session;
 import com.test.viewpagerfun.viewmodel.SharedViewModel;
 import com.test.viewpagerfun.viewmodel.SharedViewModelFactory;
 
-import java.io.Serializable;
 import java.util.List;
 
 import static com.test.viewpagerfun.constants.ConstantsHolder.*;
@@ -54,8 +53,8 @@ public class ReviewActivity extends FragmentActivity {
     }
 
     private void resumeReview() {
-        List<Note> previousNotes = new PrefManager<Note>(getApplicationContext())
-                .getNotes(PREFS_REMAINING_NOTES);
+        PrefManager.init(this);
+        List<Note> previousNotes = PrefManager.getNotes(PREFS_REMAINING_NOTES);
 
         /* - If no notes from a previous review exist. Load new review items from database
          * - Else restore review with remaining items.
@@ -125,7 +124,8 @@ public class ReviewActivity extends FragmentActivity {
             @Override
             public void run() {
                 List<Note> remainingNotes = model.getRemainingNotes();
-                new PrefManager<>(getApplicationContext()).setNotes(PREFS_REMAINING_NOTES, remainingNotes);
+                PrefManager.init(ReviewActivity.this);
+                PrefManager.setNotes(PREFS_REMAINING_NOTES, remainingNotes);
             }
         });
 

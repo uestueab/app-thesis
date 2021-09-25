@@ -4,16 +4,11 @@ import android.app.Activity;
 import android.content.Intent;
 import android.view.View;
 
-import androidx.lifecycle.Observer;
-
 import com.test.viewpagerfun.PrefManager;
 import com.test.viewpagerfun.ReviewActivity;
 import com.test.viewpagerfun.StartingScreenActivity;
 import com.test.viewpagerfun.databinding.ReviewDetailedResultFragmentBinding;
-import com.test.viewpagerfun.model.entity.Note;
 import com.test.viewpagerfun.viewmodel.SharedViewModel;
-
-import java.util.List;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -45,7 +40,8 @@ public class NextReviewItemListener implements View.OnClickListener{
             //remove flicker
             binding.tvQuestion.setText("");
         } else {
-            new PrefManager<>(getActivity()).remove(PREFS_REMAINING_NOTES);
+            PrefManager.init(getActivity());
+            PrefManager.remove(PREFS_REMAINING_NOTES);
 
             // all items passed, quit by moving to another activity
             Intent intent = new Intent(getActivity(), StartingScreenActivity.class);

@@ -8,7 +8,6 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.widget.Toast;
 
 import com.test.viewpagerfun.databinding.ActivityStartingScreenBinding;
 import com.test.viewpagerfun.listeners.onClick.StartActivityListener;
@@ -44,7 +43,8 @@ public class StartingScreenActivity extends AppCompatActivity {
      *  - Remaining items from a previous session. (loaded from SharedPreferences)
      */
     private void showReviewItemCount() {
-        List<Note> previousNotes = new PrefManager<>(getApplicationContext()).getNotes(PREFS_REMAINING_NOTES);
+        PrefManager.init(this);
+        List<Note> previousNotes = PrefManager.getNotes(PREFS_REMAINING_NOTES);
 
         if (previousNotes == null || previousNotes.size() == 0) {
             StartingScreenViewModel model = new ViewModelProvider(this).get(StartingScreenViewModel.class);
@@ -67,6 +67,10 @@ public class StartingScreenActivity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()){
+            case R.id.menu_item_settings:
+                Intent intent2 = new Intent(StartingScreenActivity.this, SettingsActivity.class);
+                startActivity(intent2);
+                return true;
             case R.id.menu_item_manage_notes:
                 Intent intent = new Intent(StartingScreenActivity.this, ManageNoteActivity.class);
                 startActivity(intent);
