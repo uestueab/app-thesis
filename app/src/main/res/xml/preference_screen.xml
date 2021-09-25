@@ -2,19 +2,27 @@
 
 
     <PreferenceCategory
-        app:title="Display Settings"
         app:iconSpaceReserved="false"
-        >
+        app:title="Display Settings">
 
         <SwitchPreferenceCompat
-            app:iconSpaceReserved="false"
-            app:key="notifications"
+            app:icon="@drawable/notifications_on"
+            app:key="prefs_notifications"
             app:title="Enable message notifications" />
+
+        <ListPreference
+            app:entries="@array/themes"
+            app:entryValues="@array/themes"
+            app:iconSpaceReserved="false"
+            app:key="pref_theme"
+            app:title="Select theme"
+            app:useSimpleSummaryProvider="true" />
 
         <Preference
             app:iconSpaceReserved="false"
             app:key="feedback"
             app:summary="Report technical issues or suggest new features"
+            app:allowDividerAbove="true"
             app:title="Send feedback" />
 
     </PreferenceCategory>

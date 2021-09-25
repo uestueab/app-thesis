@@ -1,6 +1,9 @@
 package com.test.viewpagerfun;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.preference.PreferenceFragmentCompat;
+import androidx.preference.SwitchPreference;
+
 import android.os.Bundle;
 
 public class SettingsActivity extends AppCompatActivity {
