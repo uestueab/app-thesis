@@ -4,27 +4,31 @@
     <style name="light" parent="Theme.AppCompat.Light.DarkActionBar">
         <item name="alertDialogTheme">@style/light_dialogTheme</item>
 
+        <!--        Settings Activity -->
         <item name="android:textColor">#2b303b</item>
         <item name="android:textColorSecondary">#2b303b</item>
 
-
         <item name="android:statusBarColor">#c0c5ce</item>
         <item name="android:navigationBarColor">#eff1f5</item>
+
+        <!--        Menu color-->
+        <item name="android:itemBackground">#c0c5ce</item>
 
         <item name="colorAccent">#bf616a</item>
         <item name="colorPrimary">#c0c5ce</item>
         <item name="colorPrimaryDark">#c0c5ce</item>
 
         <item name="backgroundColor">#eff1f5</item>
-        <item name="backgroundColor_secondary">#c0c5ce</item>
+        <item name="backgroundColor_secondary">#ccccce</item>
         <item name="textColor">#2b303b</item>
         <item name="textColor_secondary">#65737e</item>
 
-        <item name="cardBackgroundColor">#eff1f5</item>
+        <item name="cardBackgroundColor">#ccccce</item>
         <item name="cardForegroundColor">#2b303b</item>
+        <item name="cardButtonColor">#eff1f5</item>
         <item name="cardReviewColor">#4f5b66</item>
 
-        <item name="buttonColor">#8fa1b3</item>
+        <item name="buttonColor">#c0c5ce</item>
 
     </style>
 
@@ -34,21 +38,25 @@
         <item name="android:textColor">#ebdbb2</item>
         <item name="android:textColorSecondary">#928374</item>
 
+        <!--        Menu color-->
+        <item name="android:itemBackground">#928374</item>
+
+
         <item name="android:statusBarColor">#282828</item>
         <item name="android:navigationBarColor">#282828</item>
 
         <item name="colorAccent">#cc241d</item>
 
         <item name="backgroundColor">#282828</item>
-        <item name="backgroundColor_secondary">#928374</item>
+        <item name="backgroundColor_secondary">#1a1a1a</item>
         <item name="textColor">#ebdbb2</item>
-        <item name="textColor_secondary">#65737e</item>
+        <item name="textColor_secondary">#000000</item>
 
-        <item name="cardBackgroundColor">#282828</item>
-        <item name="cardForegroundColor">#a89984</item>
+        <item name="cardBackgroundColor">#1a1a1a</item>
+        <item name="cardForegroundColor">#ebdbb2</item>
         <item name="cardReviewColor">#d79921</item>
 
-        <item name="buttonColor">#fb4934</item>
+        <item name="buttonColor">#98971a</item>
 
     </style>
 

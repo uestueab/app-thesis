@@ -21,7 +21,7 @@ import java.util.List;
 
 import static com.test.viewpagerfun.constants.ConstantsHolder.*;
 
-public class ReviewActivity extends FragmentActivity {
+public class ReviewActivity extends BaseActivity {
 
     private final String TAG = this.getClass().getSimpleName();
     private Handler handler = new Handler();

@@ -4,6 +4,7 @@
     android:id="@+id/fragment_two"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="?attr/backgroundColor"
     android:padding="12dp">
 
     <androidx.cardview.widget.CardView
@@ -12,7 +13,7 @@
         android:layout_height="140dp"
         android:layout_marginTop="12dp"
         android:padding="8dp"
-        app:cardBackgroundColor="#EDEDED"
+        app:cardBackgroundColor="?attr/cardBackgroundColor"
         app:layout_constraintTop_toTopOf="parent">
 
         <RelativeLayout
@@ -27,10 +28,7 @@
                 android:layout_centerVertical="true"
                 android:layout_marginTop="40dp"
                 android:lineSpacingMultiplier="1.2"
-                android:shadowColor="#000000"
-                android:shadowDx="-1"
-                android:shadowDy="-1"
-                android:shadowRadius="1"
+                android:textColor="?attr/cardReviewColor"
                 android:textSize="32sp" />
 
             <Button
@@ -39,8 +37,11 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@id/tv_question"
                 android:layout_alignParentEnd="true"
-                android:background="@null"
-                android:text="NEXT" />
+                android:background="?android:selectableItemBackground"
+                android:elevation="0dp"
+                android:stateListAnimator="@null"
+                android:text="NEXT"
+                android:textColor="?attr/textColor" />
         </RelativeLayout>
     </androidx.cardview.widget.CardView>
 
@@ -49,7 +50,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="5dp"
-        android:background="#EDEDED"
+        android:background="?attr/backgroundColor_secondary"
         android:gravity="center"
         android:text="Vocabulary Meaning"
         app:layout_constraintTop_toBottomOf="@id/cardView" />
@@ -59,6 +60,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center"
+        android:textColor="?attr/textColor_secondary"
         app:layout_constraintTop_toBottomOf="@id/tv_voc_meaning" />
 
     <TextView
@@ -66,9 +68,10 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="12dp"
-        android:background="#EDEDED"
+        android:background="?attr/backgroundColor_secondary"
         android:padding="14dp"
         android:text="TEXT"
+        android:textColor="?attr/textColor"
         android:textSize="18sp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/tv_answerResult" />
@@ -78,7 +81,6 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginLeft="8dp"
-        android:text="Meaning:"
         app:layout_constraintStart_toEndOf="@id/tv_answerBlock"
         app:layout_constraintTop_toTopOf="@id/tv_answerBlock" />
 
@@ -91,26 +93,28 @@
         app:layout_constraintStart_toStartOf="@id/tv_answerMeaningField"
         app:layout_constraintTop_toBottomOf="@id/tv_answerMeaningField" />
 
-    <Button
+    <androidx.appcompat.widget.AppCompatButton
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_weight="1"
-        android:background="#EDEDED"
+        android:background="?attr/backgroundColor_secondary"
         android:drawableLeft="@drawable/play_sound"
         android:gravity="left|center"
         android:padding="6dp"
         android:text="PLAY"
+        android:textColor="?attr/cardForegroundColor"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="@id/tv_answerMeaningField" />
 
-    <Button
+    <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/btn_nextBottom"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentEnd="true"
         android:layout_marginBottom="10dp"
-        android:background="@null"
+        android:background="?attr/buttonColor"
         android:text="NEXT"
+        android:textColor="?attr/textColor_secondary"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
 

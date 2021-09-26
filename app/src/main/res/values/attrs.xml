@@ -8,6 +8,7 @@
 
         <attr name="cardBackgroundColor" format="color"/>
         <attr name="cardForegroundColor" format="color"/>
+        <attr name="cardButtonColor" format="color"/>
         <attr name="cardReviewColor" format="color"/>
 
         <attr name="buttonColor" format="color"/>

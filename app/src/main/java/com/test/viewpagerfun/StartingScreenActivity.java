@@ -57,6 +57,9 @@ public class StartingScreenActivity extends BaseActivity {
         }
     }
 
+    /*
+     *  Create the menu
+     */
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
@@ -64,6 +67,9 @@ public class StartingScreenActivity extends BaseActivity {
         return true;
     }
 
+    /*
+     *  Decides what to do when pressed on a menu item
+     */
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()){
@@ -81,6 +87,9 @@ public class StartingScreenActivity extends BaseActivity {
         return true;
     }
 
+    /*
+     *  Moving out of app via back press is prohibited
+     */
     @Override
     public void onBackPressed() {
     }

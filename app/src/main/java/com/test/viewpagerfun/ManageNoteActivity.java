@@ -42,7 +42,7 @@ import java.util.List;
 
 import it.xabaras.android.recyclerview.swipedecorator.RecyclerViewSwipeDecorator;
 import static com.test.viewpagerfun.constants.ConstantsHolder.*;
-public class ManageNoteActivity extends AppCompatActivity {
+public class ManageNoteActivity extends BaseActivity {
 
     private ActivityManageNoteBinding binding;
 

@@ -9,6 +9,8 @@
     <color name="white">#FFFFFFFF</color>
 
 
+    <color name="correct">#8ec07c</color>
+    <color name="wrong">#fb4934</color>
 
     <color name="deleteNoteOnSwipe">#FF0000</color>
     <color name="editNoteOnSwipe">#0A9264</color>

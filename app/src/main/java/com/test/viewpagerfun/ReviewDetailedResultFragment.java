@@ -5,6 +5,7 @@ import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
@@ -52,9 +53,14 @@ public class ReviewDetailedResultFragment extends Fragment {
         Review review = model.getMostRecentReview();
         binding.tvQuestion.setText(review.getNote().getPrompt());
         if (review.getScore() < 2) {
-            binding.tvAnswerResult.setBackgroundColor(Color.RED);
+            binding.tvAnswerResult.setText("wrong");
+            binding.tvAnswerResult.setBackgroundColor(
+                    ContextCompat.getColor(getActivity(),R.color.wrong));
         } else {
-            binding.tvAnswerResult.setBackgroundColor(Color.GREEN);
+            binding.tvAnswerResult.setText("correct");
+            binding.tvAnswerResult.setBackgroundColor(
+                    ContextCompat.getColor(getActivity(),R.color.correct)
+            );
         }
 
         /*  when a note fails during review add it on top of the list stack.

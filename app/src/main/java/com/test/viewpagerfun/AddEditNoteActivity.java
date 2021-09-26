@@ -23,7 +23,7 @@ import java.io.Serializable;
 
 import static com.test.viewpagerfun.constants.ConstantsHolder.*;
 
-public class AddEditNoteActivity extends AppCompatActivity {
+public class AddEditNoteActivity extends BaseActivity {
 
     private int requestCode;
     private ActivityAddNoteBinding binding;

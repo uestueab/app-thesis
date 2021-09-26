@@ -4,6 +4,7 @@
     android:id="@+id/fragment_one"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="?attr/backgroundColor"
     android:padding="12dp">
 
     <androidx.cardview.widget.CardView
@@ -12,13 +13,17 @@
         android:layout_height="140dp"
         android:layout_marginTop="12dp"
         android:padding="8dp"
-        app:cardBackgroundColor="#EDEDED"
+        app:cardBackgroundColor="?attr/cardBackgroundColor"
         app:layout_constraintTop_toTopOf="parent">
 
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
+            <!--                android:shadowColor="#000000"-->
+            <!--                android:shadowDx="-1"-->
+            <!--                android:shadowDy="-1"-->
+            <!--                android:shadowRadius="1"-->
             <TextView
                 android:id="@+id/tv_question"
                 android:layout_width="wrap_content"
@@ -27,10 +32,7 @@
                 android:layout_centerVertical="true"
                 android:layout_marginTop="40dp"
                 android:lineSpacingMultiplier="1.2"
-                android:shadowColor="#000000"
-                android:shadowDx="-1"
-                android:shadowDy="-1"
-                android:shadowRadius="1"
+                android:textColor="?attr/cardReviewColor"
                 android:textSize="32sp" />
 
             <Button
@@ -39,8 +41,12 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@id/tv_question"
                 android:layout_alignParentEnd="true"
-                android:background="@null"
-                android:text="SUBMIT" />
+                android:background="?android:selectableItemBackground"
+                android:elevation="0dp"
+                android:stateListAnimator="@null"
+                android:text="SUBMIT"
+                android:textColor="?attr/cardForegroundColor"
+                />
 
             <Button
                 android:id="@+id/btn_notKnow"
@@ -48,8 +54,11 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@id/tv_question"
                 android:layout_alignParentStart="true"
-                android:background="@null"
-                android:text="DON'T KNOW" />
+                android:background="?android:selectableItemBackground"
+                android:elevation="0dp"
+                android:stateListAnimator="@null"
+                android:text="DON'T KNOW"
+                android:textColor="?attr/cardForegroundColor" />
         </RelativeLayout>
 
     </androidx.cardview.widget.CardView>
@@ -60,9 +69,10 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="5dp"
-        android:background="#EDEDED"
+        android:background="?attr/backgroundColor_secondary"
         android:gravity="center"
         android:text="Vocabulary Meaning"
+        android:textColor="?attr/textColor"
         app:layout_constraintTop_toBottomOf="@id/cardView" />
 
     <EditText
@@ -70,20 +80,22 @@
         android:layout_width="150dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="50dp"
-        android:backgroundTint="@color/design_default_color_primary"
+        android:autofillHints=""
+        android:backgroundTint="?attr/colorAccent"
         android:ellipsize="end"
-        android:gravity="center"
 
+        android:gravity="center"
         android:hint="Your response"
         android:singleLine="true"
         android:textAlignment="center"
+        android:textColor="?attr/textColor"
+        android:textColorHint="?attr/textColor"
         android:textCursorDrawable="@drawable/color_cursor"
         android:textSize="16sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@id/tv_voc_meaning"
-        android:autofillHints="" />
+        app:layout_constraintTop_toTopOf="@id/tv_voc_meaning" />
 
     <!-- ATTENTION: The snippet below disables completions for some reason...
         android:inputType="textAutoComplete"

@@ -1,6 +1,9 @@
 package com.test.viewpagerfun;
 import android.os.Bundle;
 
+/*
+    SettingsActivity: Inflates the settings fragment
+ */
 public class SettingsActivity extends BaseActivity {
 
     @Override
