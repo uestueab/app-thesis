@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
    <string-array name="themes">
-       <item>light</item>
-       <item>gruvbox</item>
-       <item>breeze</item>
+       <item>Light</item>
+       <item>Gruvbox</item>
+       <item>Breeze</item>
    </string-array>
 </resources>

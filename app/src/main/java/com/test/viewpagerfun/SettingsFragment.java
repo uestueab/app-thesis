@@ -4,11 +4,13 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.widget.Toast;
 
+import androidx.appcompat.app.AppCompatDelegate;
 import androidx.preference.ListPreference;
 import androidx.preference.Preference;
 import androidx.preference.PreferenceFragmentCompat;
 import androidx.preference.SwitchPreference;
 import androidx.preference.SwitchPreferenceCompat;
+import static com.test.viewpagerfun.constants.ConstantsHolder.*;
 
 public class SettingsFragment extends PreferenceFragmentCompat {
     @Override
@@ -54,15 +56,18 @@ public class SettingsFragment extends PreferenceFragmentCompat {
             public boolean onPreferenceChange(Preference preference, Object newValue) {
 
                 String theme_name = (String) newValue;
-                    switch (theme_name){
-                        case "light":
-                            Toast.makeText(getContext(), "Theme: "+ "light", Toast.LENGTH_SHORT).show();
-                            break;
+                    switch (theme_name.toLowerCase()){
                         case "gruvbox":
-                            Toast.makeText(getContext(), "Theme: "+"gruvbox", Toast.LENGTH_SHORT).show();
+                            PrefManager.set(PREFS_THEME,THEME_GRUVBOX);
+                            getActivity().recreate();
                             break;
                         case "breeze":
-                            Toast.makeText(getContext(), "Theme: "+"breeze", Toast.LENGTH_SHORT).show();
+                            PrefManager.set(PREFS_THEME,THEME_BREEZE);
+                            getActivity().recreate();
+                            break;
+                        default:
+                            PrefManager.set(PREFS_THEME,THEME_LIGHT);
+                            getActivity().recreate();
                             break;
                     }
 

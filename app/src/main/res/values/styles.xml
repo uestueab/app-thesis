@@ -2,7 +2,18 @@
 <resources>
 
     <style name="light" parent="Theme.AppCompat.Light.DarkActionBar">
+        <item name="alertDialogTheme">@style/light_dialogTheme</item>
+
+        <item name="android:textColor">#2b303b</item>
+        <item name="android:textColorSecondary">#2b303b</item>
+
+
+        <item name="android:statusBarColor">#c0c5ce</item>
+        <item name="android:navigationBarColor">#eff1f5</item>
+
         <item name="colorAccent">#bf616a</item>
+        <item name="colorPrimary">#c0c5ce</item>
+        <item name="colorPrimaryDark">#c0c5ce</item>
 
         <item name="backgroundColor">#eff1f5</item>
         <item name="backgroundColor_secondary">#c0c5ce</item>
@@ -18,9 +29,15 @@
     </style>
 
     <style name="gruvbox" parent="Theme.AppCompat.Light.DarkActionBar">
-        <item name="colorAccent">#cc241d</item>
-        <item name="alertDialogTheme">@style/DialogTheme</item>
+        <item name="alertDialogTheme">@style/gruvbox_dialogTheme</item>
 
+        <item name="android:textColor">#ebdbb2</item>
+        <item name="android:textColorSecondary">#928374</item>
+
+        <item name="android:statusBarColor">#282828</item>
+        <item name="android:navigationBarColor">#282828</item>
+
+        <item name="colorAccent">#cc241d</item>
 
         <item name="backgroundColor">#282828</item>
         <item name="backgroundColor_secondary">#928374</item>
@@ -35,7 +52,17 @@
 
     </style>
 
-    <style name="DialogTheme" parent="Theme.AppCompat.Light.Dialog.Alert">
+<!--    Dialog Themes-->
+    <style name="light_dialogTheme" parent="Theme.AppCompat.Light.Dialog.Alert">
+        <item name="android:colorBackground">#eff1f5</item>
+        <item name="android:textColor">#2b303b</item>
+        <item name="android:textColorPrimary">#2b303b</item>
+        <item name="android:textColorSecondary">#928374</item>
+        <item name="textColorAlertDialogListItem">#928374</item>
+        <item name="colorAccent">#bf616a</item>
+    </style>
+
+    <style name="gruvbox_dialogTheme" parent="Theme.AppCompat.Light.Dialog.Alert">
         <item name="android:colorBackground">#282828</item>
         <item name="android:textColor">#928374</item>
         <item name="android:textColorPrimary">#928374</item>

@@ -23,6 +23,8 @@ public final class ConstantsHolder {
     public static final String PREFS_FILE = "PREFS_FILE";
     public static final String PREFS_REMAINING_NOTES = "PREFS_REMAINING_NOTES";
 
+    public static final String PREFS_THEME = "PREFS_THEME";
+
     /*
        EXTRA/REQUEST CONSTANTS, E.G: INTENT.PUTEXTRA(EXTRA_REMAINING_REVIEWS, BUNDLE);
      */
@@ -50,4 +52,12 @@ public final class ConstantsHolder {
     //denotes how many mismatches are allowed every 'MIN_MISMATCH_LENGTH' characters
     public static final float MIN_MISMATCH_LENGTH = 5;
 
+
+    /*
+      THEMES
+     */
+
+    public static final String THEME_LIGHT = "theme_light";
+    public static final String THEME_GRUVBOX = "theme_gruvbox";
+    public static final String THEME_BREEZE = "theme_breeze";
 }

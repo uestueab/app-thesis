@@ -18,7 +18,7 @@ import java.util.List;
 
 import static com.test.viewpagerfun.constants.ConstantsHolder.*;
 
-public class StartingScreenActivity extends AppCompatActivity {
+public class StartingScreenActivity extends BaseActivity {
     private ActivityStartingScreenBinding binding;
 
     @Override
