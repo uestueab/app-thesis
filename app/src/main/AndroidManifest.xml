@@ -11,7 +11,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.ViewPagerFun" >
-        <activity android:name=".SettingsActivity" >
+        <activity android:name=".SettingsActivity" android:theme="@style/gruvbox" >
         </activity>
         <activity android:name=".StartingScreenActivity" >
             <intent-filter>
