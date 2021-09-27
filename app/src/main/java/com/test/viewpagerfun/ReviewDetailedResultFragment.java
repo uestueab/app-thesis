@@ -21,8 +21,6 @@ import com.test.viewpagerfun.listeners.onClick.NextReviewItemListener;
 import com.test.viewpagerfun.sm2.Review;
 import com.test.viewpagerfun.viewmodel.SharedViewModel;
 
-import java.util.Collections;
-import java.util.List;
 
 public class ReviewDetailedResultFragment extends Fragment {
 

@@ -1,17 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <declare-styleable name="ds">
-        <attr name="backgroundColor" format="color"/>
-        <attr name="backgroundColor_secondary" format="color"/>
-        <attr name="textColor" format="color"/>
-        <attr name="textColor_secondary" format="color"/>
+        <attr name="backgroundColor" format="color" />
+        <attr name="backgroundColor_secondary" format="color" />
+        <attr name="textColor" format="color" />
+        <attr name="textColor_secondary" format="color" />
 
-        <attr name="cardBackgroundColor" format="color"/>
-        <attr name="cardForegroundColor" format="color"/>
-        <attr name="cardButtonColor" format="color"/>
-        <attr name="cardReviewColor" format="color"/>
+        <attr name="cardBackgroundColor" format="color" />
+        <attr name="cardForegroundColor" format="color" />
+        <attr name="cardButtonColor" format="color" />
+        <attr name="cardReviewColor" format="color" />
 
-        <attr name="buttonColor" format="color"/>
+        <attr name="listItemBackgroundColor" format="color" />
+        <attr name="listItemTextColor" format="color" />
+        <attr name="listItemTextColor_secondary" format="color" />
+
+        <attr name="buttonColor" format="color" />
 
     </declare-styleable>
 
