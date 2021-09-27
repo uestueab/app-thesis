@@ -104,5 +104,24 @@ public class SettingsFragment extends PreferenceFragmentCompat {
             }
         });
 
+        SwitchPreferenceCompat prefs_display_animation = (SwitchPreferenceCompat) findPreference(PREFS_DISPLAY_ANIMATION);
+        //show check state
+        boolean animation_enabled = PrefManager.get(PREFS_DISPLAY_ANIMATION, false);
+        if (animation_enabled)
+            prefs_display_animation.setChecked(true);
+        else
+            prefs_display_animation.setChecked(false);
+
+        prefs_display_animation.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
+            @Override
+            public boolean onPreferenceChange(Preference preference, Object newValue) {
+
+                boolean animation_preference = (boolean) newValue;
+                PrefManager.set(PREFS_DISPLAY_ANIMATION, animation_preference);
+                Toast.makeText(getActivity(), "Value of pref: "+ animation_preference, Toast.LENGTH_SHORT).show();
+                return true;
+            }
+        });
+
     }
 }

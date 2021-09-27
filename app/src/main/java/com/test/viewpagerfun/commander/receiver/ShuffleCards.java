@@ -28,12 +28,10 @@ public class ShuffleCards {
 
 
 	public <E> void setState(E pref) {
-		if(state == null)
 			state = (List<Note>) pref;
 	}
 
 	public <E> void setPref(E pref) {
-		if(pref_value == null)
 			pref_value = (String) pref;
 	}
 

@@ -13,4 +13,7 @@ public class Review {
         this.note = note;
         this.score = score;
     }
+    public boolean hasFailed(){
+        return score < 2;
+    }
 }

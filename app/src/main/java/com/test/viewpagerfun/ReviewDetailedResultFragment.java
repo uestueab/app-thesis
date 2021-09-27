@@ -18,7 +18,10 @@ import android.widget.Toast;
 
 
 import com.test.viewpagerfun.commander.Commander;
+import com.test.viewpagerfun.commander.commands.ReviewAnimationCommand;
 import com.test.viewpagerfun.commander.commands.ShuffleCardsCommand;
+import com.test.viewpagerfun.commander.receiver.ReviewAnimation;
+import com.test.viewpagerfun.commander.state.ReviewAnimationState;
 import com.test.viewpagerfun.databinding.ReviewDetailedResultFragmentBinding;
 import com.test.viewpagerfun.listeners.onClick.NextReviewItemListener;
 import com.test.viewpagerfun.sm2.Review;
@@ -53,26 +56,28 @@ public class ReviewDetailedResultFragment extends Fragment {
         //Prepare all features associated to this particular fragment
         Commander.init();
         Commander.setCommand(PREFS_REVIEW_SHUFFLE, new ShuffleCardsCommand());
+        Commander.setCommand(PREFS_DISPLAY_ANIMATION, new ReviewAnimationCommand());
 
         //Update the UI.
         Review review = model.getMostRecentReview();
         binding.tvQuestion.setText(review.getNote().getPrompt());
         binding.tvReviewProgress.setText(model.getItemsReviewedCount(true)+"/"+model.getTotalNotes());
-        if (review.getScore() < 2) {
+        if (review.hasFailed()) {
             binding.tvAnswerResult.setText("wrong");
             binding.tvAnswerResult.setBackgroundColor(
                     ContextCompat.getColor(getActivity(),R.color.wrong));
-            binding.reviewResultAnimation.setAnimation(R.raw.wrong);
-            binding.reviewResultAnimation.playAnimation();
 
         } else {
             binding.tvAnswerResult.setText("correct");
             binding.tvAnswerResult.setBackgroundColor(
                     ContextCompat.getColor(getActivity(),R.color.correct)
             );
-            binding.reviewResultAnimation.setAnimation(R.raw.correct);
-            binding.reviewResultAnimation.playAnimation();
         }
+
+        //FEATURE: Play review animation
+        Commander.setState(PREFS_DISPLAY_ANIMATION,
+                ReviewAnimationState.builder().binding(binding).hasFailed(review.hasFailed()).build());
+        Commander.run(PREFS_DISPLAY_ANIMATION);
 
         /*  when a note fails during review add it on top of the list stack.
             This causes the review to be finished only if all items have passed correctly.
@@ -81,11 +86,12 @@ public class ReviewDetailedResultFragment extends Fragment {
             if(notes.size() > 0)
                 notes.remove(0);
 
-            if (review.getScore() < 2)
+            if (review.hasFailed()){
                 notes.add(review.getNote());
                 //FEATURE: Shuffle based on preference
                 Commander.setState(PREFS_REVIEW_SHUFFLE,notes);
                 Commander.run(PREFS_REVIEW_SHUFFLE);
+            }
         });
 
         //Decides finishing the review, or showing next item in queue.
