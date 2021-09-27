@@ -20,10 +20,17 @@ public final class ConstantsHolder {
      */
 
     // specifies the file in which to save the shared preferences
-    public static final String PREFS_FILE = "PREFS_FILE";
-    public static final String PREFS_REMAINING_NOTES = "PREFS_REMAINING_NOTES";
+    public static final String PREFS_FILE = "prefs_file";
+    public static final String PREFS_REMAINING_NOTES = "prefs_remaining_notes";
 
-    public static final String PREFS_THEME = "PREFS_THEME";
+    public static final String PREFS_GENERAL_NOTIFICATIONS = "prefs_general_notifications";
+    public static final String PREFS_GENERAL_LANGUAGE = "prefs_general_language";
+    public static final String PREFS_DISPLAY_THEME = "prefs_display_theme";
+    public static final String PREFS_DISPLAY_ANIMATION = "prefs_display_animation";
+    public static final String PREFS_REVIEW_SHUFFLE = "prefs_review_shuffle";
+    public static final String PREFS_ADVANCED_EXPERIMENTAL = "prefs_advanced_experimental";
+
+    public static final String PREFS_FEEDBACK = "prefs_feedback";
 
     /*
        EXTRA/REQUEST CONSTANTS, E.G: INTENT.PUTEXTRA(EXTRA_REMAINING_REVIEWS, BUNDLE);
@@ -56,8 +63,13 @@ public final class ConstantsHolder {
     /*
       THEMES
      */
-
     public static final String THEME_LIGHT = "theme_light";
     public static final String THEME_GRUVBOX = "theme_gruvbox";
     public static final String THEME_BREEZE = "theme_breeze";
+
+    /*
+        URI
+     */
+    public static final String URI_REPO = "https://github.com/uestueab/thesis";
+    public static final String URI_REPO_ISSUES = "https://github.com/uestueab/thesis/issues";
 }

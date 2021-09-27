@@ -1,30 +1,80 @@
 <PreferenceScreen xmlns:app="http://schemas.android.com/apk/res-auto">
 
+    <PreferenceCategory
+        app:iconSpaceReserved="false"
+        app:title="General Settings">
+
+        <SwitchPreferenceCompat
+            app:icon="@drawable/notifications_on"
+            app:key="prefs_general_notifications"
+            app:title="Enable message notifications"/>
+
+        <ListPreference
+            app:entries="@array/languages"
+            app:entryValues="@array/languages"
+            app:iconSpaceReserved="false"
+            app:key="prefs_general_language"
+            app:title="Select user interface language"
+            app:useSimpleSummaryProvider="true" />
+            />
+
+    </PreferenceCategory>
 
     <PreferenceCategory
         app:iconSpaceReserved="false"
         app:title="Display Settings">
 
-        <SwitchPreferenceCompat
-            app:icon="@drawable/notifications_on"
-            app:key="prefs_notifications"
-            app:title="Enable message notifications" />
-
         <ListPreference
             app:entries="@array/themes"
             app:entryValues="@array/themes"
             app:iconSpaceReserved="false"
-            app:key="pref_theme"
+            app:key="prefs_display_theme"
             app:title="Select theme"
             app:useSimpleSummaryProvider="true" />
 
+        <SwitchPreferenceCompat
+            app:iconSpaceReserved="false"
+            app:key="prefs_display_animation"
+            app:title="Enable review animations"
+            />
+
+    </PreferenceCategory>
+
+    <PreferenceCategory
+        app:iconSpaceReserved="false"
+        app:title="Review Settings">
+
+        <SwitchPreferenceCompat
+            app:iconSpaceReserved="false"
+            app:key="prefs_review_shuffle"
+            app:title="Shuffle cards after answering"
+            app:summary="Randomize the order of appearance"
+            />
+
+    </PreferenceCategory>
+
+    <PreferenceCategory
+        app:iconSpaceReserved="false"
+        app:title="Advanced Settings"
+        app:summary="Makes use of third party services"
+        app:initialExpandedChildrenCount="1">
+        <SwitchPreferenceCompat
+            app:iconSpaceReserved="false"
+            app:key="prefs_advanced_experimental"
+            app:title="Enable experimental features"
+            app:summary="Can potentially cause unwanted effects!"
+            />
+
+    </PreferenceCategory>
+
+    <PreferenceCategory
+        app:iconSpaceReserved="false"
+        app:title="Feedback">
         <Preference
             app:iconSpaceReserved="false"
-            app:key="feedback"
+            app:key="prefs_feedback"
             app:summary="Report technical issues or suggest new features"
-            app:allowDividerAbove="true"
             app:title="Send feedback" />
-
     </PreferenceCategory>
 
 </PreferenceScreen>

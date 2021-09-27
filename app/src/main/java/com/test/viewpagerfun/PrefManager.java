@@ -25,6 +25,9 @@ public class PrefManager {
     private static SharedPreferences prefs;
     private static SharedPreferences.Editor editor;
 
+    //Force instantiation through init() method
+    private PrefManager(){}
+
     @SuppressLint("CommitPrefEdits")
     public static void init(Context context) {
         if (prefs == null) {

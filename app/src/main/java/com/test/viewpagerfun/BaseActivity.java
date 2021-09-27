@@ -5,9 +5,7 @@ import android.os.Bundle;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import static com.test.viewpagerfun.constants.ConstantsHolder.PREFS_THEME;
-import static com.test.viewpagerfun.constants.ConstantsHolder.THEME_GRUVBOX;
-import static com.test.viewpagerfun.constants.ConstantsHolder.THEME_LIGHT;
+import static com.test.viewpagerfun.constants.ConstantsHolder.*;
 
 /*
     BaseActivity:
@@ -27,7 +25,7 @@ public abstract class BaseActivity extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
         PrefManager.init(this);
-        String new_theme =  PrefManager.get(PREFS_THEME,THEME_LIGHT);
+        String new_theme =  PrefManager.get(PREFS_DISPLAY_THEME,THEME_LIGHT);
 
         if (!current_theme.equals(new_theme)) {
             this.recreate();
@@ -36,7 +34,7 @@ public abstract class BaseActivity extends AppCompatActivity {
 
     protected void applyTheme(Context context){
         PrefManager.init(context);
-        current_theme =  PrefManager.get(PREFS_THEME,THEME_LIGHT);
+        current_theme =  PrefManager.get(PREFS_DISPLAY_THEME,THEME_LIGHT);
         if (current_theme.equals(THEME_GRUVBOX)) {
             setTheme(R.style.gruvbox);
         } else {

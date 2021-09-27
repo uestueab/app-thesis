@@ -5,4 +5,10 @@
        <item>Gruvbox</item>
        <item>Breeze</item>
    </string-array>
+
+    <string-array name="languages">
+        <item>English</item>
+        <item>German</item>
+    </string-array>
+
 </resources>

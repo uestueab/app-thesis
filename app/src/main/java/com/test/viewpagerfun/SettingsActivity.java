@@ -15,5 +15,6 @@ public class SettingsActivity extends BaseActivity {
                 .beginTransaction()
                 .replace(R.id.settings_container, new SettingsFragment())
                 .commit();
+
     }
 }

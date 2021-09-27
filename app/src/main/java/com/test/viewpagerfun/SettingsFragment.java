@@ -1,6 +1,8 @@
 package com.test.viewpagerfun;
 
+import android.content.Intent;
 import android.graphics.Color;
+import android.net.Uri;
 import android.os.Bundle;
 import android.widget.Toast;
 
@@ -10,6 +12,7 @@ import androidx.preference.Preference;
 import androidx.preference.PreferenceFragmentCompat;
 import androidx.preference.SwitchPreference;
 import androidx.preference.SwitchPreferenceCompat;
+
 import static com.test.viewpagerfun.constants.ConstantsHolder.*;
 
 public class SettingsFragment extends PreferenceFragmentCompat {
@@ -21,56 +24,64 @@ public class SettingsFragment extends PreferenceFragmentCompat {
         loadSettings();
     }
 
-    private void loadSettings(){
+    private void loadSettings() {
         PrefManager.init(getContext());
 
-        SwitchPreferenceCompat prefs_notifications = (SwitchPreferenceCompat) findPreference("prefs_notifications");
-        boolean notications_enabled = PrefManager.get("prefs_notification",false);
-        if(notications_enabled){
-            prefs_notifications.setChecked(true);
-            prefs_notifications.setIcon(R.drawable.notifications_on);
-        }
-        else{
-            prefs_notifications.setChecked(false);
-            prefs_notifications.setIcon(R.drawable.notifications_off);
+        SwitchPreferenceCompat prefs_general_notifications = (SwitchPreferenceCompat) findPreference(PREFS_GENERAL_NOTIFICATIONS);
+        boolean notifications_enabled = PrefManager.get(PREFS_GENERAL_NOTIFICATIONS, false);
+        if (notifications_enabled) {
+            prefs_general_notifications.setChecked(true);
+            prefs_general_notifications.setIcon(R.drawable.notifications_on);
+        } else {
+            prefs_general_notifications.setChecked(false);
+            prefs_general_notifications.setIcon(R.drawable.notifications_off);
         }
 
-        prefs_notifications.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
+        prefs_general_notifications.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
             @Override
             public boolean onPreferenceChange(Preference preference, Object newValue) {
 
                 boolean notifications_enabled = (boolean) newValue;
-                if(notifications_enabled){
-                    prefs_notifications.setIcon(R.drawable.notifications_on);
-                }else{
-                    prefs_notifications.setIcon(R.drawable.notifications_off);
+                if (notifications_enabled) {
+                    prefs_general_notifications.setIcon(R.drawable.notifications_on);
+                } else {
+                    prefs_general_notifications.setIcon(R.drawable.notifications_off);
                 }
-                PrefManager.set("prefs_notification",notifications_enabled);
+                PrefManager.set(PREFS_GENERAL_NOTIFICATIONS, notifications_enabled);
                 return true;
             }
         });
 
-        ListPreference pref_theme = (ListPreference) findPreference("pref_theme");
-        pref_theme.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
+        ListPreference pref_display_theme = (ListPreference) findPreference(PREFS_DISPLAY_THEME);
+        pref_display_theme.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
             @Override
             public boolean onPreferenceChange(Preference preference, Object newValue) {
 
                 String theme_name = (String) newValue;
-                    switch (theme_name.toLowerCase()){
-                        case "gruvbox":
-                            PrefManager.set(PREFS_THEME,THEME_GRUVBOX);
-                            getActivity().recreate();
-                            break;
-                        case "breeze":
-                            PrefManager.set(PREFS_THEME,THEME_BREEZE);
-                            getActivity().recreate();
-                            break;
-                        default:
-                            PrefManager.set(PREFS_THEME,THEME_LIGHT);
-                            getActivity().recreate();
-                            break;
-                    }
+                switch (theme_name.toLowerCase()) {
+                    case "gruvbox":
+                        PrefManager.set(PREFS_DISPLAY_THEME, THEME_GRUVBOX);
+                        getActivity().recreate();
+                        break;
+                    case "breeze":
+                        PrefManager.set(PREFS_DISPLAY_THEME, THEME_BREEZE);
+                        getActivity().recreate();
+                        break;
+                    default:
+                        PrefManager.set(PREFS_DISPLAY_THEME, THEME_LIGHT);
+                        getActivity().recreate();
+                        break;
+                }
 
+                return true;
+            }
+        });
+
+        Preference prefs_feedback = (Preference) findPreference(PREFS_FEEDBACK);
+        prefs_feedback.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
+            @Override
+            public boolean onPreferenceClick(Preference preference) {
+                startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(URI_REPO_ISSUES)));
                 return true;
             }
         });
