@@ -24,6 +24,15 @@
             android:layout_height="match_parent">
 
             <TextView
+                android:id="@+id/tv_reviewProgress"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:layout_marginStart="4dp"
+                android:textColor="?attr/cardForegroundColor"
+                android:textSize="12sp" />
+
+            <TextView
                 android:id="@+id/tv_question"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"

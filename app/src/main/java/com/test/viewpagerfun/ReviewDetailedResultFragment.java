@@ -1,5 +1,6 @@
 package com.test.viewpagerfun;
 
+import android.annotation.SuppressLint;
 import android.graphics.Color;
 import android.os.Bundle;
 
@@ -41,6 +42,7 @@ public class ReviewDetailedResultFragment extends Fragment {
         return binding.getRoot();
     }
 
+    @SuppressLint("SetTextI18n")
     @Override
     public void onResume() {
         super.onResume();
@@ -50,6 +52,7 @@ public class ReviewDetailedResultFragment extends Fragment {
         //Update the UI.
         Review review = model.getMostRecentReview();
         binding.tvQuestion.setText(review.getNote().getPrompt());
+        binding.tvReviewProgress.setText(model.getItemsReviewedCount(true)+"/"+model.getTotalNotes());
         if (review.getScore() < 2) {
             binding.tvAnswerResult.setText("wrong");
             binding.tvAnswerResult.setBackgroundColor(

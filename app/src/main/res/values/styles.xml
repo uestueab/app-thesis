@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <style name="light" parent="Theme.AppCompat.Light.DarkActionBar">
+    <style name="light" parent="Base.Theme.AppCompat.Light.DarkActionBar">
         <item name="alertDialogTheme">@style/light_dialogTheme</item>
 
         <!--        Settings Activity -->
@@ -40,7 +40,7 @@
 
     </style>
 
-    <style name="gruvbox" parent="Theme.AppCompat.Light.DarkActionBar">
+    <style name="gruvbox" parent="Base.Theme.AppCompat.Light.DarkActionBar">
         <item name="alertDialogTheme">@style/gruvbox_dialogTheme</item>
 
         <item name="android:textColor">#ebdbb2</item>
@@ -79,7 +79,7 @@
 
     </style>
 
-<!--    Dialog Themes-->
+    <!--    Dialog Themes-->
     <style name="light_dialogTheme" parent="Theme.AppCompat.Light.Dialog.Alert">
         <item name="android:colorBackground">#eff1f5</item>
         <item name="android:textColor">#2b303b</item>
@@ -97,6 +97,6 @@
         <item name="textColorAlertDialogListItem">#ebdbb2</item>
         <item name="colorAccent">#cc241d</item>
     </style>
-
+    
 
 </resources>

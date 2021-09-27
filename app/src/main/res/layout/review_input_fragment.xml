@@ -28,6 +28,15 @@
             <!--                android:shadowDy="-1"-->
             <!--                android:shadowRadius="1"-->
             <TextView
+                android:id="@+id/tv_reviewProgress"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:layout_marginStart="4dp"
+                android:textColor="?attr/cardForegroundColor"
+                android:textSize="12sp" />
+
+            <TextView
                 android:id="@+id/tv_question"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -82,7 +91,6 @@
         android:layout_width="150dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="50dp"
-        android:autofillHints=""
         android:backgroundTint="?attr/colorAccent"
         android:ellipsize="end"
 

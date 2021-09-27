@@ -18,6 +18,7 @@ public class SharedViewModel extends AndroidViewModel {
     private final NoteRepository repository;
 
     private final LiveData<List<Note>> notes;
+    private int totalNotes;
     private final MutableLiveData<Review> mostRecentReview = new MutableLiveData<>();
     private final MutableLiveData<Session> session = new MutableLiveData<>(new Session());
 
@@ -38,6 +39,11 @@ public class SharedViewModel extends AndroidViewModel {
     // Notes List
     public LiveData<List<Note>> getNotes() { return notes; }
     public List<Note> getRemainingNotes() { return notes.getValue(); }
+    public int getTotalNotes() {
+        if (totalNotes == 0)
+            totalNotes =  notes.getValue().size();
+        return totalNotes;
+    }
 
     //  Note (Only available if getNotes is observed!)
     public Note getNote() { return notes.getValue().get(0); }
@@ -55,8 +61,13 @@ public class SharedViewModel extends AndroidViewModel {
 
     // Session
     public Session getSession(){ return session.getValue();}
-    public void applyReview(Review review){
-        session.getValue().applyReview(review);
+    public void applyReview(Review review){ session.getValue().applyReview(review); }
+
+    public int getItemsReviewedCount(boolean onDetails) {
+        int value = 1;
+        if (onDetails)
+            --value;
+        return session.getValue().getNoteStatistics().size() + value;
     }
 
     // Database

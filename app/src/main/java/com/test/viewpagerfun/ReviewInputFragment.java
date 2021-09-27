@@ -1,5 +1,6 @@
 package com.test.viewpagerfun;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.os.Bundle;
 
@@ -54,6 +55,7 @@ public class ReviewInputFragment extends Fragment {
      *  - switching from ReviewDetailedResultFragment to this fragment (back button)
      *  - putting the app in background.
      */
+    @SuppressLint("SetTextI18n")
     @Override
     public void onResume() {
         super.onResume();
@@ -65,6 +67,7 @@ public class ReviewInputFragment extends Fragment {
         // Update the UI.
         model.getNotes().observe(getViewLifecycleOwner(), notes -> {
             binding.tvQuestion.setText(model.getNote().getPrompt());
+            binding.tvReviewProgress.setText(model.getItemsReviewedCount(false)+"/"+model.getTotalNotes());
         });
 
         answerSubmitted();
