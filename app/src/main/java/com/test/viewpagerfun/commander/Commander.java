@@ -23,15 +23,22 @@ public class Commander {
 	}
 	
 	public static <E> void setCommand(E pref, ICommand command) {
-		command.setState(pref);
+		command.setPref(pref);
 		commandMap.put(pref, command);
 	}
-	
+
+	public static <E> void setState(E pref, E state) {
+		if(commandMap.containsKey(pref))
+			commandMap.get(pref).setState(state);
+		else
+			throw new RuntimeException("Specified key doesn't exist");
+	}
+
+
 	public static <E> void run(E pref) {
 		if(commandMap.containsKey(pref)) 
 			commandMap.get(pref).execute();
-		else
-			throw new RuntimeException("Specified key doesn't exist");
+		else throw new RuntimeException("Specified key doesn't exist");
 	}
 	
 	public static int commandCount() { return commandMap.size();}

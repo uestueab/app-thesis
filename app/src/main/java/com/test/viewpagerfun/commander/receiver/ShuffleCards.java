@@ -1,20 +1,38 @@
 package com.test.viewpagerfun.commander.receiver;
 
 
-/* PlaySound.class
+import com.test.viewpagerfun.PrefManager;
+import com.test.viewpagerfun.model.entity.Note;
+
+import java.util.Collections;
+import java.util.List;
+
+/* ShuffleCards.class
  * ---------------
- * The class who's methods get called by the Command 0bject.
+ * The class who's methods get called by the Command object.
  */
 public class ShuffleCards {
 	private static String pref_value = null;
-	
+	private static List<Note> state = null;
 
+
+	// Since we have a state and the pref key, we can have a more sophisticated method
 	public void shuffle() {
-		// Since we have a state (field: preference), we can have a more sophisticated method
+		if(state == null)
+			return;
+
+		boolean shuffle_enabled = PrefManager.get(pref_value,false);
+		if(shuffle_enabled)
+			Collections.shuffle(state);
 	}
 
-	
+
 	public <E> void setState(E pref) {
+		if(state == null)
+			state = (List<Note>) pref;
+	}
+
+	public <E> void setPref(E pref) {
 		if(pref_value == null)
 			pref_value = (String) pref;
 	}

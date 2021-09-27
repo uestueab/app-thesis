@@ -17,12 +17,13 @@ import android.view.ViewGroup;
 import android.widget.Toast;
 
 
+import com.test.viewpagerfun.commander.Commander;
+import com.test.viewpagerfun.commander.commands.ShuffleCardsCommand;
 import com.test.viewpagerfun.databinding.ReviewDetailedResultFragmentBinding;
 import com.test.viewpagerfun.listeners.onClick.NextReviewItemListener;
 import com.test.viewpagerfun.sm2.Review;
 import com.test.viewpagerfun.viewmodel.SharedViewModel;
-
-
+import static com.test.viewpagerfun.constants.ConstantsHolder.*;
 public class ReviewDetailedResultFragment extends Fragment {
 
     //make communication between fragments possible
@@ -49,6 +50,10 @@ public class ReviewDetailedResultFragment extends Fragment {
 
         model = new ViewModelProvider(requireActivity()).get(SharedViewModel.class);
 
+        //Prepare all features associated to this particular fragment
+        Commander.init();
+        Commander.setCommand(PREFS_REVIEW_SHUFFLE, new ShuffleCardsCommand());
+
         //Update the UI.
         Review review = model.getMostRecentReview();
         binding.tvQuestion.setText(review.getNote().getPrompt());
@@ -57,11 +62,16 @@ public class ReviewDetailedResultFragment extends Fragment {
             binding.tvAnswerResult.setText("wrong");
             binding.tvAnswerResult.setBackgroundColor(
                     ContextCompat.getColor(getActivity(),R.color.wrong));
+            binding.reviewResultAnimation.setAnimation(R.raw.wrong);
+            binding.reviewResultAnimation.playAnimation();
+
         } else {
             binding.tvAnswerResult.setText("correct");
             binding.tvAnswerResult.setBackgroundColor(
                     ContextCompat.getColor(getActivity(),R.color.correct)
             );
+            binding.reviewResultAnimation.setAnimation(R.raw.correct);
+            binding.reviewResultAnimation.playAnimation();
         }
 
         /*  when a note fails during review add it on top of the list stack.
@@ -73,8 +83,9 @@ public class ReviewDetailedResultFragment extends Fragment {
 
             if (review.getScore() < 2)
                 notes.add(review.getNote());
-                //Below could be a feature...
-                //Collections.shuffle(notes);
+                //FEATURE: Shuffle based on preference
+                Commander.setState(PREFS_REVIEW_SHUFFLE,notes);
+                Commander.run(PREFS_REVIEW_SHUFFLE);
         });
 
         //Decides finishing the review, or showing next item in queue.

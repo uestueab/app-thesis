@@ -14,9 +14,9 @@
         android:layout_marginTop="12dp"
         android:padding="8dp"
         app:cardBackgroundColor="?attr/cardBackgroundColor"
-        app:cardUseCompatPadding="true"
-        app:cardElevation="4dp"
         app:cardCornerRadius="3dp"
+        app:cardElevation="4dp"
+        app:cardUseCompatPadding="true"
         app:layout_constraintTop_toTopOf="parent">
 
         <RelativeLayout
@@ -27,8 +27,8 @@
                 android:id="@+id/tv_reviewProgress"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="4dp"
                 android:layout_marginStart="4dp"
+                android:layout_marginTop="4dp"
                 android:textColor="?attr/cardForegroundColor"
                 android:textSize="12sp" />
 
@@ -53,6 +53,17 @@
                 android:stateListAnimator="@null"
                 android:text="NEXT"
                 android:textColor="?attr/textColor" />
+
+            <com.airbnb.lottie.LottieAnimationView
+                android:id="@+id/review_result_animation"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_marginTop="4dp"
+
+                android:layout_alignParentEnd="true"
+                app:lottie_autoPlay="true"
+                app:lottie_loop="false"/>
+
         </RelativeLayout>
     </androidx.cardview.widget.CardView>
 

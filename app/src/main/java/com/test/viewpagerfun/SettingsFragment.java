@@ -86,5 +86,23 @@ public class SettingsFragment extends PreferenceFragmentCompat {
             }
         });
 
+        SwitchPreferenceCompat prefs_review_shuffle = (SwitchPreferenceCompat) findPreference(PREFS_REVIEW_SHUFFLE);
+        //show check state
+        boolean shuffle_enabled = PrefManager.get(PREFS_REVIEW_SHUFFLE, false);
+        if (shuffle_enabled)
+            prefs_review_shuffle.setChecked(true);
+        else
+            prefs_review_shuffle.setChecked(false);
+
+        prefs_review_shuffle.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
+            @Override
+            public boolean onPreferenceChange(Preference preference, Object newValue) {
+
+                boolean shuffle_preference = (boolean) newValue;
+                PrefManager.set(PREFS_REVIEW_SHUFFLE, shuffle_preference);
+                return true;
+            }
+        });
+
     }
 }
