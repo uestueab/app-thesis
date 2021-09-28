@@ -1,5 +1,7 @@
 package com.test.viewpagerfun;
 
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.ActionBar;
 import androidx.fragment.app.FragmentActivity;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.viewpager2.adapter.FragmentStateAdapter;
@@ -9,8 +11,12 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
+import android.view.MenuItem;
 import android.widget.Toast;
 
+import com.test.viewpagerfun.commander.Commander;
+import com.test.viewpagerfun.commander.commands.BackPressCommand;
+import com.test.viewpagerfun.commander.state.BackPressState;
 import com.test.viewpagerfun.model.entity.Note;
 import com.test.viewpagerfun.sm2.Scheduler;
 import com.test.viewpagerfun.sm2.Session;
@@ -24,7 +30,7 @@ import static com.test.viewpagerfun.constants.ConstantsHolder.*;
 public class ReviewActivity extends BaseActivity {
 
     private final String TAG = this.getClass().getSimpleName();
-    private Handler handler = new Handler();
+    private final Handler handler = new Handler();
 
     // make use of animations, when moving to next fragment
     private ViewPager2 viewPager;
@@ -40,7 +46,12 @@ public class ReviewActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_screen_slide);
 
-        // Instantiate a ViewPager2 and a PagerAdapter.
+        // calling the action bar
+        ActionBar actionBar = getSupportActionBar();
+        // showing the back button in action bar
+        actionBar.setDisplayHomeAsUpEnabled(true);
+
+        // Get reference of ViewPager2 and the PagerAdapter.
         viewPager = findViewById(R.id.pager);
         // use button navigation, instead of gesture swiping to next fragment
         viewPager.setUserInputEnabled(false);
@@ -48,6 +59,11 @@ public class ReviewActivity extends BaseActivity {
         // The pager adapter, which provides the pages to the view pager widget.
         FragmentStateAdapter pagerAdapter = new ScreenSlidePagerAdapter(this);
         viewPager.setAdapter(pagerAdapter);
+
+        // Prepare features associated with this activity, after inflating layout
+        Commander.init();
+        Commander.setCommand(PREFS_REVIEW_BACK, new BackPressCommand());
+        Commander.setState(PREFS_REVIEW_BACK, new BackPressState(this));
 
         resumeReview();
     }
@@ -79,34 +95,11 @@ public class ReviewActivity extends BaseActivity {
 
     @Override
     public void onBackPressed() {
-
-        Log.d(TAG, "onBackPressed: ");
-        /*  Avoid accidentally going out of review by hitting the back button.
+        /*
+            Feature: Avoid accidentally going out of review by hitting the back button.
             Instead leave review only when back button was pressed in quick succession.
          */
-        if (backPressedTime + 2000 > System.currentTimeMillis()) {
-            Intent intent = new Intent(this, StartingScreenActivity.class);
-
-
-            /* Check if the back button was pressed on a fragment other than the review input fragment.
-             * That means the review item has lapsed/passed! So remove it from the list.
-             */
-//            if (viewPager.getCurrentItem() != 0)
-//                remainingNotes.remove(0);
-
-//            Bundle bundle = new Bundle();
-//            bundle.putSerializable(BUNDLE_REMAINING_NOTES, (Serializable) remainingNotes);
-//
-//            intent.putExtra(EXTRA_REMAINING_REVIEWS, bundle);
-//            setResult(intent);
-            startActivity(intent);
-            finish();
-        } else {
-            toast = Toast.makeText(this, "Press back again to pause review", Toast.LENGTH_SHORT);
-            toast.show();
-        }
-
-        backPressedTime = System.currentTimeMillis();
+        Commander.run(PREFS_REVIEW_BACK);
     }
 
     /* Things to be done, when the activity loses foreground state
@@ -129,6 +122,9 @@ public class ReviewActivity extends BaseActivity {
             }
         });
 
+        /*
+            SM2: Apply algorithm & Update the database
+         */
         Scheduler scheduler = Scheduler.builder().build();
         Session session = model.getSession();
         scheduler.applySession(session);
@@ -136,12 +132,14 @@ public class ReviewActivity extends BaseActivity {
         for (Note note : session.getNoteStatistics().keySet())
             model.update(note);
 
+    }
 
-//        if (viewPager.getCurrentItem() != 0)
-//            remainingNotes.remove(0);
-
-
-        if(toast != null)
-            toast.cancel();
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        if (item.getItemId() == android.R.id.home) {
+            onBackPressed();
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 }

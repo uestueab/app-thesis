@@ -53,7 +53,7 @@ public class ReviewDetailedResultFragment extends Fragment {
 
         model = new ViewModelProvider(requireActivity()).get(SharedViewModel.class);
 
-        //Prepare all features associated to this particular fragment
+        //Prepare all features associated with this particular fragment
         Commander.init();
         Commander.setCommand(PREFS_REVIEW_SHUFFLE, new ShuffleCardsCommand());
         Commander.setCommand(PREFS_DISPLAY_ANIMATION, new ReviewAnimationCommand());

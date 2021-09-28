@@ -89,10 +89,7 @@ public class SettingsFragment extends PreferenceFragmentCompat {
         SwitchPreferenceCompat prefs_review_shuffle = (SwitchPreferenceCompat) findPreference(PREFS_REVIEW_SHUFFLE);
         //show check state
         boolean shuffle_enabled = PrefManager.get(PREFS_REVIEW_SHUFFLE, false);
-        if (shuffle_enabled)
-            prefs_review_shuffle.setChecked(true);
-        else
-            prefs_review_shuffle.setChecked(false);
+        prefs_review_shuffle.setChecked(shuffle_enabled);
 
         prefs_review_shuffle.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
             @Override
@@ -107,10 +104,7 @@ public class SettingsFragment extends PreferenceFragmentCompat {
         SwitchPreferenceCompat prefs_display_animation = (SwitchPreferenceCompat) findPreference(PREFS_DISPLAY_ANIMATION);
         //show check state
         boolean animation_enabled = PrefManager.get(PREFS_DISPLAY_ANIMATION, false);
-        if (animation_enabled)
-            prefs_display_animation.setChecked(true);
-        else
-            prefs_display_animation.setChecked(false);
+        prefs_display_animation.setChecked(animation_enabled);
 
         prefs_display_animation.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
             @Override
@@ -118,10 +112,24 @@ public class SettingsFragment extends PreferenceFragmentCompat {
 
                 boolean animation_preference = (boolean) newValue;
                 PrefManager.set(PREFS_DISPLAY_ANIMATION, animation_preference);
-                Toast.makeText(getActivity(), "Value of pref: "+ animation_preference, Toast.LENGTH_SHORT).show();
                 return true;
             }
         });
+
+        SwitchPreferenceCompat prefs_review_back = (SwitchPreferenceCompat) findPreference(PREFS_REVIEW_BACK);
+        //show check state
+        boolean back_enabled = PrefManager.get(PREFS_REVIEW_BACK, false);
+        prefs_review_back.setChecked(back_enabled);
+        prefs_review_back.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
+            @Override
+            public boolean onPreferenceChange(Preference preference, Object newValue) {
+
+                boolean backPress_preference = (boolean) newValue;
+                PrefManager.set(PREFS_REVIEW_BACK,backPress_preference);
+                return true;
+            }
+        });
+
 
     }
 }

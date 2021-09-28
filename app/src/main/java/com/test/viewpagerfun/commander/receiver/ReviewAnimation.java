@@ -26,7 +26,6 @@ public class ReviewAnimation {
 		return;
 
 		boolean animation_enabled = PrefManager.get(pref_value,false);
-		Log.d("ReviewAnimation::::::::::", "playAnimation: "+ animation_enabled);
 		if(animation_enabled){
 			if (state.isHasFailed())
 				state.getBinding().reviewResultAnimation.setAnimation(R.raw.wrong);

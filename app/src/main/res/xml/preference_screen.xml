@@ -7,7 +7,7 @@
         <SwitchPreferenceCompat
             app:icon="@drawable/notifications_on"
             app:key="prefs_general_notifications"
-            app:title="Enable message notifications"/>
+            app:title="Notifications for new reviews"/>
 
         <ListPreference
             app:entries="@array/languages"
@@ -35,14 +35,22 @@
         <SwitchPreferenceCompat
             app:iconSpaceReserved="false"
             app:key="prefs_display_animation"
-            app:title="Enable review animations"
+            app:title="Show animations"
             />
 
     </PreferenceCategory>
 
     <PreferenceCategory
         app:iconSpaceReserved="false"
-        app:title="Review Settings">
+        app:title="Review Settings"
+        >
+
+        <SwitchPreferenceCompat
+            app:iconSpaceReserved="false"
+            app:key="prefs_review_mismatch_toast"
+            app:title="Show 'answer is slightly off' message"
+            app:summary="Message on little mismatch"
+            />
 
         <SwitchPreferenceCompat
             app:iconSpaceReserved="false"
@@ -51,13 +59,26 @@
             app:summary="Randomize the order of appearance"
             />
 
+        <SwitchPreferenceCompat
+            app:iconSpaceReserved="false"
+            app:key="prefs_review_haptic"
+            app:title="Haptic Feedback"
+            app:summary="Vibrate on certain events"
+            />
+
+        <SwitchPreferenceCompat
+            app:iconSpaceReserved="false"
+            app:key="prefs_review_back"
+            app:title="Double press back button to leave review"
+            />
+
     </PreferenceCategory>
 
     <PreferenceCategory
         app:iconSpaceReserved="false"
         app:title="Advanced Settings"
         app:summary="Makes use of third party services"
-        app:initialExpandedChildrenCount="1">
+        >
         <SwitchPreferenceCompat
             app:iconSpaceReserved="false"
             app:key="prefs_advanced_experimental"

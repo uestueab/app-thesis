@@ -108,8 +108,6 @@ public class ReviewInputFragment extends Fragment {
         });
     }
 
-
-
     //Fragments outlive their views. clean up any references to the binding class instance in the fragment
     @Override
     public void onDestroyView() {
