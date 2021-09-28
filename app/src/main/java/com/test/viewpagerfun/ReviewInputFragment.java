@@ -67,7 +67,7 @@ public class ReviewInputFragment extends Fragment {
         // Update the UI.
         model.getNotes().observe(getViewLifecycleOwner(), notes -> {
             binding.tvQuestion.setText(model.getNote().getPrompt());
-            binding.tvReviewProgress.setText(model.getItemsReviewedCount(false)+"/"+model.getTotalNotes());
+            binding.tvReviewProgress.setText(model.getCorrectCount(true)+"/"+model.getTotalNotes());
         });
 
         answerSubmitted();

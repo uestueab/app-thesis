@@ -21,6 +21,7 @@ public class SharedViewModel extends AndroidViewModel {
     private int totalNotes;
     private final MutableLiveData<Review> mostRecentReview = new MutableLiveData<>();
     private final MutableLiveData<Session> session = new MutableLiveData<>(new Session());
+    private int correctCount;
 
     //constructor for loading from database
     public SharedViewModel(Application application) {
@@ -63,11 +64,17 @@ public class SharedViewModel extends AndroidViewModel {
     public Session getSession(){ return session.getValue();}
     public void applyReview(Review review){ session.getValue().applyReview(review); }
 
-    public int getItemsReviewedCount(boolean onDetails) {
-        int value = 1;
-        if (onDetails)
-            --value;
-        return session.getValue().getNoteStatistics().size() + value;
+    public int getCorrectCount(boolean onInput) {
+        if (mostRecentReview.getValue() == null){
+            correctCount = 0;
+        }else{
+            if (!getMostRecentReview().hasFailed())
+                //Increment counter only when focus is on input fragment
+                if (onInput)
+                    correctCount++;
+        }
+
+        return correctCount;
     }
 
     // Database

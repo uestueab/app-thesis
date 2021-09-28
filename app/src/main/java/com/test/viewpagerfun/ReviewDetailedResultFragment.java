@@ -61,7 +61,7 @@ public class ReviewDetailedResultFragment extends Fragment {
         //Update the UI.
         Review review = model.getMostRecentReview();
         binding.tvQuestion.setText(review.getNote().getPrompt());
-        binding.tvReviewProgress.setText(model.getItemsReviewedCount(true)+"/"+model.getTotalNotes());
+        binding.tvReviewProgress.setText(model.getCorrectCount(false)+"/"+model.getTotalNotes());
         if (review.hasFailed()) {
             binding.tvAnswerResult.setText("wrong");
             binding.tvAnswerResult.setBackgroundColor(
