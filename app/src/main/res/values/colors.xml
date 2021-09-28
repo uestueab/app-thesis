@@ -9,6 +9,7 @@
     <color name="white">#FFFFFFFF</color>
 
 
+    <color name="warning">#ebcb8b</color>
     <color name="correct">#8ec07c</color>
     <color name="wrong">#fb4934</color>
 

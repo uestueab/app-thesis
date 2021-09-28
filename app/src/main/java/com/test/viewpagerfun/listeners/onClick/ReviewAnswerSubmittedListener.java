@@ -1,19 +1,29 @@
 package com.test.viewpagerfun.listeners.onClick;
 
+import android.app.ActionBar;
 import android.app.Activity;
 import android.media.AudioAttributes;
 import android.os.VibrationEffect;
 import android.os.Vibrator;
+import android.view.Gravity;
 import android.view.HapticFeedbackConstants;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.animation.CycleInterpolator;
 import android.view.animation.TranslateAnimation;
+import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.appcompat.app.AppCompatActivity;
+
 import com.test.viewpagerfun.PrefManager;
+import com.test.viewpagerfun.R;
 import com.test.viewpagerfun.ReviewActivity;
 import com.test.viewpagerfun.commander.Commander;
 import com.test.viewpagerfun.commander.commands.HapticFeedbackCommand;
+import com.test.viewpagerfun.commander.commands.MismatchToastCommand;
+import com.test.viewpagerfun.commander.state.MismatchToastState;
 import com.test.viewpagerfun.databinding.ReviewInputFragmentBinding;
 import com.test.viewpagerfun.model.entity.Note;
 import com.test.viewpagerfun.sm2.Review;
@@ -58,12 +68,14 @@ public class ReviewAnswerSubmittedListener implements View.OnClickListener{
         //Prepare features for 'answer submitted' event
         Commander.init();
         Commander.setCommand(PREFS_REVIEW_HAPTIC, new HapticFeedbackCommand());
-        Commander.setState(PREFS_REVIEW_HAPTIC, activity);
+        Commander.setCommand(PREFS_REVIEW_MISMATCH_TOAST, new MismatchToastCommand());
+
 
 
         if (response.length() == 0) {
             v.performHapticFeedback(HapticFeedbackConstants.LONG_PRESS);
             // Feature: Vibrate when empty answer submitted
+            Commander.setState(PREFS_REVIEW_HAPTIC, activity);
             Commander.run(PREFS_REVIEW_HAPTIC);
             binding.etReviewAnswer.startAnimation(shakeError());
 
@@ -104,8 +116,13 @@ public class ReviewAnswerSubmittedListener implements View.OnClickListener{
             int distance = Levenshtein.distance(response,meaning);
             int mismatchTolerance = (int) Math.floor(meaning.length() / MIN_MISMATCH_LENGTH);
 
-            if(distance <= mismatchTolerance)
+            if(distance <= mismatchTolerance){
+                Commander.setState(PREFS_REVIEW_MISMATCH_TOAST,
+                        MismatchToastState.builder().activity(activity).binding(binding).distance(distance).meaning(meaning).build());
+                Commander.run(PREFS_REVIEW_MISMATCH_TOAST);
+
                 return true;
+            }
         }
         return false;
     }
@@ -116,8 +133,5 @@ public class ReviewAnswerSubmittedListener implements View.OnClickListener{
         shake.setDuration(500);
         shake.setInterpolator(new CycleInterpolator(4));
         return shake;
-    }
-
-    private void vibrateOnError() {
     }
 }

@@ -64,13 +64,13 @@ public class SharedViewModel extends AndroidViewModel {
     public Session getSession(){ return session.getValue();}
     public void applyReview(Review review){ session.getValue().applyReview(review); }
 
-    public int getCorrectCount(boolean onInput) {
+    public int getCorrectCount(boolean onDetails) {
         if (mostRecentReview.getValue() == null){
             correctCount = 0;
         }else{
             if (!getMostRecentReview().hasFailed())
                 //Increment counter only when focus is on input fragment
-                if (onInput)
+                if (onDetails)
                     correctCount++;
         }
 

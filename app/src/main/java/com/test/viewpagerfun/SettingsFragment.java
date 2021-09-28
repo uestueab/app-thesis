@@ -144,5 +144,19 @@ public class SettingsFragment extends PreferenceFragmentCompat {
             }
         });
 
+        SwitchPreferenceCompat prefs_review_mismatch_toast = (SwitchPreferenceCompat) findPreference(PREFS_REVIEW_MISMATCH_TOAST);
+        //show check state
+        boolean mismatch_toast_enabled = PrefManager.get(PREFS_REVIEW_MISMATCH_TOAST, false);
+        prefs_review_mismatch_toast.setChecked(mismatch_toast_enabled);
+        prefs_review_mismatch_toast.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
+            @Override
+            public boolean onPreferenceChange(Preference preference, Object newValue) {
+
+                boolean mismatch_toast_preference = (boolean) newValue;
+                PrefManager.set(PREFS_REVIEW_MISMATCH_TOAST,mismatch_toast_preference);
+                return true;
+            }
+        });
+
     }
 }
