@@ -10,7 +10,10 @@ import android.view.animation.CycleInterpolator;
 import android.view.animation.TranslateAnimation;
 import android.widget.Toast;
 
+import com.test.viewpagerfun.PrefManager;
 import com.test.viewpagerfun.ReviewActivity;
+import com.test.viewpagerfun.commander.Commander;
+import com.test.viewpagerfun.commander.commands.HapticFeedbackCommand;
 import com.test.viewpagerfun.databinding.ReviewInputFragmentBinding;
 import com.test.viewpagerfun.model.entity.Note;
 import com.test.viewpagerfun.sm2.Review;
@@ -52,9 +55,16 @@ public class ReviewAnswerSubmittedListener implements View.OnClickListener{
         Note note = model.getNote();
         Review review;
 
+        //Prepare features for 'answer submitted' event
+        Commander.init();
+        Commander.setCommand(PREFS_REVIEW_HAPTIC, new HapticFeedbackCommand());
+        Commander.setState(PREFS_REVIEW_HAPTIC, activity);
+
+
         if (response.length() == 0) {
             v.performHapticFeedback(HapticFeedbackConstants.LONG_PRESS);
-            vibrateOnError();
+            // Feature: Vibrate when empty answer submitted
+            Commander.run(PREFS_REVIEW_HAPTIC);
             binding.etReviewAnswer.startAnimation(shakeError());
 
             return;
@@ -109,13 +119,5 @@ public class ReviewAnswerSubmittedListener implements View.OnClickListener{
     }
 
     private void vibrateOnError() {
-        Vibrator v = (Vibrator) activity.getSystemService(VIBRATOR_SERVICE);
-        AudioAttributes audioAttributes = new AudioAttributes.Builder()
-                .setContentType(AudioAttributes.CONTENT_TYPE_SONIFICATION)
-                .setUsage(AudioAttributes.USAGE_ALARM)
-                .build();
-        VibrationEffect ve = VibrationEffect.createOneShot(100,
-                VibrationEffect.DEFAULT_AMPLITUDE);
-        v.vibrate(ve, audioAttributes);
     }
 }

@@ -130,6 +130,19 @@ public class SettingsFragment extends PreferenceFragmentCompat {
             }
         });
 
+        SwitchPreferenceCompat prefs_review_haptic = (SwitchPreferenceCompat) findPreference(PREFS_REVIEW_HAPTIC);
+        //show check state
+        boolean haptic_enabled = PrefManager.get(PREFS_REVIEW_HAPTIC, false);
+        prefs_review_haptic.setChecked(haptic_enabled);
+        prefs_review_haptic.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
+            @Override
+            public boolean onPreferenceChange(Preference preference, Object newValue) {
+
+                boolean haptic_preference = (boolean) newValue;
+                PrefManager.set(PREFS_REVIEW_HAPTIC,haptic_preference);
+                return true;
+            }
+        });
 
     }
 }
