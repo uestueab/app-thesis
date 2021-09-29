@@ -21,8 +21,12 @@ public class StartingScreenViewModel extends AndroidViewModel {
         notes = repository.getAllNotes();
     }
 
-    public LiveData<List<Note>> getNotes() {
+    public LiveData<List<Note>> getNotesLiveData() {
         return notes;
+    }
+
+    public List<Note> getNotes(){
+        return notes.getValue();
     }
 }
 

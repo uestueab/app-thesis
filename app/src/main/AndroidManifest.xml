@@ -2,6 +2,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.test.viewpagerfun" >
 
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
     <uses-permission android:name="android.permission.VIBRATE" />
 
     <application
@@ -28,6 +29,10 @@
             android:name=".AddEditNoteActivity"
             android:parentActivityName=".ManageNoteActivity" >
         </activity>
+
+        <service
+            android:name=".NotificationJobService"
+            android:permission="android.permission.BIND_JOB_SERVICE" />
     </application>
 
 </manifest>

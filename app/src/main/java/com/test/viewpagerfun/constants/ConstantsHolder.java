@@ -1,8 +1,8 @@
 package com.test.viewpagerfun.constants;
 
 /**
- * This class holds constants that otherwise would be defined in many other places.
- * It's a public final class, which a final class cannot be extended by any other class.
+ * This class holds key constants that otherwise would be defined in many other places.
+ * It's a public final class, that means it cannot be extended by any other class.
  *
  * USAGE:   when using the constants in another class, it could be useful to omit the
  *          class prefix 'ConstantsHolder' prefix by using a static import, like so:
@@ -75,4 +75,10 @@ public final class ConstantsHolder {
      */
     public static final String URI_REPO = "https://github.com/uestueab/thesis";
     public static final String URI_REPO_ISSUES = "https://github.com/uestueab/thesis/issues";
+
+    /*
+        FEATURES
+     */
+    public static final String NOTIFICATIONS_LAST_RUN = "NOTIFICATIONS_LAST_RUN";
+
 }

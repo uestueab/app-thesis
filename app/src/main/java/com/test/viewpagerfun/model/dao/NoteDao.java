@@ -31,4 +31,7 @@ public abstract class NoteDao {
     @Query("SELECT * FROM note_table ORDER BY note_title DESC")
     public abstract LiveData<List<Note>> getAllNotes();
 
+    @Query("SELECT * FROM note_table ORDER BY note_title DESC")
+    public abstract List<Note> getAllNotesSynch();
+
 }

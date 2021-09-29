@@ -14,6 +14,7 @@ import java.util.List;
 public class NoteRepository {
     private NoteDao noteDao;
     private LiveData<List<Note>> allNotes;
+    private List<Note> allNotesSynch;
 
     public NoteRepository(Application application) {
         NoteDatabase database = NoteDatabase.getInstance(application);
@@ -39,6 +40,10 @@ public class NoteRepository {
 
     public LiveData<List<Note>> getAllNotes() {
         return allNotes;
+    }
+
+    public List<Note> getAllNotesSynch() {
+        return allNotesSynch;
     }
 
     private static class InsertNoteAsyncTask extends AsyncTask<Note, Void, Void> {

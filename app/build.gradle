@@ -37,6 +37,7 @@ dependencies {
     def room_version = "2.3.0"
     def preference_version = "1.1.1"
     def lottieVersion = "4.1.0"
+    def work_version = "2.6.0"
 
 
     //Lombok: for Builder,Getter,Setter
@@ -45,7 +46,7 @@ dependencies {
     //Room database
     implementation("androidx.room:room-runtime:$room_version")
     annotationProcessor "androidx.room:room-compiler:$room_version"
-    //Write Lists to SharedPrefs
+    //Transform Lists to json string to save in database
     implementation 'com.google.code.gson:gson:2.8.8'
     //CardView
     implementation("androidx.cardview:cardview:1.0.0")

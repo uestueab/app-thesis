@@ -16,7 +16,7 @@ import static com.test.viewpagerfun.constants.ConstantsHolder.PREFS_FILE;
 
 /**
  * Singleton
- *
+ * <p>
  * Manages the shared preferences. SharedPreferences are related to context.
  * You can only reference it through a context, hence the init method approach.
  */
@@ -26,7 +26,8 @@ public class PrefManager {
     private static SharedPreferences.Editor editor;
 
     //Force instantiation through init() method
-    private PrefManager(){}
+    private PrefManager() {
+    }
 
     @SuppressLint("CommitPrefEdits")
     public static void init(Context context) {
@@ -131,6 +132,10 @@ public class PrefManager {
     //Remove key from SharedPreferences
     public static void remove(String key) {
         editor.remove(key).apply();
+    }
+
+    public static boolean contains(String key) {
+        return prefs.contains(key);
     }
 }
 
