@@ -8,10 +8,14 @@ import android.util.Log;
 
 import androidx.core.app.NotificationCompat;
 
+import static com.test.viewpagerfun.constants.ConstantsHolder.NOTIFICATIONS_LAST_RUN;
+
 
 public class NotificationJobService extends JobService {
     private static final String TAG = "NotificationJobService";
     private boolean jobCancelled = false;
+
+    private static final int delay = 15 * 60 * 1000;
 
     @Override
     public boolean onStartJob(JobParameters params) {
@@ -25,30 +29,38 @@ public class NotificationJobService extends JobService {
         new Thread(new Runnable() {
             @Override
             public void run() {
-                int notesCount = params.getExtras().getInt("count");
 
-                //Creating a notification channel
-                NotificationChannel channel=new NotificationChannel("channel1",
-                        "hello",
-                        NotificationManager.IMPORTANCE_HIGH);
-                NotificationManager manager=(NotificationManager) getSystemService(NOTIFICATION_SERVICE);
-                manager.createNotificationChannel(channel);
+                PrefManager.init(getApplicationContext());
+                long last_app_session = PrefManager.get(NOTIFICATIONS_LAST_RUN, Long.MAX_VALUE);
 
-                //Creating the notification object
-                NotificationCompat.Builder notification=new NotificationCompat.Builder(getApplicationContext(),"channel1");
-                //notification.setAutoCancel(true);
-                notification.setContentTitle("Yatta says:");
-                notification.setContentText("You have currently " + notesCount + " review items");
-                notification.setSmallIcon(R.drawable.ic_launcher_foreground);
+                if(System.currentTimeMillis() - delay > last_app_session) {
+                    int notesCount = params.getExtras().getInt("count");
 
-                //make the notification manager to issue a notification on the notification's channel
-                manager.notify(121,notification.build());
+                    //Creating a notification channel
+                    NotificationChannel channel = new NotificationChannel("channel1",
+                            "hello",
+                            NotificationManager.IMPORTANCE_HIGH);
+                    NotificationManager manager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
+                    manager.createNotificationChannel(channel);
 
-                Log.d(TAG, "run: available review: " + notesCount);
+                    //Creating the notification object
+                    NotificationCompat.Builder notification = new NotificationCompat.Builder(getApplicationContext(), "channel1");
+                    //notification.setAutoCancel(true);
+                    notification.setContentTitle("New Reviews available");
+                    notification.setContentText(notesCount + " items are available");
+                    notification.setSmallIcon(R.drawable.ic_launcher_foreground);
+
+                    //make the notification manager to issue a notification on the notification's channel
+                    manager.notify(121, notification.build());
+
+                    Log.d(TAG, "run: available review: " + notesCount);
 
 
-                Log.d(TAG, "Job finished");
-                jobFinished(params, false);
+                    Log.d(TAG, "Job finished");
+                    jobFinished(params, false);
+                }else{
+                    Log.d(TAG, "JobService condition not met");
+                }
             }
         }).start();
 

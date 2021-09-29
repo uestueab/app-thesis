@@ -135,4 +135,11 @@ public class StartingScreenActivity extends BaseActivity {
     public void onBackPressed() {
     }
 
+    @Override
+    protected void onPause() {
+        super.onPause();
+        Log.d(TAG, "onPause: ");
+        PrefManager.init(this);
+        PrefManager.set(NOTIFICATIONS_LAST_RUN,System.currentTimeMillis());
+    }
 }
