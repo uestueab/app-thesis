@@ -52,6 +52,9 @@ public class AddEditNoteActivity extends BaseActivity {
 
         Intent intent = getIntent();
 
+        // the inserted edittext becomes the parent of all programmatically created edittext fields.
+        et_synonyoms.add(binding.editTextSynonym);
+
         if(intent.hasExtra(EXTRA_EDIT_NOTE)){
             setTitle("Edit Note");
 
@@ -61,40 +64,21 @@ public class AddEditNoteActivity extends BaseActivity {
 
             binding.editTextTitle.setText(note.getPrompt());
             binding.editTextMeaning.setText(note.getMeaning());
+
+            for(String synonym: note.getSynonyms()){
+                createSynonymFields(synonym);
+            }
+
         }else{
             setTitle("Add Note");
             requestCode = ADD_NOTE_REQUEST;
         }
 
-        et_synonyoms.add(binding.editTextSynonym);
 
         binding.btnAddSynonym.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
-                ConstraintSet set = new ConstraintSet();
-
-                EditText editText = new EditText(AddEditNoteActivity.this);
-                editText.setId(View.generateViewId());
-                editText.setHint("add synonym...");
-                editText.setHintTextColor(binding.editTextSynonym.getHintTextColors());
-                editText.setTextColor(binding.editTextSynonym.getTextColors());
-
-                et_synonyoms.add(editText);
-
-                binding.clRootLayout.addView(editText, et_synonyoms.size());
-
-                set.clone(binding.clRootLayout);
-                // connect start and end point of views, in this case top of child to top of parent.
-                set.connect(editText.getId(), ConstraintSet.TOP, et_synonyoms.get(et_synonyoms.size()-2).getId(), ConstraintSet.BOTTOM);
-                set.connect(editText.getId(), ConstraintSet.START, et_synonyoms.get(et_synonyoms.size()-2).getId(), ConstraintSet.START);
-                // ... similarly add other constraints
-                set.applyTo(binding.clRootLayout);
-
-                //since we now have an additional field
-                //show a button to remove the created view
-                binding.btnRemoveSynonym.setVisibility(View.VISIBLE);
-                binding.tvRemoveSynonym.setVisibility(View.VISIBLE);
+                createSynonymFields(null);
             }
         });
 
@@ -115,7 +99,37 @@ public class AddEditNoteActivity extends BaseActivity {
                 et_synonyoms.remove(et_synonyoms.size()-1);
             }
         });
+    }
 
+    private void createSynonymFields(String synonym){
+        ConstraintSet set = new ConstraintSet();
+
+        EditText editText = new EditText(AddEditNoteActivity.this);
+        editText.setId(View.generateViewId());
+        if(synonym == null){
+            editText.setHint("add synonym...");
+            editText.setHintTextColor(binding.editTextSynonym.getHintTextColors());
+        }else{
+            editText.setText(synonym);
+        }
+        editText.setTextColor(binding.editTextSynonym.getTextColors());
+
+
+        et_synonyoms.add(editText);
+
+        binding.clRootLayout.addView(editText, et_synonyoms.size());
+
+        set.clone(binding.clRootLayout);
+        // connect start and end point of views, in this case top of child to top of parent.
+        set.connect(editText.getId(), ConstraintSet.TOP, et_synonyoms.get(et_synonyoms.size()-2).getId(), ConstraintSet.BOTTOM);
+        set.connect(editText.getId(), ConstraintSet.START, et_synonyoms.get(et_synonyoms.size()-2).getId(), ConstraintSet.START);
+        // ... similarly add other constraints
+        set.applyTo(binding.clRootLayout);
+
+        //since we now have an additional field
+        //show a button to remove the created view
+        binding.btnRemoveSynonym.setVisibility(View.VISIBLE);
+        binding.tvRemoveSynonym.setVisibility(View.VISIBLE);
 
     }
 
