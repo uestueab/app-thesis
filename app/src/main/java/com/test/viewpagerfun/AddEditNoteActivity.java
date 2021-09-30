@@ -34,6 +34,8 @@ public class AddEditNoteActivity extends BaseActivity {
     private Note note;
 
     private final List<EditText> et_synonyoms = new ArrayList<EditText>();
+    private List<String> synonyms = new ArrayList<String>();
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -96,12 +98,39 @@ public class AddEditNoteActivity extends BaseActivity {
             }
         });
 
+        binding.btnRemoveSynonym.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(et_synonyoms.size() == 2){
+                    // there are two edittext fields left. remove one more..
+                    binding.clRootLayout.removeView(et_synonyoms.get(et_synonyoms.size()-1));
+                    et_synonyoms.remove(et_synonyoms.size()-1);
+                    // and make the button disappear
+                    binding.btnRemoveSynonym.setVisibility(View.INVISIBLE);
+                    binding.tvRemoveSynonym.setVisibility(View.INVISIBLE);
+
+                    return;
+                }
+                binding.clRootLayout.removeView(et_synonyoms.get(et_synonyoms.size()-1));
+                et_synonyoms.remove(et_synonyoms.size()-1);
+            }
+        });
+
 
     }
 
+    private void saveSynonyms(){
+        for(int i=0; i < et_synonyoms.size(); i++){
+            synonyms.add(et_synonyoms.get(i).getText().toString());
+        }
+    }
+
     private void saveNote(){
+        saveSynonyms();
+
         //get input of edittext fields
         String title = binding.editTextTitle.getText().toString();
+        String meaning = binding.editTextMeaning.getText().toString();
 
         //restrict empty fields
         if(title.trim().isEmpty()){
@@ -113,6 +142,8 @@ public class AddEditNoteActivity extends BaseActivity {
         if(requestCode == ADD_NOTE_REQUEST){
             note = Note.builder()
                     .prompt(title)
+                    .meaning(meaning)
+                    .synonyms(synonyms)
                     .build();
         }else if(requestCode == EDIT_NOTE_REQUEST){
             note.setPrompt(title);
