@@ -5,6 +5,7 @@ import android.app.Activity;
 import android.media.AudioAttributes;
 import android.os.VibrationEffect;
 import android.os.Vibrator;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.HapticFeedbackConstants;
 import android.view.LayoutInflater;
@@ -51,13 +52,19 @@ import static com.test.viewpagerfun.constants.ConstantsHolder.*;
  *  Add some feedback, like small vibrate when empty string submitted.
  */
 public class ReviewAnswerSubmittedListener implements View.OnClickListener{
+    private static final String TAG = "ReviewAnswerSubmittedListener";
 
     private Activity activity;
     private ReviewInputFragmentBinding binding;
     private SharedViewModel model;
 
+    private long startTime;
+
     @Override
     public void onClick(View v) {
+
+        long timeSpend = (System.currentTimeMillis() - startTime) / 1000;
+
 
         String rawUserResponse = binding.etReviewAnswer.getText().toString();
         String response = StringProvider.toComparable(rawUserResponse);
@@ -82,11 +89,19 @@ public class ReviewAnswerSubmittedListener implements View.OnClickListener{
             return;
         }
 
+        int score;
+
+        //Determine score for the review
         if(isValidAnswer(response,note)){
-            review = new Review(note,3);
-        }else{
-            review = new Review(note,1);
-        }
+            // no hesitation, full score
+            if(timeSpend <= 30) { score = 3; }
+            else { // hesitated, adjust score
+                score = 2;
+            }
+        }else{ score = 1; }
+
+        review = new Review(note,score);
+        Log.d(TAG, "onClick: "+ "[Review score: " + score + "]");
 
         // Note is now reviewed
         model.setMostRecentReview(review);

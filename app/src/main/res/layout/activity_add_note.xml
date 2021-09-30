@@ -1,30 +1,111 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/cl_root_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="?attr/backgroundColor"
     android:orientation="vertical"
     android:padding="16dp"
-    tools:context=".AddEditNoteActivity"
-    android:background="?attr/backgroundColor"
-    >
+    tools:context=".AddEditNoteActivity">
+
+    <TextView
+        android:id="@+id/addCategoryNote"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="12dp"
+        android:text="Note"
+        android:textColor="?attr/colorAccent"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <EditText
         android:id="@+id/edit_text_title"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="Title"
+        android:hint="Title: (front)"
         android:inputType="text"
         android:textColor="?attr/textColor"
-        />
+        android:textColorHint="?attr/listItemTextColor"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/addCategoryNote" />
 
     <EditText
-        android:id="@+id/edit_text_description"
+        android:id="@+id/edit_text_meaning"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="meaning"
+        android:hint="Meaning: (back)"
         android:inputType="textMultiLine"
-        android:textColor="?attr/textColor" />
+        android:textColor="?attr/textColor"
+        android:textColorHint="?attr/listItemTextColor"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/edit_text_title" />
 
-</LinearLayout>
+    <TextView
+        android:id="@+id/addCategorySynonym"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="24dp"
+        android:text="Synonym"
+        android:textColor="?attr/colorAccent"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/edit_text_meaning" />
+
+
+    <ImageButton
+        android:id="@+id/btn_add_synonym"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="18dp"
+        android:background="@drawable/rounded_corner"
+        android:src="@drawable/ic_add"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/addCategorySynonym" />
+
+    <EditText
+        android:id="@+id/edit_text_synonym"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:hint="add synonym..."
+        android:textColor="?attr/textColor"
+        android:textColorHint="?attr/listItemTextColor"
+        app:layout_constraintStart_toStartOf="@id/btn_add_synonym"
+        app:layout_constraintTop_toBottomOf="@id/btn_add_synonym" />
+
+    <ImageButton
+        android:id="@+id/btn_remove_synonym"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="18dp"
+        android:layout_marginTop="18dp"
+        android:background="@drawable/rounded_corner"
+        android:src="@drawable/ic_remove"
+        android:visibility="invisible"
+        app:layout_constraintStart_toEndOf="@id/edit_text_synonym"
+        app:layout_constraintTop_toBottomOf="@id/addCategorySynonym" />
+
+    <TextView
+        android:id="@+id/tv_add_synonym"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="4dp"
+        android:text="add"
+        android:textColor="?attr/listItemTextColor_secondary"
+        app:layout_constraintBottom_toBottomOf="@id/btn_add_synonym"
+        app:layout_constraintStart_toEndOf="@id/btn_add_synonym" />
+
+    <TextView
+        android:id="@+id/tv_remove_synonym"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="4dp"
+        android:text="remove"
+        android:visibility="invisible"
+        android:textColor="?attr/listItemTextColor_secondary"
+        app:layout_constraintBottom_toBottomOf="@id/btn_remove_synonym"
+        app:layout_constraintStart_toEndOf="@id/btn_remove_synonym" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

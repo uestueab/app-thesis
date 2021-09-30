@@ -47,7 +47,12 @@ public class SharedViewModel extends AndroidViewModel {
     }
 
     //  Note (Only available if getNotes is observed!)
-    public Note getNote() { return notes.getValue().get(0); }
+    public Note getNote() {
+        if(notes.getValue().size() > 0)
+            return notes.getValue().get(0);
+
+        return null;
+    }
 
     /**
      * @return Works like an iterator. Returns true if there are notes left to show.

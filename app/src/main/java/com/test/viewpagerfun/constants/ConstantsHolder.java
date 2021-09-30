@@ -79,6 +79,15 @@ public final class ConstantsHolder {
     /*
         FEATURES
      */
-    public static final String NOTIFICATIONS_LAST_RUN = "NOTIFICATIONS_LAST_RUN";
+
+    // For notifications
+    public static final String APP_CLOSED_AT = "APP_CLOSED_AT";
+    public static final String NOTIFY_DELAY_TIME = "NOTIFY_DELAY_TIME";
+
+    // 1-Day in milliseconds: 1 * 24 * 60 * 60 * 1000
+    // public static final long NOTIFY_DEFAULT_DELAY_TIME = 86400000;
+
+    // 15-Min in milliseconds: 15 * 60 * 1000;
+     public static final long NOTIFY_DEFAULT_DELAY_TIME = 900000;
 
 }

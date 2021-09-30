@@ -13,24 +13,19 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Toast;
 
 import com.test.viewpagerfun.databinding.ActivityStartingScreenBinding;
 import com.test.viewpagerfun.listeners.onClick.StartActivityListener;
 import com.test.viewpagerfun.model.entity.Note;
-import com.test.viewpagerfun.model.repository.NoteRepository;
 import com.test.viewpagerfun.viewmodel.StartingScreenViewModel;
 
 import java.util.List;
-import java.util.concurrent.TimeUnit;
-
 import static com.test.viewpagerfun.constants.ConstantsHolder.*;
 
 public class StartingScreenActivity extends BaseActivity {
     private static final String TAG = "StartingScreenActivity";
     private ActivityStartingScreenBinding binding;
-    private StartingScreenViewModel model;
-
-    private final Handler handler = new Handler();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,19 +43,19 @@ public class StartingScreenActivity extends BaseActivity {
                         .build());
 
 
-
+        scheduleJob(NOTIFY_DEFAULT_DELAY_TIME);
     }
 
-    public void scheduleJob(int count) {
+    public void scheduleJob(long delayInMilliSec) {
 
         PersistableBundle bundle = new PersistableBundle();
-        bundle.putInt("count", count);
+        bundle.putLong(NOTIFY_DELAY_TIME, delayInMilliSec);
 
         ComponentName componentName = new ComponentName(this, NotificationJobService.class);
         JobInfo info = new JobInfo.Builder(123, componentName)
                 .setExtras(bundle)
                 .setPersisted(true)
-                .setPeriodic(15 * 60 * 1000)
+                .setPeriodic(delayInMilliSec)
                 .build();
 
         JobScheduler scheduler = (JobScheduler) getSystemService(JOB_SCHEDULER_SERVICE);
@@ -88,14 +83,21 @@ public class StartingScreenActivity extends BaseActivity {
         List<Note> previousNotes = PrefManager.getNotes(PREFS_REMAINING_NOTES);
 
         if (previousNotes == null || previousNotes.size() == 0) {
-            model = new ViewModelProvider(this).get(StartingScreenViewModel.class);
-            model.getNotesLiveData().observe(this, item -> {
-                binding.tvReviewItemCount.setText("Review: " + item.size());
-                scheduleJob(item.size());
+            StartingScreenViewModel model = new ViewModelProvider(this).get(StartingScreenViewModel.class);
+            model.getNotes().observe(this, item -> {
+                int noteCount = model.getNotesCount();
+                binding.tvReviewItemCount.setText("Review: " + noteCount);
+                if(noteCount > 0){
+                    binding.btnStartReview.setVisibility(View.VISIBLE);
+                }
+                else{ // when there are no review notes available, there is no point in moving to review activity.
+                    binding.btnStartReview.setVisibility(View.GONE);
+                }
             });
         } else {
             binding.tvReviewItemCount.setText("Review: " + previousNotes.size());
         }
+
     }
 
     /*
@@ -140,6 +142,7 @@ public class StartingScreenActivity extends BaseActivity {
         super.onPause();
         Log.d(TAG, "onPause: ");
         PrefManager.init(this);
-        PrefManager.set(NOTIFICATIONS_LAST_RUN,System.currentTimeMillis());
+        PrefManager.set(APP_CLOSED_AT,System.currentTimeMillis());
+        Log.d(TAG, APP_CLOSED_AT + " value is set");
     }
 }

@@ -3,6 +3,8 @@ package com.test.viewpagerfun;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.constraintlayout.widget.ConstraintSet;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -11,15 +13,17 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.EditText;
 import android.widget.NumberPicker;
 import android.widget.Toast;
 
 import com.test.viewpagerfun.databinding.ActivityAddNoteBinding;
-import com.test.viewpagerfun.databinding.ActivityManageNoteBinding;
 import com.test.viewpagerfun.model.entity.Note;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
 import static com.test.viewpagerfun.constants.ConstantsHolder.*;
 
@@ -28,6 +32,8 @@ public class AddEditNoteActivity extends BaseActivity {
     private int requestCode;
     private ActivityAddNoteBinding binding;
     private Note note;
+
+    private final List<EditText> et_synonyoms = new ArrayList<EditText>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,11 +58,45 @@ public class AddEditNoteActivity extends BaseActivity {
             requestCode = bundle.getInt(REQUEST_CODE,0);
 
             binding.editTextTitle.setText(note.getPrompt());
-            binding.editTextDescription.setText(note.getMeaning());
+            binding.editTextMeaning.setText(note.getMeaning());
         }else{
             setTitle("Add Note");
             requestCode = ADD_NOTE_REQUEST;
         }
+
+        et_synonyoms.add(binding.editTextSynonym);
+
+        binding.btnAddSynonym.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                ConstraintSet set = new ConstraintSet();
+
+                EditText editText = new EditText(AddEditNoteActivity.this);
+                editText.setId(View.generateViewId());
+                editText.setHint("add synonym...");
+                editText.setHintTextColor(binding.editTextSynonym.getHintTextColors());
+                editText.setTextColor(binding.editTextSynonym.getTextColors());
+
+                et_synonyoms.add(editText);
+
+                binding.clRootLayout.addView(editText, et_synonyoms.size());
+
+                set.clone(binding.clRootLayout);
+                // connect start and end point of views, in this case top of child to top of parent.
+                set.connect(editText.getId(), ConstraintSet.TOP, et_synonyoms.get(et_synonyoms.size()-2).getId(), ConstraintSet.BOTTOM);
+                set.connect(editText.getId(), ConstraintSet.START, et_synonyoms.get(et_synonyoms.size()-2).getId(), ConstraintSet.START);
+                // ... similarly add other constraints
+                set.applyTo(binding.clRootLayout);
+
+                //since we now have an additional field
+                //show a button to remove the created view
+                binding.btnRemoveSynonym.setVisibility(View.VISIBLE);
+                binding.tvRemoveSynonym.setVisibility(View.VISIBLE);
+            }
+        });
+
+
     }
 
     private void saveNote(){

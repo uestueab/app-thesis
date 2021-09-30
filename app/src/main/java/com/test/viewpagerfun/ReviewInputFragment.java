@@ -37,6 +37,9 @@ public class ReviewInputFragment extends Fragment {
     //view binding of fragment
     private ReviewInputFragmentBinding binding;
 
+    //measure time spend on this fragment. Determines whether the user hesitated during review
+    long startTime;
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -66,10 +69,14 @@ public class ReviewInputFragment extends Fragment {
         model = new ViewModelProvider(requireActivity()).get(SharedViewModel.class);
         // Update the UI.
         model.getNotes().observe(getViewLifecycleOwner(), notes -> {
-            binding.tvQuestion.setText(model.getNote().getPrompt());
-            binding.tvReviewProgress.setText(model.getCorrectCount(false)+"/"+model.getTotalNotes());
+            Note currentNote = model.getNote();
+            if(currentNote != null){
+                binding.tvQuestion.setText(currentNote.getPrompt());
+                binding.tvReviewProgress.setText(model.getCorrectCount(false)+"/"+model.getTotalNotes());
+            }
         });
 
+        startTime = System.currentTimeMillis();
         answerSubmitted();
     }
 
@@ -89,6 +96,7 @@ public class ReviewInputFragment extends Fragment {
                         .activity(getActivity())
                         .model(model)
                         .binding(binding)
+                        .startTime(startTime)
                         .build()
         );
     }

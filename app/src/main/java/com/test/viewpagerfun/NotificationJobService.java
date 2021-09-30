@@ -8,14 +8,14 @@ import android.util.Log;
 
 import androidx.core.app.NotificationCompat;
 
-import static com.test.viewpagerfun.constants.ConstantsHolder.NOTIFICATIONS_LAST_RUN;
+import static com.test.viewpagerfun.constants.ConstantsHolder.APP_CLOSED_AT;
+import static com.test.viewpagerfun.constants.ConstantsHolder.NOTIFY_DELAY_TIME;
 
 
 public class NotificationJobService extends JobService {
     private static final String TAG = "NotificationJobService";
     private boolean jobCancelled = false;
 
-    private static final int delay = 15 * 60 * 1000;
 
     @Override
     public boolean onStartJob(JobParameters params) {
@@ -31,10 +31,16 @@ public class NotificationJobService extends JobService {
             public void run() {
 
                 PrefManager.init(getApplicationContext());
-                long last_app_session = PrefManager.get(NOTIFICATIONS_LAST_RUN, Long.MAX_VALUE);
+                /* Intention:
+                    Make the notification appear after inactivity. (inactivity = closed time + x_days?)
+                    Get the time the app was closed. (second parameter is to prohibit premature execution)
+                 */
+                long app_closed_at = PrefManager.get(APP_CLOSED_AT, Long.MAX_VALUE);
+                long notificationDelay = params.getExtras().getLong(NOTIFY_DELAY_TIME);
 
-                if(System.currentTimeMillis() - delay > last_app_session) {
-                    int notesCount = params.getExtras().getInt("count");
+                if(System.currentTimeMillis() - notificationDelay > app_closed_at) {
+                    Log.d(TAG, "JobService condition ist met");
+                    Log.d(TAG, "Notification in progress...");
 
                     //Creating a notification channel
                     NotificationChannel channel = new NotificationChannel("channel1",
@@ -46,20 +52,19 @@ public class NotificationJobService extends JobService {
                     //Creating the notification object
                     NotificationCompat.Builder notification = new NotificationCompat.Builder(getApplicationContext(), "channel1");
                     //notification.setAutoCancel(true);
-                    notification.setContentTitle("New Reviews available");
-                    notification.setContentText(notesCount + " items are available");
+                    notification.setContentTitle("Hang in there!");
+                    notification.setContentText("Don't forget to taking your reviews");
                     notification.setSmallIcon(R.drawable.ic_launcher_foreground);
 
                     //make the notification manager to issue a notification on the notification's channel
                     manager.notify(121, notification.build());
-
-                    Log.d(TAG, "run: available review: " + notesCount);
-
+                    Log.d(TAG, "Notification send");
 
                     Log.d(TAG, "Job finished");
                     jobFinished(params, false);
                 }else{
                     Log.d(TAG, "JobService condition not met");
+                    Log.d(TAG, "Delay is set to: " + notificationDelay);
                 }
             }
         }).start();

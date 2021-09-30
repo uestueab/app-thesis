@@ -12,21 +12,22 @@ import java.util.List;
 
 public class StartingScreenViewModel extends AndroidViewModel {
 
+    private final NoteRepository repository;
     private final LiveData<List<Note>> notes;
 
 
-    public StartingScreenViewModel(Application application){
+    public StartingScreenViewModel(Application application) {
         super(application);
-        NoteRepository repository = new NoteRepository(application);
+        repository = new NoteRepository(application);
         notes = repository.getAllNotes();
     }
 
-    public LiveData<List<Note>> getNotesLiveData() {
+    public LiveData<List<Note>> getNotes() {
         return notes;
     }
 
-    public List<Note> getNotes(){
-        return notes.getValue();
+    public int getNotesCount() {
+        return notes.getValue().size();
     }
 }
 

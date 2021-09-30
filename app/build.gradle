@@ -45,6 +45,8 @@ dependencies {
     //Room database
     implementation("androidx.room:room-runtime:$room_version")
     annotationProcessor "androidx.room:room-compiler:$room_version"
+
+
     //Transform Lists to json string to save in database
     implementation 'com.google.code.gson:gson:2.8.8'
     //CardView
