@@ -2,20 +2,15 @@ package com.test.viewpagerfun;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.constraintlayout.widget.ConstraintSet;
 
-import android.app.Activity;
 import android.content.Intent;
-import android.icu.util.BuddhistCalendar;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
-import android.widget.NumberPicker;
 import android.widget.Toast;
 
 import com.test.viewpagerfun.databinding.ActivityAddNoteBinding;
@@ -33,7 +28,7 @@ public class AddEditNoteActivity extends BaseActivity {
     private ActivityAddNoteBinding binding;
     private Note note;
 
-    private final List<EditText> et_synonyoms = new ArrayList<EditText>();
+    private final List<EditText> et_synonyms = new ArrayList<EditText>();
     private List<String> synonyms = new ArrayList<String>();
 
 
@@ -50,23 +45,33 @@ public class AddEditNoteActivity extends BaseActivity {
         // showing the back button in action bar
         actionBar.setDisplayHomeAsUpEnabled(true);
 
-        Intent intent = getIntent();
-
         // the inserted edittext becomes the parent of all programmatically created edittext fields.
-        et_synonyoms.add(binding.editTextSynonym);
+        et_synonyms.add(binding.editTextSynonym);
+
+        Intent intent = getIntent();
 
         if(intent.hasExtra(EXTRA_EDIT_NOTE)){
             setTitle("Edit Note");
 
             Bundle bundle = intent.getBundleExtra(EXTRA_EDIT_NOTE);
+            //get the note to be edited
             note = (Note) bundle.getSerializable(BUNDLE_EDIT_NOTE);
+            //get the request-code
             requestCode = bundle.getInt(REQUEST_CODE,0);
 
+            //fill in all the fields
             binding.editTextTitle.setText(note.getPrompt());
             binding.editTextMeaning.setText(note.getMeaning());
 
-            for(String synonym: note.getSynonyms()){
-                createSynonymFields(synonym);
+            synonyms = note.getSynonyms();
+
+            //if the note has synonyms show them on screen too
+            if(synonyms != null && synonyms.size() > 0){
+                for(int i=0; i<synonyms.size(); i++){
+                    if( i == 0) binding.editTextSynonym.setText(synonyms.get(0));
+                    else
+                        createSynonymField(synonyms.get(i));
+                }
             }
 
         }else{
@@ -78,30 +83,30 @@ public class AddEditNoteActivity extends BaseActivity {
         binding.btnAddSynonym.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                createSynonymFields(null);
+                createSynonymField(null);
             }
         });
 
         binding.btnRemoveSynonym.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(et_synonyoms.size() == 2){
+                if(et_synonyms.size() == 2){
                     // there are two edittext fields left. remove one more..
-                    binding.clRootLayout.removeView(et_synonyoms.get(et_synonyoms.size()-1));
-                    et_synonyoms.remove(et_synonyoms.size()-1);
+                    binding.clRootLayout.removeView(et_synonyms.get(et_synonyms.size()-1));
+                    et_synonyms.remove(et_synonyms.size()-1);
                     // and make the button disappear
                     binding.btnRemoveSynonym.setVisibility(View.INVISIBLE);
                     binding.tvRemoveSynonym.setVisibility(View.INVISIBLE);
 
                     return;
                 }
-                binding.clRootLayout.removeView(et_synonyoms.get(et_synonyoms.size()-1));
-                et_synonyoms.remove(et_synonyoms.size()-1);
+                binding.clRootLayout.removeView(et_synonyms.get(et_synonyms.size()-1));
+                et_synonyms.remove(et_synonyms.size()-1);
             }
         });
     }
 
-    private void createSynonymFields(String synonym){
+    private void createSynonymField(String synonym){
         ConstraintSet set = new ConstraintSet();
 
         EditText editText = new EditText(AddEditNoteActivity.this);
@@ -115,14 +120,14 @@ public class AddEditNoteActivity extends BaseActivity {
         editText.setTextColor(binding.editTextSynonym.getTextColors());
 
 
-        et_synonyoms.add(editText);
+        et_synonyms.add(editText);
 
-        binding.clRootLayout.addView(editText, et_synonyoms.size());
+        binding.clRootLayout.addView(editText, et_synonyms.size());
 
         set.clone(binding.clRootLayout);
         // connect start and end point of views, in this case top of child to top of parent.
-        set.connect(editText.getId(), ConstraintSet.TOP, et_synonyoms.get(et_synonyoms.size()-2).getId(), ConstraintSet.BOTTOM);
-        set.connect(editText.getId(), ConstraintSet.START, et_synonyoms.get(et_synonyoms.size()-2).getId(), ConstraintSet.START);
+        set.connect(editText.getId(), ConstraintSet.TOP, et_synonyms.get(et_synonyms.size()-2).getId(), ConstraintSet.BOTTOM);
+        set.connect(editText.getId(), ConstraintSet.START, et_synonyms.get(et_synonyms.size()-2).getId(), ConstraintSet.START);
         // ... similarly add other constraints
         set.applyTo(binding.clRootLayout);
 
@@ -134,8 +139,18 @@ public class AddEditNoteActivity extends BaseActivity {
     }
 
     private void saveSynonyms(){
-        for(int i=0; i < et_synonyoms.size(); i++){
-            synonyms.add(et_synonyoms.get(i).getText().toString());
+        //there are already the synonyms within the list. Adding synonyms from the edittext fields causes
+        //the list to have duplicates. So we need to clear the list.
+        if(synonyms != null && synonyms.size() > 0)
+            synonyms.clear();
+        else
+            //in case the note doesn't have synonyms we give the user a chance to add some.
+            synonyms = new ArrayList<>();
+
+        for(int i = 0; i < et_synonyms.size(); i++){
+            String synonym = et_synonyms.get(i).getText().toString();
+            if(synonym != null && !synonym.trim().isEmpty())
+                synonyms.add(synonym);
         }
     }
 
@@ -147,8 +162,8 @@ public class AddEditNoteActivity extends BaseActivity {
         String meaning = binding.editTextMeaning.getText().toString();
 
         //restrict empty fields
-        if(title.trim().isEmpty()){
-            Toast.makeText(this, "Please insert a title", Toast.LENGTH_SHORT).show();
+        if(title.trim().isEmpty() || meaning.trim().isEmpty()){
+            Toast.makeText(this, "Insert a title and meaning!", Toast.LENGTH_SHORT).show();
             return;
         }
 
@@ -161,20 +176,17 @@ public class AddEditNoteActivity extends BaseActivity {
                     .build();
         }else if(requestCode == EDIT_NOTE_REQUEST){
             note.setPrompt(title);
+            note.setMeaning(meaning);
+            note.setSynonyms(synonyms);
         }
 
         String extraKey = requestCode == ADD_NOTE_REQUEST ? EXTRA_ADD_NOTE : EXTRA_EDIT_NOTE;
 
-        //prepare intent and send note too
+        //prepare intent and send note to ManageNoteActivity again
         Intent intent = new Intent();
         Bundle bundle = new Bundle();
         bundle.putSerializable(BUNDLE_ADD_NOTE,(Serializable) note);
         intent.putExtra(extraKey,bundle);
-
-//        long id = getIntent().getLongExtra(EXTRA_ID,-1);
-//        if(id != -1){
-//           intent.putExtra(EXTRA_ID,id);
-//        }
 
         intent.putExtra(REQUEST_CODE, requestCode);
         setResult(RESULT_OK, intent);

@@ -117,12 +117,12 @@ public class StartingScreenActivity extends BaseActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()){
             case R.id.menu_item_settings:
-                Intent intent2 = new Intent(StartingScreenActivity.this, SettingsActivity.class);
-                startActivity(intent2);
+                Intent intentSettings = new Intent(StartingScreenActivity.this, SettingsActivity.class);
+                startActivity(intentSettings);
                 return true;
             case R.id.menu_item_manage_notes:
-                Intent intent = new Intent(StartingScreenActivity.this, ManageNoteActivity.class);
-                startActivity(intent);
+                Intent intentManageNote = new Intent(StartingScreenActivity.this, ManageNoteActivity.class);
+                startActivity(intentManageNote);
                 return true;
             default:
                 super.onOptionsItemSelected(item);

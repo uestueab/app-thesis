@@ -13,6 +13,7 @@ import androidx.room.PrimaryKey;
 import com.test.viewpagerfun.toolbox.TimeProvider;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 
 import lombok.AllArgsConstructor;
@@ -35,7 +36,8 @@ public class Note implements Cloneable, Serializable {
     @ColumnInfo(name = "note_title")
     private String prompt;              // represents the question. the input the user wants to learn
     private String meaning;             // the meaning of the prompt in the language the user speaks.
-    private List<String> synonyms;      // treated as valid answers
+    @Builder.Default
+    private List<String> synonyms = new ArrayList<>();      // treated as valid answers
     private String mnemonic;            // represents a hint text, as specified by the user.
 
 

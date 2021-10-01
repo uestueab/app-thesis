@@ -106,8 +106,6 @@ public class ManageNoteActivity extends BaseActivity {
         });
     }
 
-
-
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater menuInflater = getMenuInflater();

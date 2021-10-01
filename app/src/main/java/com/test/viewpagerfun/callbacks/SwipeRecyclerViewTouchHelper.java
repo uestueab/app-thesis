@@ -75,7 +75,7 @@ public class SwipeRecyclerViewTouchHelper extends ItemTouchHelper.SimpleCallback
                                 noteViewModel.insert(finalCloneNote);
                             }
                         }).show();
-                        Toast.makeText(activity, "Note deleted: "+ deletedNoteTitle, Toast.LENGTH_SHORT).show();
+                Toast.makeText(activity, "Note deleted: " + deletedNoteTitle, Toast.LENGTH_SHORT).show();
                 break;
             case ItemTouchHelper.RIGHT:
                 editNote(adapter.getNoteAt(position));
@@ -101,8 +101,9 @@ public class SwipeRecyclerViewTouchHelper extends ItemTouchHelper.SimpleCallback
     private void editNote(Note note) {
         Intent intent = new Intent(activity, AddEditNoteActivity.class);
         Bundle bundle = new Bundle();
+        bundle.putInt(REQUEST_CODE, EDIT_NOTE_REQUEST);
         bundle.putSerializable(BUNDLE_EDIT_NOTE, (Serializable) note);
-        intent.putExtra(EXTRA_EDIT_NOTE,bundle);
+        intent.putExtra(EXTRA_EDIT_NOTE, bundle);
 
         addEditNoteResultLauncher.launch(intent);
     }

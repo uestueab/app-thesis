@@ -19,7 +19,7 @@ public class StartingScreenViewModel extends AndroidViewModel {
     public StartingScreenViewModel(Application application) {
         super(application);
         repository = new NoteRepository(application);
-        notes = repository.getAllNotes();
+        notes = repository.getNotesDue();
     }
 
     public LiveData<List<Note>> getNotes() {

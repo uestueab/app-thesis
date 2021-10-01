@@ -27,7 +27,7 @@ public class SharedViewModel extends AndroidViewModel {
     public SharedViewModel(Application application) {
         super(application);
         repository = new NoteRepository(application);
-        notes = repository.getAllNotes();
+        notes = repository.getNotesDue();
     }
 
     //constructor for storing remaining notes from a previous review
