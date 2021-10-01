@@ -3,9 +3,17 @@ package com.test.viewpagerfun;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
 import androidx.constraintlayout.widget.ConstraintSet;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 
+import android.Manifest;
+import android.content.ContextWrapper;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.media.MediaPlayer;
+import android.media.MediaRecorder;
 import android.os.Bundle;
+import android.os.Environment;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -13,9 +21,12 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.test.viewpagerfun.constants.Permissions;
 import com.test.viewpagerfun.databinding.ActivityAddNoteBinding;
 import com.test.viewpagerfun.model.entity.Note;
 
+import java.io.File;
+import java.io.IOException;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
@@ -31,6 +42,9 @@ public class AddEditNoteActivity extends BaseActivity {
     private final List<EditText> et_synonyms = new ArrayList<EditText>();
     private List<String> synonyms = new ArrayList<String>();
 
+    private MediaRecorder mediaRecorder;
+    private MediaPlayer mediaPlayer;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,6 +58,7 @@ public class AddEditNoteActivity extends BaseActivity {
         actionBar.setHomeAsUpIndicator(R.drawable.ic_close);
         // showing the back button in action bar
         actionBar.setDisplayHomeAsUpEnabled(true);
+
 
         // the inserted edittext becomes the parent of all programmatically created edittext fields.
         et_synonyms.add(binding.editTextSynonym);
@@ -104,6 +119,31 @@ public class AddEditNoteActivity extends BaseActivity {
                 et_synonyms.remove(et_synonyms.size()-1);
             }
         });
+
+        if (isMicrophonePresent())
+            getMicrophonePermission();
+
+        binding.btnRecordAudio.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                btnRecordPressed();
+            }
+        });
+
+        binding.btnStopRecording.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                btnStopPressed();
+            }
+        });
+
+        binding.btnPlayRecording.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                btnPlayPressed();
+            }
+        });
+
     }
 
     private void createSynonymField(String synonym){
@@ -191,6 +231,65 @@ public class AddEditNoteActivity extends BaseActivity {
         intent.putExtra(REQUEST_CODE, requestCode);
         setResult(RESULT_OK, intent);
         finish();
+    }
+
+    private boolean isMicrophonePresent(){
+        return this.getPackageManager().hasSystemFeature(PackageManager.FEATURE_MICROPHONE);
+    }
+
+    private void getMicrophonePermission(){
+        if(ContextCompat.checkSelfPermission(this,
+                Manifest.permission.RECORD_AUDIO) == PackageManager.PERMISSION_DENIED){
+
+            ActivityCompat.requestPermissions(this,
+                    new String[]{Manifest.permission.RECORD_AUDIO}, Permissions.REQUEST_MICROPHONE);
+        }
+    }
+
+    private void btnRecordPressed(){
+        if(mediaRecorder == null)
+            mediaRecorder = new MediaRecorder();
+
+        try {
+            mediaRecorder.setAudioSource(MediaRecorder.AudioSource.MIC);
+            mediaRecorder.setOutputFormat(MediaRecorder.OutputFormat.OGG);
+            mediaRecorder.setOutputFile(getRecordingFilePath());
+            mediaRecorder.setAudioEncoder(MediaRecorder.AudioEncoder.OPUS);
+            mediaRecorder.prepare();
+            mediaRecorder.start();
+
+            Toast.makeText(this, "Recording started...", Toast.LENGTH_SHORT).show();
+        }catch (IOException e){
+            e.printStackTrace();
+        }
+    }
+
+    private void btnStopPressed(){
+        mediaRecorder.stop();
+        mediaRecorder.release();
+        mediaRecorder = null;
+
+        Toast.makeText(this, "Recording stopped...", Toast.LENGTH_SHORT).show();
+    }
+
+    private void btnPlayPressed(){
+        if(mediaPlayer == null)
+            mediaPlayer = new MediaPlayer();
+
+        try{
+            mediaPlayer.setDataSource(getRecordingFilePath());
+            mediaPlayer.prepare();
+            mediaPlayer.start();
+        }catch (IOException e){
+            e.printStackTrace();
+        }
+    }
+
+    private String getRecordingFilePath(){
+        ContextWrapper contextWrapper = new ContextWrapper(getApplicationContext());
+        File recordingDir = contextWrapper.getExternalFilesDir(Environment.DIRECTORY_MUSIC);
+        File file = new File(recordingDir,"rec_" + "test"+".ogg");
+        return file.getPath();
     }
 
     @Override
