@@ -45,6 +45,7 @@ public class AddEditNoteActivity extends BaseActivity {
     private MediaRecorder mediaRecorder;
     private MediaPlayer mediaPlayer;
 
+    private boolean recordingExists = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -247,41 +248,58 @@ public class AddEditNoteActivity extends BaseActivity {
     }
 
     private void btnRecordPressed(){
-        if(mediaRecorder == null)
+        if(mediaRecorder == null){
             mediaRecorder = new MediaRecorder();
 
-        try {
-            mediaRecorder.setAudioSource(MediaRecorder.AudioSource.MIC);
-            mediaRecorder.setOutputFormat(MediaRecorder.OutputFormat.OGG);
-            mediaRecorder.setOutputFile(getRecordingFilePath());
-            mediaRecorder.setAudioEncoder(MediaRecorder.AudioEncoder.OPUS);
-            mediaRecorder.prepare();
-            mediaRecorder.start();
+            try {
+                mediaRecorder.setAudioSource(MediaRecorder.AudioSource.MIC);
+                mediaRecorder.setOutputFormat(MediaRecorder.OutputFormat.OGG);
+                mediaRecorder.setOutputFile(getRecordingFilePath());
+                mediaRecorder.setAudioEncoder(MediaRecorder.AudioEncoder.OPUS);
+                mediaRecorder.setAudioEncodingBitRate(128000);
+                mediaRecorder.setAudioSamplingRate(44100);
+                mediaRecorder.prepare();
+                mediaRecorder.start();
 
-            Toast.makeText(this, "Recording started...", Toast.LENGTH_SHORT).show();
-        }catch (IOException e){
-            e.printStackTrace();
+                Toast.makeText(this, "Recording started...", Toast.LENGTH_SHORT).show();
+            }catch (IOException e){
+                e.printStackTrace();
+            }
         }
     }
 
     private void btnStopPressed(){
-        mediaRecorder.stop();
-        mediaRecorder.release();
-        mediaRecorder = null;
+        // if there is a recording going on...
+        if(mediaRecorder != null){
+            mediaRecorder.stop();
+            mediaRecorder.release();
 
-        Toast.makeText(this, "Recording stopped...", Toast.LENGTH_SHORT).show();
+            mediaRecorder = null;
+            recordingExists = true;
+
+            Toast.makeText(this, "Recording stopped...", Toast.LENGTH_SHORT).show();
+        }
     }
 
     private void btnPlayPressed(){
         if(mediaPlayer == null)
             mediaPlayer = new MediaPlayer();
 
-        try{
-            mediaPlayer.setDataSource(getRecordingFilePath());
-            mediaPlayer.prepare();
-            mediaPlayer.start();
-        }catch (IOException e){
-            e.printStackTrace();
+        // if there was a recording...
+        if(mediaRecorder == null && recordingExists) {
+            if(!mediaPlayer.isPlaying()){
+                try{
+                    mediaPlayer.setDataSource(getRecordingFilePath());
+                    mediaPlayer.prepare();
+                    mediaPlayer.start();
+
+
+                    mediaPlayer = null;
+
+                }catch (IOException e){
+                    e.printStackTrace();
+                }
+            }
         }
     }
 
