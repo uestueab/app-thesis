@@ -24,10 +24,10 @@ import android.widget.Toast;
 
 import com.test.viewpagerfun.constants.Permissions;
 import com.test.viewpagerfun.databinding.ActivityAddNoteBinding;
+import com.test.viewpagerfun.listeners.onClick.RemoveSynonymListener;
 import com.test.viewpagerfun.model.entity.Note;
 
 import java.io.File;
-import java.nio.file.*;
 import java.io.IOException;
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -52,7 +52,7 @@ public class AddEditNoteActivity extends BaseActivity {
 
     private boolean recordingExists = false;
     private String temp_recordingName = "rec_" + UUID.randomUUID().toString() + ".ogg";
-    private String note_pronunciation;
+    private String notePronunciation;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -67,6 +67,9 @@ public class AddEditNoteActivity extends BaseActivity {
         // showing the back button in action bar
         actionBar.setDisplayHomeAsUpEnabled(true);
 
+        // ask for permission
+        if (isMicrophonePresent())
+            getMicrophonePermission();
 
         // the inserted edittext becomes the parent of all programmatically created edittext fields.
         et_synonyms.add(binding.editTextSynonym);
@@ -86,10 +89,10 @@ public class AddEditNoteActivity extends BaseActivity {
             binding.editTextTitle.setText(note.getPrompt());
             binding.editTextMeaning.setText(note.getMeaning());
 
-            note_pronunciation = note.getPronunciation();
+            notePronunciation = note.getPronunciation();
 
             //show name of prev recording.
-            if(note_pronunciation != null){
+            if (notePronunciation != null) {
                 File pronunciation = new File(note.getPronunciation());
                 binding.tvAddRecording.setText(pronunciation.getName());
                 recordingExists = true;
@@ -120,26 +123,10 @@ public class AddEditNoteActivity extends BaseActivity {
             }
         });
 
-        binding.btnRemoveSynonym.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (et_synonyms.size() == 2) {
-                    // there are two edittext fields left. remove one more..
-                    binding.clRootLayout.removeView(et_synonyms.get(et_synonyms.size() - 1));
-                    et_synonyms.remove(et_synonyms.size() - 1);
-                    // and make the button disappear
-                    binding.btnRemoveSynonym.setVisibility(View.INVISIBLE);
-                    binding.tvRemoveSynonym.setVisibility(View.INVISIBLE);
-
-                    return;
-                }
-                binding.clRootLayout.removeView(et_synonyms.get(et_synonyms.size() - 1));
-                et_synonyms.remove(et_synonyms.size() - 1);
-            }
-        });
-
-        if (isMicrophonePresent())
-            getMicrophonePermission();
+        binding.btnRemoveSynonym.setOnClickListener(
+                RemoveSynonymListener.builder()
+                        .binding(binding).editTexts(et_synonyms).build()
+        );
 
         binding.btnRecordAudio.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -226,7 +213,7 @@ public class AddEditNoteActivity extends BaseActivity {
         //store the synonyms in a list
         saveSynonyms();
         //give recording a meaningful filename or null when no recording was done
-        String recordingPath =  prepareRecording(title) ? getRecordingFilePath() : null;
+        String recordingPath = prepareRecording(title) ? getRecordingFilePath() : null;
 
         //create a new note (generates an id by default)
         //..or set new values to the existing note, which already has an id
@@ -275,11 +262,11 @@ public class AddEditNoteActivity extends BaseActivity {
             mediaRecorder = new MediaRecorder();
 
             try {
-                note_pronunciation = getRecordingFilePath();
+                notePronunciation = getRecordingFilePath();
 
                 mediaRecorder.setAudioSource(MediaRecorder.AudioSource.MIC);
                 mediaRecorder.setOutputFormat(MediaRecorder.OutputFormat.OGG);
-                mediaRecorder.setOutputFile(note_pronunciation);
+                mediaRecorder.setOutputFile(notePronunciation);
                 mediaRecorder.setAudioEncoder(MediaRecorder.AudioEncoder.OPUS);
                 mediaRecorder.setAudioEncodingBitRate(128000);
                 mediaRecorder.setAudioSamplingRate(44100);
@@ -302,6 +289,8 @@ public class AddEditNoteActivity extends BaseActivity {
             mediaRecorder = null;
             recordingExists = true;
 
+            //update ui
+            binding.tvAddRecording.setText("recording available");
             Toast.makeText(this, "Recording stopped...", Toast.LENGTH_SHORT).show();
         }
     }
@@ -316,7 +305,7 @@ public class AddEditNoteActivity extends BaseActivity {
                 try {
                     //when a note already had a pronunciation recording.. play that
                     //or else play the
-                    mediaPlayer.setDataSource(note_pronunciation);
+                    mediaPlayer.setDataSource(notePronunciation);
                     mediaPlayer.prepare();
                     mediaPlayer.start();
 
@@ -341,12 +330,12 @@ public class AddEditNoteActivity extends BaseActivity {
     private boolean prepareRecording(String recordingName) {
         ContextWrapper contextWrapper = new ContextWrapper(getApplicationContext());
         File recordingDir = contextWrapper.getExternalFilesDir(Environment.DIRECTORY_MUSIC);
-        File old_file = new File(recordingDir,temp_recordingName);
+        File old_file = new File(recordingDir, temp_recordingName);
 
         if (old_file.isFile()) {
             temp_recordingName = "rec_" + recordingName + ".ogg";
             File new_file = new File(recordingDir, temp_recordingName);
-            if(old_file.renameTo(new_file)) {
+            if (old_file.renameTo(new_file)) {
                 Log.d(TAG, "prepareRecording: [New filename: " + new_file.getName() + "]");
                 return true;
             }
