@@ -39,6 +39,7 @@ public class Note implements Cloneable, Serializable {
     @Builder.Default
     private List<String> synonyms = new ArrayList<>();      // treated as valid answers
     private String mnemonic;            // represents a hint text, as specified by the user.
+    private String pronunciation;       // filepath of the recording.
 
 
     /*
