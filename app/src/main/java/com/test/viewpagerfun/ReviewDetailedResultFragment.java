@@ -2,6 +2,7 @@ package com.test.viewpagerfun;
 
 import android.annotation.SuppressLint;
 import android.graphics.Color;
+import android.media.MediaPlayer;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -26,6 +27,9 @@ import com.test.viewpagerfun.databinding.ReviewDetailedResultFragmentBinding;
 import com.test.viewpagerfun.listeners.onClick.NextReviewItemListener;
 import com.test.viewpagerfun.sm2.Review;
 import com.test.viewpagerfun.viewmodel.SharedViewModel;
+
+import java.io.IOException;
+
 import static com.test.viewpagerfun.constants.ConstantsHolder.*;
 public class ReviewDetailedResultFragment extends Fragment {
 
@@ -72,12 +76,15 @@ public class ReviewDetailedResultFragment extends Fragment {
             binding.tvAnswerResult.setBackgroundColor(
                     ContextCompat.getColor(getActivity(),R.color.correct)
             );
+
+            playPronunciation(review);
         }
 
         //FEATURE: Play review animation
         Commander.setState(PREFS_DISPLAY_ANIMATION,
                 ReviewAnimationState.builder().binding(binding).hasFailed(review.hasFailed()).build());
         Commander.run(PREFS_DISPLAY_ANIMATION);
+
 
         /*  when a note fails during review add it on top of the list stack.
             This causes the review to be finished only if all items have passed correctly.
@@ -104,6 +111,17 @@ public class ReviewDetailedResultFragment extends Fragment {
         binding.btnNextTop.setOnClickListener(nextReviewItemListener);
         binding.btnNextBottom.setOnClickListener(nextReviewItemListener);
 
+    }
+
+    private void playPronunciation(Review review){
+        MediaPlayer mediaPlayer = new MediaPlayer();
+        try {
+            mediaPlayer.setDataSource(review.getNote().getPronunciation());
+            mediaPlayer.prepare();
+            mediaPlayer.start();
+        }catch (IOException e){
+            e.printStackTrace();
+        }
     }
 
 

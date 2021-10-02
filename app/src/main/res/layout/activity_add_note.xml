@@ -102,10 +102,20 @@
         android:layout_height="wrap_content"
         android:layout_marginLeft="4dp"
         android:text="remove"
-        android:visibility="invisible"
         android:textColor="?attr/listItemTextColor_secondary"
+        android:visibility="invisible"
         app:layout_constraintBottom_toBottomOf="@id/btn_remove_synonym"
         app:layout_constraintStart_toEndOf="@id/btn_remove_synonym" />
+
+    <TextView
+        android:id="@+id/addCategoryRecord"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Record Pronunciation"
+        android:textColor="?attr/colorAccent"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@id/addCategorySynonym" />
 
     <TextView
         android:id="@+id/tv_add_recording"
@@ -114,26 +124,15 @@
         android:text="Nothing recorded yet"
         android:textColor="?attr/listItemTextColor_secondary"
         app:layout_constraintBottom_toBottomOf="@id/tv_add_synonym"
-        app:layout_constraintEnd_toEndOf="parent"
-        />
+        app:layout_constraintEnd_toEndOf="parent" />
 
-    <TextView
-        android:id="@+id/addCategoryRecord"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Record Pronounciation"
-        android:textColor="?attr/colorAccent"
-        android:textStyle="bold"
-        app:layout_constraintStart_toStartOf="@id/tv_add_recording"
-        app:layout_constraintTop_toTopOf="@id/addCategorySynonym"
-        />
 
     <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/btn_record_audio"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_weight="1"
         android:layout_marginTop="8dp"
+        android:layout_weight="1"
         android:background="?attr/backgroundColor_secondary"
         android:drawableLeft="@drawable/record_audio"
         android:gravity="left|center"
@@ -141,27 +140,23 @@
         android:text="REC."
         android:textColor="?attr/cardForegroundColor"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/tv_add_recording"
-        />
+        app:layout_constraintTop_toBottomOf="@id/tv_add_recording" />
 
     <Button
         android:id="@+id/btn_stop_recording"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:layout_constraintTop_toBottomOf="@id/btn_record_audio"
-        app:layout_constraintEnd_toEndOf="parent"
         android:text="stop"
-        />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/btn_record_audio" />
 
     <Button
         android:id="@+id/btn_play_recording"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:layout_constraintTop_toBottomOf="@id/btn_stop_recording"
-        app:layout_constraintEnd_toEndOf="parent"
         android:text="play"
-        />
-
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/btn_stop_recording" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

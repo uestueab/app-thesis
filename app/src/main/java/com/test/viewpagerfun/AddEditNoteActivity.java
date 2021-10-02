@@ -52,6 +52,7 @@ public class AddEditNoteActivity extends BaseActivity {
 
     private boolean recordingExists = false;
     private String temp_recordingName = "rec_" + UUID.randomUUID().toString() + ".ogg";
+    private String note_pronunciation;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -85,7 +86,17 @@ public class AddEditNoteActivity extends BaseActivity {
             binding.editTextTitle.setText(note.getPrompt());
             binding.editTextMeaning.setText(note.getMeaning());
 
+            note_pronunciation = note.getPronunciation();
+
+            //show name of prev recording.
+            if(note_pronunciation != null){
+                File pronunciation = new File(note.getPronunciation());
+                binding.tvAddRecording.setText(pronunciation.getName());
+                recordingExists = true;
+            }
+
             synonyms = note.getSynonyms();
+
 
             //if the note has synonyms show them on screen too
             if (synonyms != null && synonyms.size() > 0) {
@@ -264,9 +275,11 @@ public class AddEditNoteActivity extends BaseActivity {
             mediaRecorder = new MediaRecorder();
 
             try {
+                note_pronunciation = getRecordingFilePath();
+
                 mediaRecorder.setAudioSource(MediaRecorder.AudioSource.MIC);
                 mediaRecorder.setOutputFormat(MediaRecorder.OutputFormat.OGG);
-                mediaRecorder.setOutputFile(getRecordingFilePath());
+                mediaRecorder.setOutputFile(note_pronunciation);
                 mediaRecorder.setAudioEncoder(MediaRecorder.AudioEncoder.OPUS);
                 mediaRecorder.setAudioEncodingBitRate(128000);
                 mediaRecorder.setAudioSamplingRate(44100);
@@ -301,10 +314,11 @@ public class AddEditNoteActivity extends BaseActivity {
         if (mediaRecorder == null && recordingExists) {
             if (!mediaPlayer.isPlaying()) {
                 try {
-                    mediaPlayer.setDataSource(getRecordingFilePath());
+                    //when a note already had a pronunciation recording.. play that
+                    //or else play the
+                    mediaPlayer.setDataSource(note_pronunciation);
                     mediaPlayer.prepare();
                     mediaPlayer.start();
-
 
                     mediaPlayer = null;
 
@@ -333,13 +347,11 @@ public class AddEditNoteActivity extends BaseActivity {
             temp_recordingName = "rec_" + recordingName + ".ogg";
             File new_file = new File(recordingDir, temp_recordingName);
             if(old_file.renameTo(new_file)) {
-                Toast.makeText(this, "Recording processing completed", Toast.LENGTH_SHORT).show();
+                Log.d(TAG, "prepareRecording: [New filename: " + new_file.getName() + "]");
                 return true;
             }
         }
-        Log.d(TAG, "prepareRecording: " + old_file.getPath());
-        Log.d(TAG, "prepareRecording: " + old_file.getAbsolutePath());
-
+        Log.d(TAG, "prepareRecording: Processing failed");
 
         return false;
     }
