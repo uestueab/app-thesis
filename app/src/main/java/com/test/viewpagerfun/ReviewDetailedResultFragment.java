@@ -77,7 +77,8 @@ public class ReviewDetailedResultFragment extends Fragment {
                     ContextCompat.getColor(getActivity(),R.color.correct)
             );
 
-            playPronunciation(review);
+            String pronunciation = review.getNote().getPronunciation();
+            playPronunciation(pronunciation);
         }
 
         //FEATURE: Play review animation
@@ -113,14 +114,17 @@ public class ReviewDetailedResultFragment extends Fragment {
 
     }
 
-    private void playPronunciation(Review review){
-        MediaPlayer mediaPlayer = new MediaPlayer();
-        try {
-            mediaPlayer.setDataSource(review.getNote().getPronunciation());
-            mediaPlayer.prepare();
-            mediaPlayer.start();
-        }catch (IOException e){
-            e.printStackTrace();
+    private void playPronunciation(String pronunciation){
+        if(pronunciation != null){
+            MediaPlayer mediaPlayer = new MediaPlayer();
+
+            try {
+                mediaPlayer.setDataSource(pronunciation);
+                mediaPlayer.prepare();
+                mediaPlayer.start();
+            }catch (IOException e){
+                e.printStackTrace();
+            }
         }
     }
 

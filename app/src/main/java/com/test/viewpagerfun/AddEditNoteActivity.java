@@ -89,6 +89,7 @@ public class AddEditNoteActivity extends BaseActivity {
             binding.editTextTitle.setText(note.getPrompt());
             binding.editTextMeaning.setText(note.getMeaning());
 
+            //get the pronunciation of note and store globally
             notePronunciation = note.getPronunciation();
 
             //show name of prev recording.
@@ -98,8 +99,8 @@ public class AddEditNoteActivity extends BaseActivity {
                 recordingExists = true;
             }
 
+            //get synonyms of note and store globally
             synonyms = note.getSynonyms();
-
 
             //if the note has synonyms show them on screen too
             if (synonyms != null && synonyms.size() > 0) {
@@ -146,6 +147,40 @@ public class AddEditNoteActivity extends BaseActivity {
             @Override
             public void onClick(View v) {
                 btnPlayPressed();
+            }
+        });
+
+        binding.tvAddRecording.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+                String fileName = null;
+
+                //are we editing note's pronunciation? -> notePronunciation
+                // are we adding pronunciation to a new note? -> temp_recordingName
+                if(notePronunciation != null)
+                    fileName = notePronunciation;
+                else if(recordingExists)
+                    fileName = temp_recordingName;
+
+                if (fileName != null) {
+                    File file = new File(fileName);
+                    Log.d(TAG, "getRecordingFilePath: " + file.getPath());
+
+                    //does file exist on device?
+                    if(file.isFile()){
+                        //was the file deleted?
+                        if(file.delete()){
+                            //remove link note <-> pronunciation location, in case we are editing
+                            if(note != null)
+                                note.setPronunciation(null);
+                            //update ui
+                            binding.tvAddRecording.setText("Nothing recorded yet");
+                            //reset
+                            recordingExists = false;
+                        }
+                    }
+                }
+                return false;
             }
         });
 
@@ -212,8 +247,6 @@ public class AddEditNoteActivity extends BaseActivity {
 
         //store the synonyms in a list
         saveSynonyms();
-        //give recording a meaningful filename or null when no recording was done
-        String recordingPath = prepareRecording(title) ? getRecordingFilePath() : null;
 
         //create a new note (generates an id by default)
         //..or set new values to the existing note, which already has an id
@@ -222,14 +255,15 @@ public class AddEditNoteActivity extends BaseActivity {
                     .prompt(title)
                     .meaning(meaning)
                     .synonyms(synonyms)
-                    .pronunciation(recordingPath)
                     .build();
         } else if (requestCode == EDIT_NOTE_REQUEST) {
             note.setPrompt(title);
             note.setMeaning(meaning);
             note.setSynonyms(synonyms);
-            note.setPronunciation(recordingPath);
         }
+
+        // add pronunciation too if exist, or null when no recording was done
+        note.setPronunciation(prepareRecording());
 
         String extraKey = requestCode == ADD_NOTE_REQUEST ? EXTRA_ADD_NOTE : EXTRA_EDIT_NOTE;
 
@@ -327,22 +361,22 @@ public class AddEditNoteActivity extends BaseActivity {
     }
 
     //renames the temporary filename to the final one, containing the name of the note.
-    private boolean prepareRecording(String recordingName) {
+    private String prepareRecording() {
         ContextWrapper contextWrapper = new ContextWrapper(getApplicationContext());
         File recordingDir = contextWrapper.getExternalFilesDir(Environment.DIRECTORY_MUSIC);
         File old_file = new File(recordingDir, temp_recordingName);
 
         if (old_file.isFile()) {
-            temp_recordingName = "rec_" + recordingName + ".ogg";
+            temp_recordingName = note.getNoteId()+"_"+note.getPrompt() +".ogg";
             File new_file = new File(recordingDir, temp_recordingName);
             if (old_file.renameTo(new_file)) {
                 Log.d(TAG, "prepareRecording: [New filename: " + new_file.getName() + "]");
-                return true;
+                return temp_recordingName;
             }
         }
         Log.d(TAG, "prepareRecording: Processing failed");
 
-        return false;
+        return null;
     }
 
 
