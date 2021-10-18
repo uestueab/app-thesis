@@ -6,8 +6,8 @@ import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
-import com.test.viewpagerfun.model.repository.NoteRepository;
-import com.test.viewpagerfun.model.entity.Note;
+import com.test.viewpagerfun.model.repository.FlashCardRepository;
+import com.test.viewpagerfun.model.entity.FlashCard;
 import com.test.viewpagerfun.sm2.Review;
 import com.test.viewpagerfun.sm2.Session;
 
@@ -15,10 +15,10 @@ import java.util.List;
 
 public class SharedViewModel extends AndroidViewModel {
 
-    private final NoteRepository repository;
+    private final FlashCardRepository repository;
 
-    private final LiveData<List<Note>> notes;
-    private int totalNotes;
+    private final LiveData<List<FlashCard>> flashCards;
+    private int totalFlashCards;
     private final MutableLiveData<Review> mostRecentReview = new MutableLiveData<>();
     private final MutableLiveData<Session> session = new MutableLiveData<>(new Session());
     private int correctCount;
@@ -26,39 +26,39 @@ public class SharedViewModel extends AndroidViewModel {
     //constructor for loading from database
     public SharedViewModel(Application application) {
         super(application);
-        repository = new NoteRepository(application);
-        notes = repository.getNotesDue();
+        repository = new FlashCardRepository(application);
+        flashCards = repository.getFlashCardsDue();
     }
 
-    //constructor for storing remaining notes from a previous review
-    public SharedViewModel(Application application, List<Note> previousNotes) {
+    //constructor for storing remaining flashCards from a previous review
+    public SharedViewModel(Application application, List<FlashCard> previousFlashCards) {
         super(application);
-        repository = new NoteRepository(application);
-        notes = new MutableLiveData<>(previousNotes);
+        repository = new FlashCardRepository(application);
+        flashCards = new MutableLiveData<>(previousFlashCards);
     }
 
-    // Notes List
-    public LiveData<List<Note>> getNotes() { return notes; }
-    public List<Note> getRemainingNotes() { return notes.getValue(); }
-    public int getTotalNotes() {
-        if (totalNotes == 0)
-            totalNotes =  notes.getValue().size();
-        return totalNotes;
+    // FlashCards List
+    public LiveData<List<FlashCard>> getFlashCards() { return flashCards; }
+    public List<FlashCard> getRemainingFlashCards() { return flashCards.getValue(); }
+    public int getTotalFlashCards() {
+        if (totalFlashCards == 0)
+            totalFlashCards =  flashCards.getValue().size();
+        return totalFlashCards;
     }
 
-    //  Note (Only available if getNotes is observed!)
-    public Note getNote() {
-        if(notes.getValue().size() > 0)
-            return notes.getValue().get(0);
+    //  FlashCard (Only available if getFlashCards is observed!)
+    public FlashCard getFlashCard() {
+        if(flashCards.getValue().size() > 0)
+            return flashCards.getValue().get(0);
 
         return null;
     }
 
     /**
-     * @return Works like an iterator. Returns true if there are notes left to show.
+     * @return Works like an iterator. Returns true if there are flashCards left to show.
      * Returns false when reaching last livedata index.
      */
-    public boolean hasNextNote() { return notes.getValue().size() > 0; }
+    public boolean hasNextFlashCard() { return flashCards.getValue().size() > 0; }
 
     // Review
     public Review getMostRecentReview() { return mostRecentReview.getValue(); }
@@ -83,16 +83,16 @@ public class SharedViewModel extends AndroidViewModel {
     }
 
     // Database
-    public void insert(Note note) {
-        repository.insert(note);
+    public void insert(FlashCard flashCard) {
+        repository.insert(flashCard);
     }
 
-    public void update(Note note) {
-        repository.update(note);
+    public void update(FlashCard flashCard) {
+        repository.update(flashCard);
     }
 
-    public void delete(Note note) {
-        repository.delete(note);
+    public void delete(FlashCard flashCard) {
+        repository.delete(flashCard);
     }
 
 }

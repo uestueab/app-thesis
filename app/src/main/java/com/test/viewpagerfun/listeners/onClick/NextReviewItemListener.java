@@ -33,8 +33,8 @@ public class NextReviewItemListener implements View.OnClickListener{
 
     @Override
     public void onClick(View v) {
-        //let move to the review user input fragment if notes are left
-        if (model.hasNextNote()) {
+        //let move to the review user input fragment if flashCards are left
+        if (model.hasNextFlashCard()) {
 
             ((ReviewActivity) activity).previous_fragment();
             //remove flicker

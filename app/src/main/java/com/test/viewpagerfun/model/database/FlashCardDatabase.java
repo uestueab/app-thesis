@@ -10,25 +10,25 @@ import androidx.room.RoomDatabase;
 import androidx.room.TypeConverters;
 import androidx.sqlite.db.SupportSQLiteDatabase;
 
-import com.test.viewpagerfun.model.dao.NoteDao;
+import com.test.viewpagerfun.model.dao.FlashCardDao;
 import com.test.viewpagerfun.model.dataconverter.DataConverter;
-import com.test.viewpagerfun.model.entity.Note;
+import com.test.viewpagerfun.model.entity.FlashCard;
 
 import java.util.ArrayList;
 
 
-@Database(entities = {Note.class}, version = 1)
+@Database(entities = {FlashCard.class}, version = 1)
 @TypeConverters({DataConverter.class})
-public abstract class NoteDatabase extends RoomDatabase {
+public abstract class FlashCardDatabase extends RoomDatabase {
 
-    private static NoteDatabase instance;
+    private static FlashCardDatabase instance;
 
-    public abstract NoteDao noteDao();
+    public abstract FlashCardDao flashCardDao();
 
-    public static synchronized NoteDatabase getInstance(Context context) {
+    public static synchronized FlashCardDatabase getInstance(Context context) {
         if (instance == null) {
             instance = Room.databaseBuilder(context.getApplicationContext(),
-                    NoteDatabase.class, "note_database")
+                    FlashCardDatabase.class, "flashCard_database")
                     .fallbackToDestructiveMigration()
                     .addCallback(roomCallback)
                     .build();
@@ -44,20 +44,20 @@ public abstract class NoteDatabase extends RoomDatabase {
     };
 
     private static class PopulateDbAsyncTask extends AsyncTask<Void, Void, Void> {
-        private NoteDao noteDao;
+        private FlashCardDao flashCardDao;
 
-        private PopulateDbAsyncTask(NoteDatabase db) {
-            noteDao = db.noteDao();
+        private PopulateDbAsyncTask(FlashCardDatabase db) {
+            flashCardDao = db.flashCardDao();
         }
 
         @Override
         protected Void doInBackground(Void... voids) {
-            noteDao.insert(Note.builder()
+            flashCardDao.insert(FlashCard.builder()
                     .prompt("light").meaning("licht").synonyms( new ArrayList<String>() { { add("hell"); } } ).build());
-            noteDao.insert(Note.builder().prompt("church").meaning("kirche").build());
-            noteDao.insert(Note.builder().prompt("plant").meaning("pflanze").build());
-
-//            noteDao.insertNoteWithMetaData(new Note("Note", "with status", 10),
+            flashCardDao.insert(FlashCard.builder().prompt("church").meaning("kirche").build());
+            flashCardDao.insert(FlashCard.builder().prompt("plant").meaning("pflanze").build());
+            flashCardDao.insert(FlashCard.builder().prompt("water").meaning("wasser").build());
+//            flashCardDao.insertFlashCardWithMetaData(new FlashCard("FlashCard", "with status", 10),
 //                    new MetaData("now"));
             return null;
         }

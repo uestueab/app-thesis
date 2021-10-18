@@ -1,24 +1,24 @@
 package com.test.viewpagerfun.sm2;
 
-import com.test.viewpagerfun.model.entity.Note;
+import com.test.viewpagerfun.model.entity.FlashCard;
 
 import java.util.*;
 
 
 public class Session {
-    private Map<Note, SessionNoteStatistics> noteStatisticsMap = new HashMap<>();
+    private Map<FlashCard, SessionFlashCardStatistics> flashCardStatisticsMap = new HashMap<>();
 
     public void applyReview(Review review) {
-        Note note = review.getNote();
-        SessionNoteStatistics noteStatistics = noteStatisticsMap.computeIfAbsent(note, k -> new SessionNoteStatistics());
-        noteStatistics.setMostRecentScore(review.getScore());
+        FlashCard flashCard = review.getFlashCard();
+        SessionFlashCardStatistics flashCardStatistics = flashCardStatisticsMap.computeIfAbsent(flashCard, k -> new SessionFlashCardStatistics());
+        flashCardStatistics.setMostRecentScore(review.getScore());
 
         if (review.getScore() < 2) {
-            noteStatistics.setLapsedDuringSession(true);
+            flashCardStatistics.setLapsedDuringSession(true);
         }
     }
 
-    public Map<Note, SessionNoteStatistics> getNoteStatistics() {
-        return this.noteStatisticsMap;
+    public Map<FlashCard, SessionFlashCardStatistics> getFlashCardStatistics() {
+        return this.flashCardStatisticsMap;
     }
 }

@@ -6,7 +6,7 @@ import android.util.Log;
 import com.test.viewpagerfun.PrefManager;
 import com.test.viewpagerfun.R;
 import com.test.viewpagerfun.commander.state.ReviewAnimationState;
-import com.test.viewpagerfun.model.entity.Note;
+import com.test.viewpagerfun.model.entity.FlashCard;
 
 import java.util.Collections;
 import java.util.List;

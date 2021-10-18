@@ -64,8 +64,8 @@ public class ReviewDetailedResultFragment extends Fragment {
 
         //Update the UI.
         Review review = model.getMostRecentReview();
-        binding.tvQuestion.setText(review.getNote().getPrompt());
-        binding.tvReviewProgress.setText(model.getCorrectCount(true)+"/"+model.getTotalNotes());
+        binding.tvQuestion.setText(review.getFlashCard().getPrompt());
+        binding.tvReviewProgress.setText(model.getCorrectCount(true)+"/"+model.getTotalFlashCards());
         if (review.hasFailed()) {
             binding.tvAnswerResult.setText("wrong");
             binding.tvAnswerResult.setBackgroundColor(
@@ -77,7 +77,7 @@ public class ReviewDetailedResultFragment extends Fragment {
                     ContextCompat.getColor(getActivity(),R.color.correct)
             );
 
-            String pronunciation = review.getNote().getPronunciation();
+            String pronunciation = review.getFlashCard().getPronunciation();
             playPronunciation(pronunciation);
         }
 
@@ -87,17 +87,17 @@ public class ReviewDetailedResultFragment extends Fragment {
         Commander.run(PREFS_DISPLAY_ANIMATION);
 
 
-        /*  when a note fails during review add it on top of the list stack.
+        /*  when a flashCard fails during review add it on top of the list stack.
             This causes the review to be finished only if all items have passed correctly.
          */
-        model.getNotes().observe(getViewLifecycleOwner(), notes -> {
-            if(notes.size() > 0)
-                notes.remove(0);
+        model.getFlashCards().observe(getViewLifecycleOwner(), flashCards -> {
+            if(flashCards.size() > 0)
+                flashCards.remove(0);
 
             if (review.hasFailed()){
-                notes.add(review.getNote());
+                flashCards.add(review.getFlashCard());
                 //FEATURE: Shuffle based on preference
-                Commander.setState(PREFS_REVIEW_SHUFFLE,notes);
+                Commander.setState(PREFS_REVIEW_SHUFFLE,flashCards);
                 Commander.run(PREFS_REVIEW_SHUFFLE);
             }
         });

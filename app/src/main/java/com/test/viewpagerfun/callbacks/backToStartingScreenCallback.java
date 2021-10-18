@@ -8,7 +8,7 @@ import androidx.activity.result.ActivityResultCallback;
 
 import com.test.viewpagerfun.PrefManager;
 import com.test.viewpagerfun.databinding.ActivityStartingScreenBinding;
-import com.test.viewpagerfun.model.entity.Note;
+import com.test.viewpagerfun.model.entity.FlashCard;
 
 import java.util.List;
 
@@ -32,20 +32,20 @@ public class backToStartingScreenCallback implements ActivityResultCallback<Acti
     private Context context;
     private ActivityStartingScreenBinding binding;
 
-    //unchecked casts can be ignored, since the bundle is guaranteed to return a List<Note>
+    //unchecked casts can be ignored, since the bundle is guaranteed to return a List<FlashCard>
     @SuppressWarnings("unchecked")
     @Override
     public void onActivityResult(ActivityResult result) {
         if (result.getResultCode() == Activity.RESULT_OK) {
 
             PrefManager.init(getContext());
-            List<Note> notes = PrefManager.getNotes(PREFS_REMAINING_NOTES);
+            List<FlashCard> flashCards = PrefManager.getFlashCards(PREFS_REMAINING_NOTES);
 
             // clear the key-value pair
-            if (notes == null || notes.size() == 0) {
+            if (flashCards == null || flashCards.size() == 0) {
                 PrefManager.remove(PREFS_REMAINING_NOTES);
             }
-            binding.tvReviewItemCount.setText("Review: " + notes.size());
+            binding.tvReviewItemCount.setText("Review: " + flashCards.size());
         }
     }
 

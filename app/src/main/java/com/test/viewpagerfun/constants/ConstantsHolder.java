@@ -21,7 +21,7 @@ public final class ConstantsHolder {
 
     // specifies the file in which to save the shared preferences
     public static final String PREFS_FILE = "prefs_file";
-    public static final String PREFS_REMAINING_NOTES = "prefs_remaining_notes";
+    public static final String PREFS_REMAINING_NOTES = "prefs_remaining_flashCards";
 
     public static final String PREFS_GENERAL_NOTIFICATIONS = "prefs_general_notifications";
     public static final String PREFS_GENERAL_LANGUAGE = "prefs_general_language";
@@ -59,7 +59,7 @@ public final class ConstantsHolder {
        OPTIMAL STRING ALIGNMENT DISTANCE (LEVENSHTEIN)
      */
 
-    //denotes how many mismatches are allowed every 'MIN_MISMATCH_LENGTH' characters
+    //deflashCards how many mismatches are allowed every 'MIN_MISMATCH_LENGTH' characters
     public static final float MIN_MISMATCH_LENGTH = 5;
 
 

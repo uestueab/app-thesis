@@ -6,7 +6,7 @@
         android:title="Settings"
         app:showAsAction="never"/>
     <item
-        android:id="@+id/menu_item_manage_notes"
-        android:title="Manage notes"
+        android:id="@+id/menu_item_manage_flashCards"
+        android:title="Manage flashCards"
         app:showAsAction="never"/>
 </menu>

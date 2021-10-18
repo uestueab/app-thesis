@@ -17,7 +17,7 @@ import android.widget.Toast;
 
 import com.test.viewpagerfun.databinding.ActivityStartingScreenBinding;
 import com.test.viewpagerfun.listeners.onClick.StartActivityListener;
-import com.test.viewpagerfun.model.entity.Note;
+import com.test.viewpagerfun.model.entity.FlashCard;
 import com.test.viewpagerfun.viewmodel.StartingScreenViewModel;
 
 import java.util.List;
@@ -80,22 +80,22 @@ public class StartingScreenActivity extends BaseActivity {
      */
     private void showReviewItemCount() {
         PrefManager.init(this);
-        List<Note> previousNotes = PrefManager.getNotes(PREFS_REMAINING_NOTES);
+        List<FlashCard> previousFlashCards = PrefManager.getFlashCards(PREFS_REMAINING_NOTES);
 
-        if (previousNotes == null || previousNotes.size() == 0) {
+        if (previousFlashCards == null || previousFlashCards.size() == 0) {
             StartingScreenViewModel model = new ViewModelProvider(this).get(StartingScreenViewModel.class);
-            model.getNotes().observe(this, item -> {
-                int noteCount = model.getNotesCount();
-                binding.tvReviewItemCount.setText("Review: " + noteCount);
-                if(noteCount > 0){
+            model.getFlashCards().observe(this, item -> {
+                int flashCardCount = model.getFlashCardsCount();
+                binding.tvReviewItemCount.setText("Review: " + flashCardCount);
+                if(flashCardCount > 0){
                     binding.btnStartReview.setVisibility(View.VISIBLE);
                 }
-                else{ // when there are no review notes available, there is no point in moving to review activity.
+                else{ // when there are no review flashCards available, there is no point in moving to review activity.
                     binding.btnStartReview.setVisibility(View.GONE);
                 }
             });
         } else {
-            binding.tvReviewItemCount.setText("Review: " + previousNotes.size());
+            binding.tvReviewItemCount.setText("Review: " + previousFlashCards.size());
         }
 
     }
@@ -120,9 +120,9 @@ public class StartingScreenActivity extends BaseActivity {
                 Intent intentSettings = new Intent(StartingScreenActivity.this, SettingsActivity.class);
                 startActivity(intentSettings);
                 return true;
-            case R.id.menu_item_manage_notes:
-                Intent intentManageNote = new Intent(StartingScreenActivity.this, ManageNoteActivity.class);
-                startActivity(intentManageNote);
+            case R.id.menu_item_manage_flashCards:
+                Intent intentManageFlashCard = new Intent(StartingScreenActivity.this, ManageFlashCardActivity.class);
+                startActivity(intentManageFlashCard);
                 return true;
             default:
                 super.onOptionsItemSelected(item);

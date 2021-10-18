@@ -23,9 +23,9 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.test.viewpagerfun.constants.Permissions;
-import com.test.viewpagerfun.databinding.ActivityAddNoteBinding;
+import com.test.viewpagerfun.databinding.ActivityAddFlashcardBinding;
 import com.test.viewpagerfun.listeners.onClick.RemoveSynonymListener;
-import com.test.viewpagerfun.model.entity.Note;
+import com.test.viewpagerfun.model.entity.FlashCard;
 
 import java.io.File;
 import java.io.IOException;
@@ -36,13 +36,13 @@ import java.util.UUID;
 
 import static com.test.viewpagerfun.constants.ConstantsHolder.*;
 
-public class AddEditNoteActivity extends BaseActivity {
+public class AddEditFlashCardActivity extends BaseActivity {
 
-    private static final String TAG = "AddEditNoteActivity";
+    private static final String TAG = "AddEditFlashCardActivity";
 
     private int requestCode;
-    private ActivityAddNoteBinding binding;
-    private Note note;
+    private ActivityAddFlashcardBinding binding;
+    private FlashCard flashCard;
 
     private final List<EditText> et_synonyms = new ArrayList<EditText>();
     private List<String> synonyms = new ArrayList<String>();
@@ -52,12 +52,12 @@ public class AddEditNoteActivity extends BaseActivity {
 
     private boolean recordingExists = false;
     private String temp_recordingName = "rec_" + UUID.randomUUID().toString() + ".ogg";
-    private String notePronunciation;
+    private String flashCardPronunciation;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        binding = ActivityAddNoteBinding.inflate(getLayoutInflater());
+        binding = ActivityAddFlashcardBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
         // calling the action bar
@@ -77,32 +77,32 @@ public class AddEditNoteActivity extends BaseActivity {
         Intent intent = getIntent();
 
         if (intent.hasExtra(EXTRA_EDIT_NOTE)) {
-            setTitle("Edit Note");
+            setTitle("Edit FlashCard");
 
             Bundle bundle = intent.getBundleExtra(EXTRA_EDIT_NOTE);
-            //get the note to be edited
-            note = (Note) bundle.getSerializable(BUNDLE_EDIT_NOTE);
+            //get the flashCard to be edited
+            flashCard = (FlashCard) bundle.getSerializable(BUNDLE_EDIT_NOTE);
             //get the request-code
             requestCode = bundle.getInt(REQUEST_CODE, 0);
 
             //fill in all the fields
-            binding.editTextTitle.setText(note.getPrompt());
-            binding.editTextMeaning.setText(note.getMeaning());
+            binding.editTextTitle.setText(flashCard.getPrompt());
+            binding.editTextMeaning.setText(flashCard.getMeaning());
 
-            //get the pronunciation of note and store globally
-            notePronunciation = note.getPronunciation();
+            //get the pronunciation of flashCard and store globally
+            flashCardPronunciation = flashCard.getPronunciation();
 
             //show name of prev recording.
-            if (notePronunciation != null) {
-                File pronunciation = new File(note.getPronunciation());
+            if (flashCardPronunciation != null) {
+                File pronunciation = new File(flashCard.getPronunciation());
                 binding.tvAddRecording.setText(pronunciation.getName());
                 recordingExists = true;
             }
 
-            //get synonyms of note and store globally
-            synonyms = note.getSynonyms();
+            //get synonyms of flashCard and store globally
+            synonyms = flashCard.getSynonyms();
 
-            //if the note has synonyms show them on screen too
+            //if the flashCard has synonyms show them on screen too
             if (synonyms != null && synonyms.size() > 0) {
                 for (int i = 0; i < synonyms.size(); i++) {
                     if (i == 0) binding.editTextSynonym.setText(synonyms.get(0));
@@ -112,7 +112,7 @@ public class AddEditNoteActivity extends BaseActivity {
             }
 
         } else {
-            setTitle("Add Note");
+            setTitle("Add FlashCard");
             requestCode = ADD_NOTE_REQUEST;
         }
 
@@ -155,10 +155,10 @@ public class AddEditNoteActivity extends BaseActivity {
             public boolean onLongClick(View v) {
                 String fileName = null;
 
-                //are we editing note's pronunciation? -> notePronunciation
-                // are we adding pronunciation to a new note? -> temp_recordingName
-                if(notePronunciation != null)
-                    fileName = notePronunciation;
+                //are we editing flashCard's pronunciation? -> flashCardPronunciation
+                // are we adding pronunciation to a new flashCard? -> temp_recordingName
+                if(flashCardPronunciation != null)
+                    fileName = flashCardPronunciation;
                 else if(recordingExists)
                     fileName = temp_recordingName;
 
@@ -170,9 +170,9 @@ public class AddEditNoteActivity extends BaseActivity {
                     if(file.isFile()){
                         //was the file deleted?
                         if(file.delete()){
-                            //remove link note <-> pronunciation location, in case we are editing
-                            if(note != null)
-                                note.setPronunciation(null);
+                            //remove link flashCard <-> pronunciation location, in case we are editing
+                            if(flashCard != null)
+                                flashCard.setPronunciation(null);
                             //update ui
                             binding.tvAddRecording.setText("Nothing recorded yet");
                             //reset
@@ -189,7 +189,7 @@ public class AddEditNoteActivity extends BaseActivity {
     private void createSynonymField(String synonym) {
         ConstraintSet set = new ConstraintSet();
 
-        EditText editText = new EditText(AddEditNoteActivity.this);
+        EditText editText = new EditText(AddEditFlashCardActivity.this);
         editText.setId(View.generateViewId());
         if (synonym == null) {
             editText.setHint("add synonym...");
@@ -224,7 +224,7 @@ public class AddEditNoteActivity extends BaseActivity {
         if (synonyms != null && synonyms.size() > 0)
             synonyms.clear();
         else
-            //in case the note doesn't have synonyms we give the user a chance to add some.
+            //in case the flashCard doesn't have synonyms we give the user a chance to add some.
             synonyms = new ArrayList<>();
 
         for (int i = 0; i < et_synonyms.size(); i++) {
@@ -234,7 +234,7 @@ public class AddEditNoteActivity extends BaseActivity {
         }
     }
 
-    private void saveNote() {
+    private void saveFlashCard() {
         //get input of edittext fields
         String title = binding.editTextTitle.getText().toString();
         String meaning = binding.editTextMeaning.getText().toString();
@@ -248,29 +248,29 @@ public class AddEditNoteActivity extends BaseActivity {
         //store the synonyms in a list
         saveSynonyms();
 
-        //create a new note (generates an id by default)
-        //..or set new values to the existing note, which already has an id
+        //create a new flashCard (generates an id by default)
+        //..or set new values to the existing flashCard, which already has an id
         if (requestCode == ADD_NOTE_REQUEST) {
-            note = Note.builder()
+            flashCard = FlashCard.builder()
                     .prompt(title)
                     .meaning(meaning)
                     .synonyms(synonyms)
                     .build();
         } else if (requestCode == EDIT_NOTE_REQUEST) {
-            note.setPrompt(title);
-            note.setMeaning(meaning);
-            note.setSynonyms(synonyms);
+            flashCard.setPrompt(title);
+            flashCard.setMeaning(meaning);
+            flashCard.setSynonyms(synonyms);
         }
 
         // add pronunciation too if exist, or null when no recording was done
-        note.setPronunciation(prepareRecording());
+        flashCard.setPronunciation(prepareRecording());
 
         String extraKey = requestCode == ADD_NOTE_REQUEST ? EXTRA_ADD_NOTE : EXTRA_EDIT_NOTE;
 
-        //prepare intent and send note to ManageNoteActivity again
+        //prepare intent and send flashCard to ManageFlashCardActivity again
         Intent intent = new Intent();
         Bundle bundle = new Bundle();
-        bundle.putSerializable(BUNDLE_ADD_NOTE, (Serializable) note);
+        bundle.putSerializable(BUNDLE_ADD_NOTE, (Serializable) flashCard);
         intent.putExtra(extraKey, bundle);
 
         intent.putExtra(REQUEST_CODE, requestCode);
@@ -296,11 +296,11 @@ public class AddEditNoteActivity extends BaseActivity {
             mediaRecorder = new MediaRecorder();
 
             try {
-                notePronunciation = getRecordingFilePath();
+                flashCardPronunciation = getRecordingFilePath();
 
                 mediaRecorder.setAudioSource(MediaRecorder.AudioSource.MIC);
                 mediaRecorder.setOutputFormat(MediaRecorder.OutputFormat.OGG);
-                mediaRecorder.setOutputFile(notePronunciation);
+                mediaRecorder.setOutputFile(flashCardPronunciation);
                 mediaRecorder.setAudioEncoder(MediaRecorder.AudioEncoder.OPUS);
                 mediaRecorder.setAudioEncodingBitRate(128000);
                 mediaRecorder.setAudioSamplingRate(44100);
@@ -337,9 +337,9 @@ public class AddEditNoteActivity extends BaseActivity {
         if (mediaRecorder == null && recordingExists) {
             if (!mediaPlayer.isPlaying()) {
                 try {
-                    //when a note already had a pronunciation recording.. play that
+                    //when a flashCard already had a pronunciation recording.. play that
                     //or else play the
-                    mediaPlayer.setDataSource(notePronunciation);
+                    mediaPlayer.setDataSource(flashCardPronunciation);
                     mediaPlayer.prepare();
                     mediaPlayer.start();
 
@@ -360,14 +360,14 @@ public class AddEditNoteActivity extends BaseActivity {
         return file.getPath();
     }
 
-    //renames the temporary filename to the final one, containing the name of the note.
+    //renames the temporary filename to the final one, containing the name of the flashCard.
     private String prepareRecording() {
         ContextWrapper contextWrapper = new ContextWrapper(getApplicationContext());
         File recordingDir = contextWrapper.getExternalFilesDir(Environment.DIRECTORY_MUSIC);
         File old_file = new File(recordingDir, temp_recordingName);
 
         if (old_file.isFile()) {
-            temp_recordingName = note.getNoteId()+"_"+note.getPrompt() +".ogg";
+            temp_recordingName = flashCard.getFlashCardId()+"_"+flashCard.getPrompt() +".ogg";
             File new_file = new File(recordingDir, temp_recordingName);
             if (old_file.renameTo(new_file)) {
                 Log.d(TAG, "prepareRecording: [New filename: " + new_file.getName() + "]");
@@ -383,15 +383,15 @@ public class AddEditNoteActivity extends BaseActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater menuInflater = getMenuInflater();
-        menuInflater.inflate(R.menu.add_note_menu, menu);
+        menuInflater.inflate(R.menu.add_flashcards_menu, menu);
         return true;
     }
 
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()) {
-            case R.id.save_note:
-                saveNote();
+            case R.id.save_flashCard:
+                saveFlashCard();
                 return true;
             default:
                 return super.onOptionsItemSelected(item);

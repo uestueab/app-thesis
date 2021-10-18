@@ -8,8 +8,8 @@ import android.widget.Toast;
 import androidx.activity.result.ActivityResult;
 import androidx.activity.result.ActivityResultCallback;
 
-import com.test.viewpagerfun.model.entity.Note;
-import com.test.viewpagerfun.viewmodel.ManageNoteViewModel;
+import com.test.viewpagerfun.model.entity.FlashCard;
+import com.test.viewpagerfun.viewmodel.ManageFlashCardViewModel;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -22,10 +22,10 @@ import static com.test.viewpagerfun.constants.ConstantsHolder.*;
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor
-public class backToManageNoteCallback implements ActivityResultCallback<ActivityResult> {
+public class backToManageFlashCardCallback implements ActivityResultCallback<ActivityResult> {
 
     private Context context;
-    private ManageNoteViewModel viewModel;
+    private ManageFlashCardViewModel viewModel;
 
 
     @Override
@@ -38,18 +38,18 @@ public class backToManageNoteCallback implements ActivityResultCallback<Activity
 
         if (requestCode == ADD_NOTE_REQUEST && result.getResultCode() == Activity.RESULT_OK) {
             Bundle bundle = result.getData().getBundleExtra(EXTRA_ADD_NOTE);
-            Note note = (Note) bundle.getSerializable(BUNDLE_ADD_NOTE);
+            FlashCard flashCard = (FlashCard) bundle.getSerializable(BUNDLE_ADD_NOTE);
 
-            viewModel.insert(note);
-            Toast.makeText(getContext(), "Note saved", Toast.LENGTH_SHORT).show();
+            viewModel.insert(flashCard);
+            Toast.makeText(getContext(), "FlashCard saved", Toast.LENGTH_SHORT).show();
         } else if (requestCode == EDIT_NOTE_REQUEST && result.getResultCode() == Activity.RESULT_OK) {
             Bundle bundle = result.getData().getBundleExtra(EXTRA_EDIT_NOTE);
-            Note note = (Note) bundle.getSerializable(BUNDLE_ADD_NOTE);
+            FlashCard flashCard = (FlashCard) bundle.getSerializable(BUNDLE_ADD_NOTE);
 
-            viewModel.update(note);
-            Toast.makeText(getContext(), "Note updated", Toast.LENGTH_LONG).show();
+            viewModel.update(flashCard);
+            Toast.makeText(getContext(), "FlashCard updated", Toast.LENGTH_LONG).show();
         } else {
-            Toast.makeText(getContext(), "Note not saved", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getContext(), "FlashCard not saved", Toast.LENGTH_SHORT).show();
         }
     }
 }

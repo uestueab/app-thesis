@@ -2,7 +2,7 @@ package com.test.viewpagerfun.sm2;
 
 import android.util.Log;
 
-import com.test.viewpagerfun.model.entity.Note;
+import com.test.viewpagerfun.model.entity.FlashCard;
 
 import lombok.Builder;
 import lombok.Getter;
@@ -33,55 +33,55 @@ public class Scheduler {
     private Map<Integer, Float> consecutiveCorrectIntervalMappings = new HashMap<>();
 
     @Builder.Default
-    private Set<Note> notes = new HashSet<>();
+    private Set<FlashCard> flashCards = new HashSet<>();
 
-    public void addNote(Note note) {
-        notes.add(note);
+    public void addFlashCard(FlashCard flashCard) {
+        flashCards.add(flashCard);
     }
 
-    public Set<Note> getNotes() {
-        return notes;
+    public Set<FlashCard> getFlashCards() {
+        return flashCards;
     }
 
     public void applySession(Session session) {
-        session.getNoteStatistics().forEach((note, statistics) -> {
-            updateNoteInterval(note, statistics);
-            updateNoteSchedule(note);
+        session.getFlashCardStatistics().forEach((flashCard, statistics) -> {
+            updateFlashCardInterval(flashCard, statistics);
+            updateFlashCardSchedule(flashCard);
         });
     }
 
-    protected void updateNoteInterval(Note note, SessionNoteStatistics statistics) {
+    protected void updateFlashCardInterval(FlashCard flashCard, SessionFlashCardStatistics statistics) {
 
         if (statistics.isLapsedDuringSession() && statistics.getMostRecentScore() > 1) {
 
-            // note lapsed but the most recent review was successful.
-            // reset interval and correct count without updating the note's easiness factor
-            note.setConsecutiveCorrectCount(1);
-            note.setInterval(getConsecutiveCorrectInterval(1));
+            // flashCard lapsed but the most recent review was successful.
+            // reset interval and correct count without updating the flashCard's easiness factor
+            flashCard.setConsecutiveCorrectCount(1);
+            flashCard.setInterval(getConsecutiveCorrectInterval(1));
         } else if (statistics.getMostRecentScore() < 2 ) {
 
-            // last review for this note was not successful. set interval and consecutive correct count to 0
-            note.setInterval(0);
-            note.setConsecutiveCorrectCount(0);
+            // last review for this flashCard was not successful. set interval and consecutive correct count to 0
+            flashCard.setInterval(0);
+            flashCard.setConsecutiveCorrectCount(0);
         } else {
-            // note was recalled successfully during this session without a lapse; increment the correct count
-            note.setConsecutiveCorrectCount(note.getConsecutiveCorrectCount() + 1);
+            // flashCard was recalled successfully during this session without a lapse; increment the correct count
+            flashCard.setConsecutiveCorrectCount(flashCard.getConsecutiveCorrectCount() + 1);
 
-            // review was successful. update note easiness factor then calculate new interval
-            float newEasinessFactor = calculateEasinessFactor(note,statistics);
-            note.setEasinessFactor(newEasinessFactor);
+            // review was successful. update flashCard easiness factor then calculate new interval
+            float newEasinessFactor = calculateEasinessFactor(flashCard,statistics);
+            flashCard.setEasinessFactor(newEasinessFactor);
             // either update interval based on a static mapping, or based on the previous interval * EF.
             // default static mappings are based on SM2 defaults (1 day then 6 days) but this can be overridden.
-            Float fixedInterval = getConsecutiveCorrectInterval(note.getConsecutiveCorrectCount());
+            Float fixedInterval = getConsecutiveCorrectInterval(flashCard.getConsecutiveCorrectCount());
 
             Float interval = Optional.ofNullable(fixedInterval)
-                    .orElse((float)Math.round(note.getInterval() * note.getEasinessFactor()));
-            note.setInterval(interval);
+                    .orElse((float)Math.round(flashCard.getInterval() * flashCard.getEasinessFactor()));
+            flashCard.setInterval(interval);
         }
     }
 
-    protected float calculateEasinessFactor(Note note, SessionNoteStatistics statistics){
-        float newEasinessFactor = Math.max(MIN_EASINESS_FACTOR, (float)(note.getEasinessFactor()
+    protected float calculateEasinessFactor(FlashCard flashCard, SessionFlashCardStatistics statistics){
+        float newEasinessFactor = Math.max(MIN_EASINESS_FACTOR, (float)(flashCard.getEasinessFactor()
                 + (0.1 - (3 - statistics.getMostRecentScore()) * (0.08 + (3 - statistics.getMostRecentScore()) * 0.02))));
 
         if(newEasinessFactor > MAX_EASINESS_FACTOR)
@@ -91,22 +91,22 @@ public class Scheduler {
 
     }
 
-    protected void updateNoteSchedule(Note note) {
-        int intervalDaysWhole = (int)note.getInterval();
-        float intervalDaysFraction = note.getInterval() - intervalDaysWhole;
+    protected void updateFlashCardSchedule(FlashCard flashCard) {
+        int intervalDaysWhole = (int)flashCard.getInterval();
+        float intervalDaysFraction = flashCard.getInterval() - intervalDaysWhole;
         Log.d("[Interval]::::::", String.valueOf(intervalDaysWhole));
 
-//        LocalDateTime lastReview = TimeProvider.toLocalDateTime(note.getLastReviewedDate());
+//        LocalDateTime lastReview = TimeProvider.toLocalDateTime(flashCard.getLastReviewedDate());
 //        lastReview.plusDays(intervalDaysWhole)
 //                .plusHours(Math.round(HOURS_PER_DAY * intervalDaysFraction));
 //        Log.d("[lastReview]::::::", lastReview.toString());
 
-        note.setLastReviewedDate(
-               note.getLastReviewedDate() + TimeUnit.DAYS.toMillis(intervalDaysWhole)
+        flashCard.setLastReviewedDate(
+               flashCard.getLastReviewedDate() + TimeUnit.DAYS.toMillis(intervalDaysWhole)
                 + TimeUnit.HOURS.toMillis(Math.round(HOURS_PER_DAY * intervalDaysFraction))
         );
 
-        note.setDueDate(note.getLastReviewedDate());
+        flashCard.setDueDate(flashCard.getLastReviewedDate());
     }
 
     protected Float getConsecutiveCorrectInterval(int consecutiveCorrect) {

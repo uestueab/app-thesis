@@ -5,11 +5,8 @@ import android.text.TextUtils;
 import android.widget.SearchView;
 import android.widget.Toast;
 
-import com.test.viewpagerfun.ManageNoteActivity;
-import com.test.viewpagerfun.NoteAdapter;
-import com.test.viewpagerfun.databinding.ManageNoteBinding;
-import com.test.viewpagerfun.model.entity.Note;
-import com.test.viewpagerfun.viewmodel.ManageNoteViewModel;
+import com.test.viewpagerfun.FlashCardAdapter;
+import com.test.viewpagerfun.model.entity.FlashCard;
 
 import java.util.List;
 
@@ -25,24 +22,24 @@ import lombok.NoArgsConstructor;
 public class SearchViewTextListener implements SearchView.OnQueryTextListener {
 
     private Context context;
-    private NoteAdapter adapter;
+    private FlashCardAdapter adapter;
 
     @Override
     public boolean onQueryTextSubmit(String query) {
         //when SearchView gets cleared.
         if(query.equals("emptyQuery")){
-            //makes sure notes exist in adapter field
-            if(adapter.getNoteCount() == 0){
+            //makes sure flashCards exist in adapter field
+            if(adapter.getFlashCardCount() == 0){
                 return false;
             }
-            List<Note> notesListFull = adapter.getNotes();
+            List<FlashCard> flashCardsListFull = adapter.getFlashCards();
             //refresh screen with the full list again.
-            adapter.submitList(notesListFull);
+            adapter.submitList(flashCardsListFull);
             return false;
         }
 
         if (!adapter.filter(query))
-            Toast.makeText(getContext(), "couldn't find note matching query", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getContext(), "couldn't find flashCard matching query", Toast.LENGTH_SHORT).show();
 
         return false;
     }

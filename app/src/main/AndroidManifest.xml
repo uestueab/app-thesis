@@ -29,11 +29,11 @@
         </activity>
         <activity android:name=".ReviewActivity" android:label="Review" >
         </activity>
-        <activity android:name=".ManageNoteActivity" android:label="Overview total notes">
+        <activity android:name=".ManageFlashCardActivity" android:label="Overview total flashCards">
         </activity>
         <activity
-            android:name=".AddEditNoteActivity"
-            android:parentActivityName=".ManageNoteActivity" >
+            android:name=".AddEditFlashCardActivity"
+            android:parentActivityName=".ManageFlashCardActivity" >
         </activity>
 
         <service

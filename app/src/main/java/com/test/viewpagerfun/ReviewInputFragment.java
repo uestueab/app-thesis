@@ -23,7 +23,7 @@ import android.widget.Toast;
 import com.test.viewpagerfun.databinding.ReviewInputFragmentBinding;
 import com.test.viewpagerfun.listeners.onClick.ReviewAnswerSubmittedListener;
 import com.test.viewpagerfun.listeners.onEditorChange.SubmitWithKeyboardListener;
-import com.test.viewpagerfun.model.entity.Note;
+import com.test.viewpagerfun.model.entity.FlashCard;
 import com.test.viewpagerfun.sm2.Review;
 import com.test.viewpagerfun.viewmodel.SharedViewModel;
 
@@ -68,11 +68,11 @@ public class ReviewInputFragment extends Fragment {
         //get the SharedViewModel which is scoped to the underlying activity.
         model = new ViewModelProvider(requireActivity()).get(SharedViewModel.class);
         // Update the UI.
-        model.getNotes().observe(getViewLifecycleOwner(), notes -> {
-            Note currentNote = model.getNote();
-            if(currentNote != null){
-                binding.tvQuestion.setText(currentNote.getPrompt());
-                binding.tvReviewProgress.setText(model.getCorrectCount(false)+"/"+model.getTotalNotes());
+        model.getFlashCards().observe(getViewLifecycleOwner(), flashCards -> {
+            FlashCard currentFlashCard = model.getFlashCard();
+            if(currentFlashCard != null){
+                binding.tvQuestion.setText(currentFlashCard.getPrompt());
+                binding.tvReviewProgress.setText(model.getCorrectCount(false)+"/"+model.getTotalFlashCards());
             }
         });
 

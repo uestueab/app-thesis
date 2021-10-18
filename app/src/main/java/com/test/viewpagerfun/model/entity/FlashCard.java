@@ -27,13 +27,13 @@ import lombok.Setter;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-@Entity(tableName = "note_table")
-public class Note implements Cloneable, Serializable {
+@Entity(tableName = "flashCard_table")
+public class FlashCard implements Cloneable, Serializable {
 
     @PrimaryKey(autoGenerate = true)
-    private long noteId;
+    private long flashCardId;
 
-    @ColumnInfo(name = "note_title")
+    @ColumnInfo(name = "flashCard_title")
     private String prompt;              // represents the question. the input the user wants to learn
     private String meaning;             // the meaning of the prompt in the language the user speaks.
     @Builder.Default

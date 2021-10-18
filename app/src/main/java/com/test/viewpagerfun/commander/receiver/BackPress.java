@@ -7,7 +7,7 @@ import android.widget.Toast;
 import com.test.viewpagerfun.PrefManager;
 import com.test.viewpagerfun.StartingScreenActivity;
 import com.test.viewpagerfun.commander.state.BackPressState;
-import com.test.viewpagerfun.model.entity.Note;
+import com.test.viewpagerfun.model.entity.FlashCard;
 
 import java.util.Collections;
 import java.util.List;

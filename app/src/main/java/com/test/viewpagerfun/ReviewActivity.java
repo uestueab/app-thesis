@@ -17,7 +17,7 @@ import android.widget.Toast;
 import com.test.viewpagerfun.commander.Commander;
 import com.test.viewpagerfun.commander.commands.BackPressCommand;
 import com.test.viewpagerfun.commander.state.BackPressState;
-import com.test.viewpagerfun.model.entity.Note;
+import com.test.viewpagerfun.model.entity.FlashCard;
 import com.test.viewpagerfun.sm2.Scheduler;
 import com.test.viewpagerfun.sm2.Session;
 import com.test.viewpagerfun.viewmodel.SharedViewModel;
@@ -70,17 +70,17 @@ public class ReviewActivity extends BaseActivity {
 
     private void resumeReview() {
         PrefManager.init(this);
-        List<Note> previousNotes = PrefManager.getNotes(PREFS_REMAINING_NOTES);
+        List<FlashCard> previousFlashCards = PrefManager.getFlashCards(PREFS_REMAINING_NOTES);
 
-        /* - If no notes from a previous review exist. Load new review items from database
+        /* - If no flashCards from a previous review exist. Load new review items from database
          * - Else restore review with remaining items.
          */
-        if (previousNotes == null || previousNotes.size() == 0) {
+        if (previousFlashCards == null || previousFlashCards.size() == 0) {
             //The ViewModelFactory makes it possible to call different constructors for the viewmodel.
             model = new ViewModelProvider(this, new SharedViewModelFactory(getApplication())).get(SharedViewModel.class);
         } else {
             model = new ViewModelProvider(this,
-                    new SharedViewModelFactory(getApplication(), previousNotes)).get(SharedViewModel.class);
+                    new SharedViewModelFactory(getApplication(), previousFlashCards)).get(SharedViewModel.class);
         }
     }
 
@@ -116,9 +116,9 @@ public class ReviewActivity extends BaseActivity {
         handler.post(new Runnable() {
             @Override
             public void run() {
-                List<Note> remainingNotes = model.getRemainingNotes();
+                List<FlashCard> remainingFlashCards = model.getRemainingFlashCards();
                 PrefManager.init(ReviewActivity.this);
-                PrefManager.setNotes(PREFS_REMAINING_NOTES, remainingNotes);
+                PrefManager.setFlashCards(PREFS_REMAINING_NOTES, remainingFlashCards);
             }
         });
 
@@ -129,8 +129,8 @@ public class ReviewActivity extends BaseActivity {
         Session session = model.getSession();
         scheduler.applySession(session);
 
-        for (Note note : session.getNoteStatistics().keySet())
-            model.update(note);
+        for (FlashCard flashCard : session.getFlashCardStatistics().keySet())
+            model.update(flashCard);
 
     }
 

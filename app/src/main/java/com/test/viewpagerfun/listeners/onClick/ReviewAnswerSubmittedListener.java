@@ -26,7 +26,7 @@ import com.test.viewpagerfun.commander.commands.HapticFeedbackCommand;
 import com.test.viewpagerfun.commander.commands.MismatchToastCommand;
 import com.test.viewpagerfun.commander.state.MismatchToastState;
 import com.test.viewpagerfun.databinding.ReviewInputFragmentBinding;
-import com.test.viewpagerfun.model.entity.Note;
+import com.test.viewpagerfun.model.entity.FlashCard;
 import com.test.viewpagerfun.sm2.Review;
 import com.test.viewpagerfun.toolbox.Levenshtein;
 import com.test.viewpagerfun.toolbox.StringProvider;
@@ -69,7 +69,7 @@ public class ReviewAnswerSubmittedListener implements View.OnClickListener{
         String rawUserResponse = binding.etReviewAnswer.getText().toString();
         String response = StringProvider.toComparable(rawUserResponse);
 
-        Note note = model.getNote();
+        FlashCard flashCard = model.getFlashCard();
         Review review;
 
         //Prepare features for 'answer submitted' event
@@ -92,7 +92,7 @@ public class ReviewAnswerSubmittedListener implements View.OnClickListener{
         int score;
 
         //Determine score for the review
-        if(isValidAnswer(response,note)){
+        if(isValidAnswer(response,flashCard)){
             // no hesitation, full score
             if(timeSpend <= 30) { score = 3; }
             else { // hesitated, adjust score
@@ -100,10 +100,10 @@ public class ReviewAnswerSubmittedListener implements View.OnClickListener{
             }
         }else{ score = 1; }
 
-        review = new Review(note,score);
+        review = new Review(flashCard,score);
         Log.d(TAG, "onClick: "+ "[Review score: " + score + "]");
 
-        // Note is now reviewed
+        // FlashCard is now reviewed
         model.setMostRecentReview(review);
         model.applyReview(review);
 
@@ -113,19 +113,19 @@ public class ReviewAnswerSubmittedListener implements View.OnClickListener{
         binding.etReviewAnswer.setText("");
     }
 
-    private boolean isValidAnswer(String response, Note note){
-        String meaning = StringProvider.toComparable(note.getMeaning());
-        return response.equals(meaning) || withinTolerance(response, note);
+    private boolean isValidAnswer(String response, FlashCard flashCard){
+        String meaning = StringProvider.toComparable(flashCard.getMeaning());
+        return response.equals(meaning) || withinTolerance(response, flashCard);
     }
 
-    private boolean withinTolerance(String response, Note note){
+    private boolean withinTolerance(String response, FlashCard flashCard){
         List<String> meanings;
-        List<String> synonyms = note.getSynonyms();
+        List<String> synonyms = flashCard.getSynonyms();
         if(synonyms != null)
              meanings = new ArrayList<>(synonyms);
         else
             meanings = new ArrayList<>();
-        meanings.add(note.getMeaning());
+        meanings.add(flashCard.getMeaning());
 
         for(String meaning : meanings){
             int distance = Levenshtein.distance(response,meaning);

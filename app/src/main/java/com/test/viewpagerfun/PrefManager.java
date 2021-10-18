@@ -6,7 +6,7 @@ import android.content.SharedPreferences;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
-import com.test.viewpagerfun.model.entity.Note;
+import com.test.viewpagerfun.model.entity.FlashCard;
 
 import java.lang.reflect.Type;
 import java.util.List;
@@ -103,13 +103,13 @@ public class PrefManager {
     }
 
     /**
-     * @return set list of notes to the specified key in shared preference
+     * @return set list of flashCards to the specified key in shared preference
      */
-    public static void setNotes(String key, List<Note> list) {
+    public static void setFlashCards(String key, List<FlashCard> list) {
         Gson gson = new Gson();
 
         //prepare value
-        Type type = new TypeToken<List<Note>>() {
+        Type type = new TypeToken<List<FlashCard>>() {
         }.getType();
         String json = gson.toJson(list, type);
 
@@ -119,12 +119,12 @@ public class PrefManager {
 
     /**
      * @param key key of the shared preference
-     * @return get list of notes from shared preference
+     * @return get list of flashCards from shared preference
      */
-    public static List<Note> getNotes(String key) {
+    public static List<FlashCard> getFlashCards(String key) {
         Gson gson = new Gson();
         String json = prefs.getString(key, "");
-        Type type = new TypeToken<List<Note>>() {
+        Type type = new TypeToken<List<FlashCard>>() {
         }.getType();
         return gson.fromJson(json, type);
     }

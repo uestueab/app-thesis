@@ -15,12 +15,12 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.snackbar.BaseTransientBottomBar;
 import com.google.android.material.snackbar.Snackbar;
-import com.test.viewpagerfun.AddEditNoteActivity;
-import com.test.viewpagerfun.NoteAdapter;
+import com.test.viewpagerfun.AddEditFlashCardActivity;
+import com.test.viewpagerfun.FlashCardAdapter;
 import com.test.viewpagerfun.R;
-import com.test.viewpagerfun.databinding.ActivityManageNoteBinding;
-import com.test.viewpagerfun.model.entity.Note;
-import com.test.viewpagerfun.viewmodel.ManageNoteViewModel;
+import com.test.viewpagerfun.databinding.ActivityManageFlashcardBinding;
+import com.test.viewpagerfun.model.entity.FlashCard;
+import com.test.viewpagerfun.viewmodel.ManageFlashCardViewModel;
 
 import java.io.Serializable;
 
@@ -30,21 +30,21 @@ import static com.test.viewpagerfun.constants.ConstantsHolder.*;
 
 public class SwipeRecyclerViewTouchHelper extends ItemTouchHelper.SimpleCallback {
 
-    private NoteAdapter adapter;
-    private ManageNoteViewModel noteViewModel;
-    private ActivityManageNoteBinding binding;
+    private FlashCardAdapter adapter;
+    private ManageFlashCardViewModel flashCardViewModel;
+    private ActivityManageFlashcardBinding binding;
     private Activity activity;
-    private ActivityResultLauncher<Intent> addEditNoteResultLauncher;
+    private ActivityResultLauncher<Intent> addEditFlashCardResultLauncher;
 
     public SwipeRecyclerViewTouchHelper(int dragDirs, int swipeDirs,
-                                        NoteAdapter adapter, ManageNoteViewModel noteViewModel, ActivityManageNoteBinding binding,
-                                        Activity activity, ActivityResultLauncher<Intent> addEditNoteResultLauncher) {
+                                        FlashCardAdapter adapter, ManageFlashCardViewModel flashCardViewModel, ActivityManageFlashcardBinding binding,
+                                        Activity activity, ActivityResultLauncher<Intent> addEditFlashCardResultLauncher) {
         super(dragDirs, swipeDirs);
         this.adapter = adapter;
-        this.noteViewModel = noteViewModel;
+        this.flashCardViewModel = flashCardViewModel;
         this.binding = binding;
         this.activity = activity;
-        this.addEditNoteResultLauncher = addEditNoteResultLauncher;
+        this.addEditFlashCardResultLauncher = addEditFlashCardResultLauncher;
     }
 
 
@@ -59,26 +59,26 @@ public class SwipeRecyclerViewTouchHelper extends ItemTouchHelper.SimpleCallback
 
         switch (direction) {
             case ItemTouchHelper.LEFT:
-                String deletedNoteTitle = adapter.getNoteAt(position).getPrompt();
-                Note cloneNote = null;
+                String deletedFlashCardTitle = adapter.getFlashCardAt(position).getPrompt();
+                FlashCard cloneFlashCard = null;
                 try {
-                    cloneNote = (Note) adapter.getNoteAt(position).clone();
+                    cloneFlashCard = (FlashCard) adapter.getFlashCardAt(position).clone();
                 } catch (CloneNotSupportedException e) {
                     e.printStackTrace();
                 }
-                noteViewModel.delete(adapter.getNoteAt(position));
-                Note finalCloneNote = cloneNote;
-                Snackbar.make(binding.recyclerView, "Deleted: " + deletedNoteTitle, BaseTransientBottomBar.LENGTH_LONG)
+                flashCardViewModel.delete(adapter.getFlashCardAt(position));
+                FlashCard finalCloneFlashCard = cloneFlashCard;
+                Snackbar.make(binding.recyclerView, "Deleted: " + deletedFlashCardTitle, BaseTransientBottomBar.LENGTH_LONG)
                         .setAction("Restore", new View.OnClickListener() {
                             @Override
                             public void onClick(View view) {
-                                noteViewModel.insert(finalCloneNote);
+                                flashCardViewModel.insert(finalCloneFlashCard);
                             }
                         }).show();
-                Toast.makeText(activity, "Note deleted: " + deletedNoteTitle, Toast.LENGTH_SHORT).show();
+                Toast.makeText(activity, "FlashCard deleted: " + deletedFlashCardTitle, Toast.LENGTH_SHORT).show();
                 break;
             case ItemTouchHelper.RIGHT:
-                editNote(adapter.getNoteAt(position));
+                editFlashCard(adapter.getFlashCardAt(position));
                 adapter.notifyDataSetChanged();
                 break;
         }
@@ -88,9 +88,9 @@ public class SwipeRecyclerViewTouchHelper extends ItemTouchHelper.SimpleCallback
     @Override
     public void onChildDraw(@NonNull Canvas c, @NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, float dX, float dY, int actionState, boolean isCurrentlyActive) {
         new RecyclerViewSwipeDecorator.Builder(c, recyclerView, viewHolder, dX, dY, actionState, isCurrentlyActive)
-                .addSwipeLeftBackgroundColor(ContextCompat.getColor(this.activity, R.color.deleteNoteOnSwipe))
+                .addSwipeLeftBackgroundColor(ContextCompat.getColor(this.activity, R.color.deleteFlashCardOnSwipe))
                 .addSwipeLeftActionIcon(R.drawable.ic_delete)
-                .addSwipeRightBackgroundColor(ContextCompat.getColor(this.activity, R.color.editNoteOnSwipe))
+                .addSwipeRightBackgroundColor(ContextCompat.getColor(this.activity, R.color.editFlashCardOnSwipe))
                 .addSwipeRightActionIcon(R.drawable.ic_edit)
                 .create()
                 .decorate();
@@ -98,13 +98,13 @@ public class SwipeRecyclerViewTouchHelper extends ItemTouchHelper.SimpleCallback
         super.onChildDraw(c, recyclerView, viewHolder, dX, dY, actionState, isCurrentlyActive);
     }
 
-    private void editNote(Note note) {
-        Intent intent = new Intent(activity, AddEditNoteActivity.class);
+    private void editFlashCard(FlashCard flashCard) {
+        Intent intent = new Intent(activity, AddEditFlashCardActivity.class);
         Bundle bundle = new Bundle();
         bundle.putInt(REQUEST_CODE, EDIT_NOTE_REQUEST);
-        bundle.putSerializable(BUNDLE_EDIT_NOTE, (Serializable) note);
+        bundle.putSerializable(BUNDLE_EDIT_NOTE, (Serializable) flashCard);
         intent.putExtra(EXTRA_EDIT_NOTE, bundle);
 
-        addEditNoteResultLauncher.launch(intent);
+        addEditFlashCardResultLauncher.launch(intent);
     }
 }

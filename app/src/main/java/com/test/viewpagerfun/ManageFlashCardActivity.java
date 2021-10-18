@@ -29,13 +29,13 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.BaseTransientBottomBar;
 import com.google.android.material.snackbar.Snackbar;
 import com.test.viewpagerfun.callbacks.SwipeRecyclerViewTouchHelper;
-import com.test.viewpagerfun.callbacks.backToManageNoteCallback;
-import com.test.viewpagerfun.databinding.ActivityManageNoteBinding;
-import com.test.viewpagerfun.listeners.onClick.AddNoteListener;
+import com.test.viewpagerfun.callbacks.backToManageFlashCardCallback;
+import com.test.viewpagerfun.databinding.ActivityManageFlashcardBinding;
+import com.test.viewpagerfun.listeners.onClick.AddFlashCardListener;
 import com.test.viewpagerfun.listeners.onQueryTextListener.SearchViewTextListener;
-import com.test.viewpagerfun.model.entity.Note;
+import com.test.viewpagerfun.model.entity.FlashCard;
 import com.test.viewpagerfun.toolbox.TimeProvider;
-import com.test.viewpagerfun.viewmodel.ManageNoteViewModel;
+import com.test.viewpagerfun.viewmodel.ManageFlashCardViewModel;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
@@ -43,19 +43,19 @@ import java.util.List;
 
 import it.xabaras.android.recyclerview.swipedecorator.RecyclerViewSwipeDecorator;
 import static com.test.viewpagerfun.constants.ConstantsHolder.*;
-public class ManageNoteActivity extends BaseActivity {
+public class ManageFlashCardActivity extends BaseActivity {
 
-    private ActivityManageNoteBinding binding;
+    private ActivityManageFlashcardBinding binding;
 
-    private ManageNoteViewModel noteViewModel;
-    private ActivityResultLauncher<Intent> addEditNoteResultLauncher;
+    private ManageFlashCardViewModel flashCardViewModel;
+    private ActivityResultLauncher<Intent> addEditFlashCardResultLauncher;
 
-    public static NoteAdapter adapter = null;
+    public static FlashCardAdapter adapter = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        binding = ActivityManageNoteBinding.inflate(getLayoutInflater());
+        binding = ActivityManageFlashcardBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
         // calling the action bar
@@ -66,61 +66,61 @@ public class ManageNoteActivity extends BaseActivity {
         binding.recyclerView.setLayoutManager(new LinearLayoutManager(this));
         binding.recyclerView.setHasFixedSize(true);
 
-        adapter = new NoteAdapter();
+        adapter = new FlashCardAdapter();
         binding.recyclerView.setAdapter(adapter);
 
-        noteViewModel = new ViewModelProvider(this).get(ManageNoteViewModel.class);
-        noteViewModel.getAllNotes().observe(this, new Observer<List<Note>>() {
+        flashCardViewModel = new ViewModelProvider(this).get(ManageFlashCardViewModel.class);
+        flashCardViewModel.getAllFlashCards().observe(this, new Observer<List<FlashCard>>() {
             @Override
-            public void onChanged(@Nullable List<Note> notes) {
-                adapter.submitList(notes);
+            public void onChanged(@Nullable List<FlashCard> flashCards) {
+                adapter.submitList(flashCards);
             }
         });
 
         //Decides what to do when returning to this Activity
-        addEditNoteResultLauncher = registerForActivityResult(
+        addEditFlashCardResultLauncher = registerForActivityResult(
                 new ActivityResultContracts.StartActivityForResult(),
-                backToManageNoteCallback.builder()
+                backToManageFlashCardCallback.builder()
                         .context(this)
-                        .viewModel(noteViewModel)
+                        .viewModel(flashCardViewModel)
                         .build()
                 );
 
-        binding.buttonAddNote.setOnClickListener(
-                AddNoteListener.builder()
-                        .currentActivity(this).targetActivity(AddEditNoteActivity.class)
+        binding.buttonAddFlashCard.setOnClickListener(
+                AddFlashCardListener.builder()
+                        .currentActivity(this).targetActivity(AddEditFlashCardActivity.class)
                         .requestCode(ADD_NOTE_REQUEST)
-                        .resultLauncher(addEditNoteResultLauncher)
+                        .resultLauncher(addEditFlashCardResultLauncher)
                         .build()
         );
 
         //Make the RecyclerView react to swipes
         new ItemTouchHelper(new SwipeRecyclerViewTouchHelper(0, ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT,
-                adapter,noteViewModel,binding,this,addEditNoteResultLauncher)
+                adapter,flashCardViewModel,binding,this,addEditFlashCardResultLauncher)
         ).attachToRecyclerView(binding.recyclerView);
 
-        //Edit note on click
-        adapter.setOnItemClickListener(new NoteAdapter.OnItemclickListener() {
+        //Edit flashCard on click
+        adapter.setOnItemClickListener(new FlashCardAdapter.OnItemclickListener() {
             @Override
-            public void onItemClick(Note note) { editNote(note); }
+            public void onItemClick(FlashCard flashCard) { editFlashCard(flashCard); }
         });
     }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater menuInflater = getMenuInflater();
-        menuInflater.inflate(R.menu.manage_notes_menu,menu);
+        menuInflater.inflate(R.menu.manage_flashcards_menu,menu);
 
         MenuItem actionSearch= menu.findItem( R.id.search_cards);
         final SearchView searchViewEditText = (SearchView) actionSearch.getActionView();
-        searchViewEditText.setQueryHint("search notes...");
+        searchViewEditText.setQueryHint("search flashCards...");
         searchViewEditText.setOnSearchClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 searchViewEditText.setMaxWidth(Integer.MAX_VALUE);
                 getSupportActionBar().setDisplayShowTitleEnabled(false);
-                FloatingActionButton buttonAddNote = findViewById(R.id.button_add_note);
-                buttonAddNote.setVisibility(View.INVISIBLE);
+                FloatingActionButton buttonAddFlashCard = findViewById(R.id.button_add_flashCard);
+                buttonAddFlashCard.setVisibility(View.INVISIBLE);
             }
         });
 
@@ -128,8 +128,8 @@ public class ManageNoteActivity extends BaseActivity {
             @Override
             public boolean onClose() {
                 getSupportActionBar().setDisplayShowTitleEnabled(true);
-                FloatingActionButton buttonAddNote = findViewById(R.id.button_add_note);
-                buttonAddNote.setVisibility(View.VISIBLE);
+                FloatingActionButton buttonAddFlashCard = findViewById(R.id.button_add_flashCard);
+                buttonAddFlashCard.setVisibility(View.VISIBLE);
                 return false;
             }
         });
@@ -150,22 +150,22 @@ public class ManageNoteActivity extends BaseActivity {
             case android.R.id.home:
                 this.finish();
                 return true;
-            case R.id.delete_all_notes:
-//                noteViewModel.deleteAllNotes();
-                Toast.makeText(this, "[fake]: all notes deleted", Toast.LENGTH_SHORT).show();
+            case R.id.delete_all_flashCards:
+//                flashCardViewModel.deleteAllFlashCards();
+                Toast.makeText(this, "[fake]: all flashCards deleted", Toast.LENGTH_SHORT).show();
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
         }
     }
 
-    private void editNote(Note note){
-        Intent intent = new Intent(ManageNoteActivity.this, AddEditNoteActivity.class);
+    private void editFlashCard(FlashCard flashCard){
+        Intent intent = new Intent(ManageFlashCardActivity.this, AddEditFlashCardActivity.class);
         Bundle bundle = new Bundle();
         bundle.putInt(REQUEST_CODE, EDIT_NOTE_REQUEST);
-        bundle.putSerializable(BUNDLE_EDIT_NOTE, (Serializable) note);
+        bundle.putSerializable(BUNDLE_EDIT_NOTE, (Serializable) flashCard);
         intent.putExtra(EXTRA_EDIT_NOTE,bundle);
 
-        addEditNoteResultLauncher.launch(intent);
+        addEditFlashCardResultLauncher.launch(intent);
     }
 }

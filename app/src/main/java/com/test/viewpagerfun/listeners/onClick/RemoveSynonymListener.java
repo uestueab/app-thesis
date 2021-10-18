@@ -3,7 +3,7 @@ package com.test.viewpagerfun.listeners.onClick;
 import android.view.View;
 import android.widget.EditText;
 
-import com.test.viewpagerfun.databinding.ActivityAddNoteBinding;
+import com.test.viewpagerfun.databinding.ActivityAddFlashcardBinding;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -19,7 +19,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class RemoveSynonymListener implements View.OnClickListener {
 
-    private ActivityAddNoteBinding binding;
+    private ActivityAddFlashcardBinding binding;
     private List<EditText> editTexts = new ArrayList<EditText>();
 
     @Override

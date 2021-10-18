@@ -23,7 +23,7 @@ public class PlayRecordingListener implements View.OnClickListener {
     private MediaRecorder mediaRecorder;
     private MediaPlayer mediaPlayer;
 
-    private String notePronunciation;
+    private String flashCardPronunciation;
     private boolean recordingExists;
 
     @Override
@@ -35,9 +35,9 @@ public class PlayRecordingListener implements View.OnClickListener {
         if (mediaRecorder == null && recordingExists) {
             if (!mediaPlayer.isPlaying()) {
                 try {
-                    //when a note already had a pronunciation recording.. play that
+                    //when a flashCard already had a pronunciation recording.. play that
                     //or else play the
-                    mediaPlayer.setDataSource(notePronunciation);
+                    mediaPlayer.setDataSource(flashCardPronunciation);
                     mediaPlayer.prepare();
                     mediaPlayer.start();
 

@@ -13,7 +13,7 @@
     <color name="correct">#8ec07c</color>
     <color name="wrong">#fb4934</color>
 
-    <color name="deleteNoteOnSwipe">#fb4934</color>
-    <color name="editNoteOnSwipe">#689d6a</color>
+    <color name="deleteFlashCardOnSwipe">#fb4934</color>
+    <color name="editFlashCardOnSwipe">#689d6a</color>
 
 </resources>

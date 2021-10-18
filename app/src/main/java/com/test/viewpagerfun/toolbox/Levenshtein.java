@@ -37,7 +37,7 @@ public class Levenshtein {
                 //check equality of the letters. 0 on match else 1
                 int cost = response.charAt(i-1) == meaning.charAt(j-1) ? 0 : 1;
                 /*  assign the lowest value.
-                 *  note that Math.min takes can only take two arguments,
+                 *  flashCard that Math.min takes can only take two arguments,
                  *  to make it work with three, we wrap two in a separate Math.min
                  */
                 dist[i][j] = Math.min(

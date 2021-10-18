@@ -2,7 +2,7 @@ package com.test.viewpagerfun.commander.receiver;
 
 
 import com.test.viewpagerfun.PrefManager;
-import com.test.viewpagerfun.model.entity.Note;
+import com.test.viewpagerfun.model.entity.FlashCard;
 
 import java.util.Collections;
 import java.util.List;
@@ -13,7 +13,7 @@ import java.util.List;
  */
 public class ShuffleCards {
 	private static String pref_value = null;
-	private static List<Note> state = null;
+	private static List<FlashCard> state = null;
 
 
 	// Since we have a state and the pref key, we can have a more sophisticated method
@@ -28,7 +28,7 @@ public class ShuffleCards {
 
 
 	public <E> void setState(E pref) {
-			state = (List<Note>) pref;
+			state = (List<FlashCard>) pref;
 	}
 
 	public <E> void setPref(E pref) {

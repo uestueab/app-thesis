@@ -10,29 +10,29 @@ import androidx.recyclerview.widget.DiffUtil;
 import androidx.recyclerview.widget.ListAdapter;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.test.viewpagerfun.model.entity.Note;
+import com.test.viewpagerfun.model.entity.FlashCard;
 
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 
 
-public class NoteAdapter extends ListAdapter<Note, NoteAdapter.NoteHolder> {
+public class FlashCardAdapter extends ListAdapter<FlashCard, FlashCardAdapter.FlashCardHolder> {
     private OnItemclickListener listener;
-    private List<Note> noteListFull = new ArrayList<>();
+    private List<FlashCard> flashCardListFull = new ArrayList<>();
 
-    public NoteAdapter() {
+    public FlashCardAdapter() {
         super(DIFF_CALLBACK);
     }
 
-    private static final DiffUtil.ItemCallback<Note> DIFF_CALLBACK = new DiffUtil.ItemCallback<Note>() {
+    private static final DiffUtil.ItemCallback<FlashCard> DIFF_CALLBACK = new DiffUtil.ItemCallback<FlashCard>() {
         @Override
-        public boolean areItemsTheSame(@NonNull  Note oldItem, @NonNull Note newItem) {
-            return oldItem.getNoteId() == newItem.getNoteId();
+        public boolean areItemsTheSame(@NonNull  FlashCard oldItem, @NonNull FlashCard newItem) {
+            return oldItem.getFlashCardId() == newItem.getFlashCardId();
         }
 
         @Override
-        public boolean areContentsTheSame(@NonNull  Note oldItem, @NonNull  Note newItem) {
+        public boolean areContentsTheSame(@NonNull  FlashCard oldItem, @NonNull  FlashCard newItem) {
             return oldItem.getPrompt().equals(newItem.getPrompt());
 //                    && oldItem.getDescription().equals(newItem.getDescription()) &&
 //                    oldItem.getPriority() == newItem.getPriority();
@@ -41,30 +41,30 @@ public class NoteAdapter extends ListAdapter<Note, NoteAdapter.NoteHolder> {
 
     @NonNull
     @Override
-    public NoteHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public FlashCardHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View itemView = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.manage_note, parent, false);
-        return new NoteHolder(itemView);
+                .inflate(R.layout.manage_flashcard, parent, false);
+        return new FlashCardHolder(itemView);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull NoteHolder holder, int position) {
-        Note currentNote = getItem(position);
-        holder.textViewTitle.setText(currentNote.getPrompt());
-        holder.textViewMeaning.setText(currentNote.getMeaning());
+    public void onBindViewHolder(@NonNull FlashCardHolder holder, int position) {
+        FlashCard currentFlashCard = getItem(position);
+        holder.textViewTitle.setText(currentFlashCard.getPrompt());
+        holder.textViewMeaning.setText(currentFlashCard.getMeaning());
     }
 
 
-    public Note getNoteAt(int position){
+    public FlashCard getFlashCardAt(int position){
         return getItem(position);
     }
 
 
-    class NoteHolder extends RecyclerView.ViewHolder {
+    class FlashCardHolder extends RecyclerView.ViewHolder {
         private TextView textViewTitle;
         private TextView textViewMeaning;
 
-        public NoteHolder(View itemView) {
+        public FlashCardHolder(View itemView) {
             super(itemView);
             textViewTitle = itemView.findViewById(R.id.text_view_title);
             textViewMeaning = itemView.findViewById(R.id.text_view_meaning);
@@ -82,7 +82,7 @@ public class NoteAdapter extends ListAdapter<Note, NoteAdapter.NoteHolder> {
     }
 
     public interface OnItemclickListener{
-        void onItemClick(Note note);
+        void onItemClick(FlashCard flashCard);
     }
 
     public void setOnItemClickListener(OnItemclickListener listener){
@@ -91,14 +91,14 @@ public class NoteAdapter extends ListAdapter<Note, NoteAdapter.NoteHolder> {
 
     public boolean filter(String query) {
         String searchQuery = query.toLowerCase();
-        List<Note> filteredList = new ArrayList<>();
-        List<Note> currentList  = getCurrentList();
+        List<FlashCard> filteredList = new ArrayList<>();
+        List<FlashCard> currentList  = getCurrentList();
 
-        for(Note note : currentList){
-            String currentNoteTitle = note.getPrompt().toLowerCase();
-            // Found a note that matches the query! -> add to list
-            if(currentNoteTitle.contains(searchQuery))
-                filteredList.add(note);
+        for(FlashCard flashCard : currentList){
+            String currentFlashCardTitle = flashCard.getPrompt().toLowerCase();
+            // Found a flashCard that matches the query! -> add to list
+            if(currentFlashCardTitle.contains(searchQuery))
+                filteredList.add(flashCard);
         }
 
         //nothing found -> do nothing!
@@ -110,20 +110,20 @@ public class NoteAdapter extends ListAdapter<Note, NoteAdapter.NoteHolder> {
          * - display the original list with all the items again!
          * - if statement makes sure the getCurrentList() call runs only once.
          */
-        if (this.noteListFull.size() == 0)
-            this.noteListFull = new ArrayList<>(currentList);
+        if (this.flashCardListFull.size() == 0)
+            this.flashCardListFull = new ArrayList<>(currentList);
 
         // Sort the list to ensure the user gets his desired match
-        filteredList.sort(new Comparator<Note>() {
+        filteredList.sort(new Comparator<FlashCard>() {
             @Override
-            public int compare(Note firstNote, Note secondNote) {
+            public int compare(FlashCard firstFlashCard, FlashCard secondFlashCard) {
                 /* return -1 if first argument should be before second argument
                  * return 1 if second should be before first argument
                  * return 0 otherwise (meaning the order stays the same)
                  */
-                if (firstNote.getPrompt().toLowerCase().startsWith(searchQuery)) {
+                if (firstFlashCard.getPrompt().toLowerCase().startsWith(searchQuery)) {
                     return -1;
-                } else if (secondNote.getPrompt().toLowerCase().startsWith(searchQuery)) {
+                } else if (secondFlashCard.getPrompt().toLowerCase().startsWith(searchQuery)) {
                     return 1;
                 } else return 0;
             }
@@ -134,11 +134,11 @@ public class NoteAdapter extends ListAdapter<Note, NoteAdapter.NoteHolder> {
         return true;
     }
 
-    public int getNoteCount(){
-        return this.noteListFull.size();
+    public int getFlashCardCount(){
+        return this.flashCardListFull.size();
     }
 
-    public List<Note> getNotes(){
-        return this.noteListFull;
+    public List<FlashCard> getFlashCards(){
+        return this.flashCardListFull;
     }
 }

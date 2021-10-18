@@ -17,7 +17,7 @@ import static com.test.viewpagerfun.constants.ConstantsHolder.*;
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor
-public class AddNoteListener implements View.OnClickListener {
+public class AddFlashCardListener implements View.OnClickListener {
 
     private Context currentActivity;
     private Class targetActivity;

@@ -23,7 +23,7 @@ public class RecordAudioListener implements View.OnClickListener {
     private MediaRecorder mediaRecorder;
     private MediaPlayer mediaPlayer;
 
-    private String notePronunciation;
+    private String flashCardPronunciation;
     private String recordingFilePath;
 
     @Override
@@ -32,11 +32,11 @@ public class RecordAudioListener implements View.OnClickListener {
             mediaRecorder = new MediaRecorder();
 
             try {
-                notePronunciation = getRecordingFilePath();
+                flashCardPronunciation = getRecordingFilePath();
 
                 mediaRecorder.setAudioSource(MediaRecorder.AudioSource.MIC);
                 mediaRecorder.setOutputFormat(MediaRecorder.OutputFormat.OGG);
-                mediaRecorder.setOutputFile(notePronunciation);
+                mediaRecorder.setOutputFile(flashCardPronunciation);
                 mediaRecorder.setAudioEncoder(MediaRecorder.AudioEncoder.OPUS);
                 mediaRecorder.setAudioEncodingBitRate(128000);
                 mediaRecorder.setAudioSamplingRate(44100);
