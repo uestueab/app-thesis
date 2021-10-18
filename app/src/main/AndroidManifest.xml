@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    package="com.test.viewpagerfun" >
+    package="com.thesis.yatta" >
 
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"
         tools:ignore="ScopedStorage" />
@@ -18,26 +18,26 @@
         android:requestLegacyExternalStorage="true"
         android:supportsRtl="true"
         android:theme="@style/Theme.ViewPagerFun" >
-        <activity android:name=".SettingsActivity" android:label="Settings" >
+        <activity android:name="com.thesis.yatta.SettingsActivity" android:label="Settings" >
         </activity>
-        <activity android:name=".StartingScreenActivity" >
+        <activity android:name="com.thesis.yatta.StartingScreenActivity" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".ReviewActivity" android:label="Review" >
+        <activity android:name="com.thesis.yatta.ReviewActivity" android:label="Review" >
         </activity>
-        <activity android:name=".ManageFlashCardActivity" android:label="Overview total flashCards">
+        <activity android:name="com.thesis.yatta.ManageFlashCardActivity" android:label="Overview total flashCards">
         </activity>
         <activity
-            android:name=".AddEditFlashCardActivity"
-            android:parentActivityName=".ManageFlashCardActivity" >
+            android:name="com.thesis.yatta.AddEditFlashCardActivity"
+            android:parentActivityName="com.thesis.yatta.ManageFlashCardActivity" >
         </activity>
 
         <service
-            android:name=".NotificationJobService"
+            android:name="com.thesis.yatta.NotificationJobService"
             android:permission="android.permission.BIND_JOB_SERVICE" />
     </application>
 
