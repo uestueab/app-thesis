@@ -350,8 +350,8 @@ public class AddEditFlashCardActivity extends BaseActivity {
         }
     }
 
-    private String getRecordingFilePath(String fname) {
-        File file = new File(getExternalFilesDir(Environment.DIRECTORY_MUSIC), fname);
+    private String getRecordingFilePath(String fName) {
+        File file = new File(getExternalFilesDir(Environment.DIRECTORY_MUSIC), fName);
         Log.d(TAG, "getRecordingFilePath: " + file.getPath());
         return file.getPath();
     }

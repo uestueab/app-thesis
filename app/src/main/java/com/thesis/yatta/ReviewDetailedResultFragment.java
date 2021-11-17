@@ -1,6 +1,7 @@
 package com.thesis.yatta;
 
 import android.annotation.SuppressLint;
+import android.content.ContextWrapper;
 import android.media.MediaPlayer;
 import android.os.Bundle;
 
@@ -9,6 +10,7 @@ import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
+import android.os.Environment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -23,6 +25,7 @@ import com.thesis.yatta.listeners.onClick.NextReviewItemListener;
 import com.thesis.yatta.sm2.Review;
 import com.thesis.yatta.viewmodel.SharedViewModel;
 
+import java.io.File;
 import java.io.IOException;
 
 import static com.thesis.yatta.constants.ConstantsHolder.*;
@@ -112,9 +115,11 @@ public class ReviewDetailedResultFragment extends Fragment {
     private void playPronunciation(String pronunciation){
         if(pronunciation != null){
             MediaPlayer mediaPlayer = new MediaPlayer();
+            ContextWrapper contextWrapper = new ContextWrapper(getContext());
+            File fPronunciation = new File(contextWrapper.getExternalFilesDir(Environment.DIRECTORY_MUSIC), pronunciation);
 
             try {
-                mediaPlayer.setDataSource(pronunciation);
+                mediaPlayer.setDataSource(fPronunciation.getPath());
                 mediaPlayer.prepare();
                 mediaPlayer.start();
             }catch (IOException e){
