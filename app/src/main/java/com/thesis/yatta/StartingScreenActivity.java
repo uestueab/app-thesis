@@ -95,7 +95,6 @@ public class StartingScreenActivity extends BaseActivity {
         } else {
             binding.tvReviewItemCount.setText("Review: " + previousFlashCards.size());
         }
-
     }
 
     /*
@@ -121,6 +120,23 @@ public class StartingScreenActivity extends BaseActivity {
             case R.id.menu_item_manage_flashCards:
                 Intent intentManageFlashCard = new Intent(StartingScreenActivity.this, ManageFlashCardActivity.class);
                 startActivity(intentManageFlashCard);
+                return true;
+            case R.id.menu_item_allow_sound:
+                PrefManager.init(this);
+                if(!PrefManager.contains(PREFS_PLAY_PRONUNCIATION)){
+                    //Never pressed the sound icon, so initially press should disable sound and switch icons accordingly
+                    PrefManager.set(PREFS_PLAY_PRONUNCIATION, false);
+                    item.setIcon(R.drawable.no_play_sound);
+                }else{
+                    Boolean sound_enabled = PrefManager.get(PREFS_PLAY_PRONUNCIATION,false);
+                    if(sound_enabled){
+                        PrefManager.set(PREFS_PLAY_PRONUNCIATION, false);
+                        item.setIcon(R.drawable.no_play_sound);
+                    }else{
+                        PrefManager.set(PREFS_PLAY_PRONUNCIATION, true);
+                        item.setIcon(R.drawable.play_sound);
+                    }
+                }
                 return true;
             default:
                 super.onOptionsItemSelected(item);
