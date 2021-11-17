@@ -13,5 +13,9 @@
 <img alt="Gif" src="https://user-images.githubusercontent.com/16192241/142272529-b94e50d9-01c7-4277-816e-0a4fd265091c.gif" width="25%" />
 </p>
 
-_True snippet and additional text editing support_
-## Why?
+_Preview of a review exercise_
+## What is it?
+Yatta<span>&#169;</span> is an open-source flashcards based language leaning app using spaced repetition, which is founded on the thesis of the authors final semester, during his attendance in <code>Albstadt-Sigmaringen University</code>. The algorithm is influenced by SuperMemo's SM-2 and follows best practices using Android Architecture Components provided by Google.
+
+## Install
+in the making..
