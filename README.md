@@ -9,3 +9,9 @@
 </p>
 
 ---
+<p align="center">
+<img alt="Gif" src="https://user-images.githubusercontent.com/16192241/142272529-b94e50d9-01c7-4277-816e-0a4fd265091c.gif" width="25%" />
+</p>
+
+_True snippet and additional text editing support_
+## Why?
