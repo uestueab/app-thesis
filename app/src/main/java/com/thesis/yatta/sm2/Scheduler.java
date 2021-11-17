@@ -52,7 +52,7 @@ public class Scheduler {
 
     protected void updateFlashCardInterval(FlashCard flashCard, SessionFlashCardStatistics statistics) {
 
-        if (statistics.isLapsedDuringSession() && statistics.getMostRecentScore() > 1) {
+        if (statistics.isFailedDuringSession() && statistics.getMostRecentScore() > 1) {
 
             // flashCard lapsed but the most recent review was successful.
             // reset interval and correct count without updating the flashCard's easiness factor
@@ -83,6 +83,8 @@ public class Scheduler {
     protected float calculateEasinessFactor(FlashCard flashCard, SessionFlashCardStatistics statistics){
         float newEasinessFactor = Math.max(MIN_EASINESS_FACTOR, (float)(flashCard.getEasinessFactor()
                 + (0.1 - (3 - statistics.getMostRecentScore()) * (0.08 + (3 - statistics.getMostRecentScore()) * 0.02))));
+
+//        newEasinessFactor = Math.min(newEasinessFactor,MAX_EASINESS_FACTOR);
 
         if(newEasinessFactor > MAX_EASINESS_FACTOR)
             newEasinessFactor = MAX_EASINESS_FACTOR;

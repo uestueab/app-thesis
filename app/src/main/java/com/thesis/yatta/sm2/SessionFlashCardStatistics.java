@@ -10,7 +10,7 @@ import lombok.Setter;
 @AllArgsConstructor
 @NoArgsConstructor
 public class SessionFlashCardStatistics {
-    private boolean lapsedDuringSession = false;
+    private boolean failedDuringSession = false;
 
     /* mostRecentScore referes to the quality of the current review item:
      *

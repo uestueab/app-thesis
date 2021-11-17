@@ -94,8 +94,8 @@ public class AddEditFlashCardActivity extends BaseActivity {
 
             //show name of prev recording.
             if (flashCardPronunciation != null) {
-                File pronunciation = new File(flashCard.getPronunciation());
-                binding.tvAddRecording.setText(pronunciation.getName());
+                binding.tvAddRecording.setText(flashCardPronunciation);
+                flashCardPronunciation = getRecordingFilePath(flashCardPronunciation);
                 recordingExists = true;
             }
 
@@ -115,7 +115,6 @@ public class AddEditFlashCardActivity extends BaseActivity {
             setTitle("Add FlashCard");
             requestCode = ADD_NOTE_REQUEST;
         }
-
 
         binding.btnAddSynonym.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -164,7 +163,6 @@ public class AddEditFlashCardActivity extends BaseActivity {
 
                 if (fileName != null) {
                     File file = new File(fileName);
-                    Log.d(TAG, "getRecordingFilePath: " + file.getPath());
 
                     //does file exist on device?
                     if(file.isFile()){
@@ -296,7 +294,7 @@ public class AddEditFlashCardActivity extends BaseActivity {
             mediaRecorder = new MediaRecorder();
 
             try {
-                flashCardPronunciation = getRecordingFilePath();
+                flashCardPronunciation = getRecordingFilePath(temp_recordingName);
 
                 mediaRecorder.setAudioSource(MediaRecorder.AudioSource.MIC);
                 mediaRecorder.setOutputFormat(MediaRecorder.OutputFormat.OGG);
@@ -352,10 +350,8 @@ public class AddEditFlashCardActivity extends BaseActivity {
         }
     }
 
-    private String getRecordingFilePath() {
-        ContextWrapper contextWrapper = new ContextWrapper(getApplicationContext());
-        File recordingDir = contextWrapper.getExternalFilesDir(Environment.DIRECTORY_MUSIC);
-        File file = new File(recordingDir, temp_recordingName);
+    private String getRecordingFilePath(String fname) {
+        File file = new File(getExternalFilesDir(Environment.DIRECTORY_MUSIC), fname);
         Log.d(TAG, "getRecordingFilePath: " + file.getPath());
         return file.getPath();
     }

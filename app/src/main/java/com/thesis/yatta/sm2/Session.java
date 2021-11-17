@@ -13,8 +13,8 @@ public class Session {
         SessionFlashCardStatistics flashCardStatistics = flashCardStatisticsMap.computeIfAbsent(flashCard, k -> new SessionFlashCardStatistics());
         flashCardStatistics.setMostRecentScore(review.getScore());
 
-        if (review.getScore() < 2) {
-            flashCardStatistics.setLapsedDuringSession(true);
+        if (review.hasFailed()) {
+            flashCardStatistics.setFailedDuringSession(true);
         }
     }
 
