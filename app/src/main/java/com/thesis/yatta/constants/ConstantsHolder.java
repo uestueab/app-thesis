@@ -23,15 +23,16 @@ public final class ConstantsHolder {
     public static final String PREFS_FILE = "prefs_file";
     public static final String PREFS_REMAINING_NOTES = "prefs_remaining_flashCards";
 
-    public static final String PREFS_GENERAL_NOTIFICATIONS = "prefs_general_notifications";
-    public static final String PREFS_GENERAL_LANGUAGE = "prefs_general_language";
-    public static final String PREFS_DISPLAY_THEME = "prefs_display_theme";
+    public static final String PREFS_ADVANCED_EXPERIMENTAL = "prefs_advanced_experimental";
     public static final String PREFS_DISPLAY_ANIMATION = "prefs_display_animation";
+    public static final String PREFS_DISPLAY_THEME = "prefs_display_theme";
+    public static final String PREFS_GENERAL_LANGUAGE = "prefs_general_language";
+    public static final String PREFS_GENERAL_NOTIFICATIONS = "prefs_general_notifications";
+    public static final String PREFS_PLAY_PRONUNCIATION = "prefs_play_pronunciation";
+    public static final String PREFS_REVIEW_BACK = "prefs_review_back";
+    public static final String PREFS_REVIEW_HAPTIC = "prefs_review_haptic";
     public static final String PREFS_REVIEW_MISMATCH_TOAST = "prefs_review_mismatch_toast";
     public static final String PREFS_REVIEW_SHUFFLE = "prefs_review_shuffle";
-    public static final String PREFS_REVIEW_HAPTIC = "prefs_review_haptic";
-    public static final String PREFS_REVIEW_BACK = "prefs_review_back";
-    public static final String PREFS_ADVANCED_EXPERIMENTAL = "prefs_advanced_experimental";
 
     public static final String PREFS_FEEDBACK = "prefs_feedback";
 

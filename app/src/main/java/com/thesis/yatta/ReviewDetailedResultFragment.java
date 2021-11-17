@@ -17,8 +17,10 @@ import android.view.ViewGroup;
 
 
 import com.thesis.yatta.commander.Commander;
+import com.thesis.yatta.commander.commands.PlayPronunciationCommand;
 import com.thesis.yatta.commander.commands.ReviewAnimationCommand;
 import com.thesis.yatta.commander.commands.ShuffleCardsCommand;
+import com.thesis.yatta.commander.state.PlayPronunciationState;
 import com.thesis.yatta.commander.state.ReviewAnimationState;
 import com.thesis.yatta.databinding.ReviewDetailedResultFragmentBinding;
 import com.thesis.yatta.listeners.onClick.NextReviewItemListener;
@@ -59,6 +61,7 @@ public class ReviewDetailedResultFragment extends Fragment {
         Commander.init();
         Commander.setCommand(PREFS_REVIEW_SHUFFLE, new ShuffleCardsCommand());
         Commander.setCommand(PREFS_DISPLAY_ANIMATION, new ReviewAnimationCommand());
+        Commander.setCommand(PREFS_PLAY_PRONUNCIATION, new PlayPronunciationCommand());
 
         //Update the UI.
         Review review = model.getMostRecentReview();
@@ -75,8 +78,14 @@ public class ReviewDetailedResultFragment extends Fragment {
                     ContextCompat.getColor(getActivity(),R.color.correct)
             );
 
-            String pronunciation = review.getFlashCard().getPronunciation();
-            playPronunciation(pronunciation);
+            //Prepare play of pronunciation
+            Commander.setState(PREFS_PLAY_PRONUNCIATION,
+                    PlayPronunciationState.builder()
+                            .contextWrapper(new ContextWrapper(getContext()))
+                            .flashCard(review.getFlashCard())
+                            .build()
+            );
+            Commander.run(PREFS_PLAY_PRONUNCIATION);
         }
 
         //FEATURE: Play review animation
@@ -109,25 +118,7 @@ public class ReviewDetailedResultFragment extends Fragment {
 
         binding.btnNextTop.setOnClickListener(nextReviewItemListener);
         binding.btnNextBottom.setOnClickListener(nextReviewItemListener);
-
     }
-
-    private void playPronunciation(String pronunciation){
-        if(pronunciation != null){
-            MediaPlayer mediaPlayer = new MediaPlayer();
-            ContextWrapper contextWrapper = new ContextWrapper(getContext());
-            File fPronunciation = new File(contextWrapper.getExternalFilesDir(Environment.DIRECTORY_MUSIC), pronunciation);
-
-            try {
-                mediaPlayer.setDataSource(fPronunciation.getPath());
-                mediaPlayer.prepare();
-                mediaPlayer.start();
-            }catch (IOException e){
-                e.printStackTrace();
-            }
-        }
-    }
-
 
     //Fragments outlive their views. clean up any references to the binding class instance in the fragment
     @Override
