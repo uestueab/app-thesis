@@ -1,44 +1,31 @@
 package com.thesis.yatta;
 
-import androidx.core.content.ContextCompat;
 import androidx.lifecycle.ViewModelProvider;
 import android.app.job.JobInfo;
 import android.app.job.JobScheduler;
 import android.content.ComponentName;
 import android.content.Intent;
-import android.content.res.Resources;
-import android.content.res.TypedArray;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.os.PersistableBundle;
 import android.util.Log;
-import android.util.TypedValue;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
 
-import com.github.mikephil.charting.components.XAxis;
-import com.github.mikephil.charting.components.YAxis;
-import com.github.mikephil.charting.data.BarData;
-import com.github.mikephil.charting.data.BarDataSet;
-import com.github.mikephil.charting.data.BarEntry;
-import com.github.mikephil.charting.data.Entry;
-import com.github.mikephil.charting.data.LineData;
-import com.github.mikephil.charting.data.LineDataSet;
-import com.github.mikephil.charting.highlight.BarHighlighter;
 import com.thesis.yatta.commander.Commander;
 import com.thesis.yatta.commander.commands.ShowDiagramCommand;
 import com.thesis.yatta.commander.state.ShowDiagramState;
 import com.thesis.yatta.databinding.ActivityStartingScreenBinding;
 import com.thesis.yatta.listeners.onClick.StartActivityListener;
 import com.thesis.yatta.model.entity.FlashCard;
+import com.thesis.yatta.model.entity.PastReview;
+import com.thesis.yatta.toolbox.TimeProvider;
 import com.thesis.yatta.viewmodel.StartingScreenViewModel;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 import static com.thesis.yatta.constants.ConstantsHolder.*;
 
@@ -54,6 +41,7 @@ public class StartingScreenActivity extends BaseActivity {
         binding = ActivityStartingScreenBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
+        model = new ViewModelProvider(this).get(StartingScreenViewModel.class);
         showReviewItemCount();
 
         model.getPastReviews().observe(this, pastReviews ->{
@@ -79,6 +67,7 @@ public class StartingScreenActivity extends BaseActivity {
 
         scheduleJob(NOTIFY_DEFAULT_DELAY_TIME);
     }
+
 
     public void scheduleJob(long delayInMilliSec) {
 
@@ -114,23 +103,26 @@ public class StartingScreenActivity extends BaseActivity {
      */
     private void showReviewItemCount() {
         PrefManager.init(this);
-        List<FlashCard> previousFlashCards = PrefManager.getFlashCards(PREFS_REMAINING_NOTES);
+        List<FlashCard> previousFlashCards = PrefManager.getFlashCards(PREFS_REMAINING_FLASH_CARDS);
 
+        //no left over cards means: -> check if there are new cards due for the review
         if (previousFlashCards == null || previousFlashCards.size() == 0) {
-            model = new ViewModelProvider(this).get(StartingScreenViewModel.class);
             model.getFlashCards().observe(this, item -> {
                 int flashCardCount = model.getFlashCardsCount();
                 binding.tvReviewItemCount.setText("Review: " + flashCardCount);
                 if(flashCardCount > 0){
                     binding.btnStartReview.setVisibility(View.VISIBLE);
+                    model.insert(PastReview.builder().itemCount(flashCardCount).build());
                 }
                 else{ // when there are no review flashCards available, there is no point in moving to review activity.
                     binding.btnStartReview.setVisibility(View.GONE);
+                    model.updateReviewHasEnded(TimeProvider.now());
                 }
             });
         } else {
             binding.tvReviewItemCount.setText("Review: " + previousFlashCards.size());
         }
+
     }
 
     /*

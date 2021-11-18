@@ -36,6 +36,15 @@ public class StartingScreenViewModel extends AndroidViewModel {
     public int getFlashCardsCount() {
         return flashCards.getValue().size();
     }
+
+    // Database
+    public void insert(PastReview pastReview) { pastReviewRepository.insert(pastReview); }
+    public void update(PastReview pastReview) { pastReviewRepository.update(pastReview); }
+    public void delete(PastReview pastReview) { pastReviewRepository.delete(pastReview);}
+
+    public void updateReviewHasEnded(long dateEnded){
+        pastReviewRepository.updateReviewHasEnded(dateEnded);
+    }
 }
 
 

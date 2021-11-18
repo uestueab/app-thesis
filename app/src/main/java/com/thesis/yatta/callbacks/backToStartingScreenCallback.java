@@ -39,11 +39,11 @@ public class backToStartingScreenCallback implements ActivityResultCallback<Acti
         if (result.getResultCode() == Activity.RESULT_OK) {
 
             PrefManager.init(getContext());
-            List<FlashCard> flashCards = PrefManager.getFlashCards(PREFS_REMAINING_NOTES);
+            List<FlashCard> flashCards = PrefManager.getFlashCards(PREFS_REMAINING_FLASH_CARDS);
 
             // clear the key-value pair
             if (flashCards == null || flashCards.size() == 0) {
-                PrefManager.remove(PREFS_REMAINING_NOTES);
+                PrefManager.remove(PREFS_REMAINING_FLASH_CARDS);
             }
             binding.tvReviewItemCount.setText("Review: " + flashCards.size());
         }

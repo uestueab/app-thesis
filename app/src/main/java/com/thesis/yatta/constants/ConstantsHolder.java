@@ -21,7 +21,8 @@ public final class ConstantsHolder {
 
     // specifies the file in which to save the shared preferences
     public static final String PREFS_FILE = "prefs_file";
-    public static final String PREFS_REMAINING_NOTES = "prefs_remaining_flashCards";
+    public static final String PREFS_REMAINING_FLASH_CARDS = "prefs_remaining_flashCards";
+    public static final String PREFS_CURRENT_REVIEW_TOTAL_ITEMS = "prefs_current_review_total_items";
 
     public static final String PREFS_ADVANCED_EXPERIMENTAL = "prefs_advanced_experimental";
     public static final String PREFS_DISPLAY_ANIMATION = "prefs_display_animation";

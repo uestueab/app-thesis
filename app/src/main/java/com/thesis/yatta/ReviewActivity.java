@@ -67,7 +67,7 @@ public class ReviewActivity extends BaseActivity {
 
     private void resumeReview() {
         PrefManager.init(this);
-        List<FlashCard> previousFlashCards = PrefManager.getFlashCards(PREFS_REMAINING_NOTES);
+        List<FlashCard> previousFlashCards = PrefManager.getFlashCards(PREFS_REMAINING_FLASH_CARDS);
 
         /* - If no flashCards from a previous review exist. Load new review items from database
          * - Else restore review with remaining items.
@@ -115,7 +115,7 @@ public class ReviewActivity extends BaseActivity {
             public void run() {
                 List<FlashCard> remainingFlashCards = model.getRemainingFlashCards();
                 PrefManager.init(ReviewActivity.this);
-                PrefManager.setFlashCards(PREFS_REMAINING_NOTES, remainingFlashCards);
+                PrefManager.setFlashCards(PREFS_REMAINING_FLASH_CARDS, remainingFlashCards);
             }
         });
 

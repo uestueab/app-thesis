@@ -41,7 +41,7 @@ public class NextReviewItemListener implements View.OnClickListener{
             binding.tvQuestion.setText("");
         } else {
             PrefManager.init(getActivity());
-            PrefManager.remove(PREFS_REMAINING_NOTES);
+            PrefManager.remove(PREFS_REMAINING_FLASH_CARDS);
 
             // all items passed, quit by moving to another activity
             Intent intent = new Intent(getActivity(), StartingScreenActivity.class);

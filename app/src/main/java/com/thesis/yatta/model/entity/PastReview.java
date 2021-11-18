@@ -1,15 +1,12 @@
 package com.thesis.yatta.model.entity;
 
 import androidx.annotation.NonNull;
-import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 
 import com.thesis.yatta.toolbox.TimeProvider;
 
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.List;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -29,7 +26,8 @@ public class PastReview implements Cloneable, Serializable {
     private long pastReviewId;
 
     @Builder.Default
-    private long ended = TimeProvider.now();    //the date when a review has ended
+    private long started = TimeProvider.now();  //the date when a review has started
+    private long ended;                         //gets set once review is finished
     private int itemCount;                      //items learning during session
 
     @NonNull

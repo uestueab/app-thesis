@@ -29,6 +29,10 @@ public class PastReviewRepository {
         new UpdatePastReviewAsyncTask(pastReviewDao).execute(pastReview);
     }
 
+    public void updateReviewHasEnded(long ended) {
+        new CustomUpdatePastReviewAsyncTask(pastReviewDao).execute(ended);
+    }
+
     public void delete(PastReview pastReview) {
         new DeletePastReviewAsyncTask(pastReviewDao).execute(pastReview);
     }
@@ -63,6 +67,20 @@ public class PastReviewRepository {
         @Override
         protected Void doInBackground(PastReview... pastReviews) {
             pastReviewDao.update(pastReviews[0]);
+            return null;
+        }
+    }
+
+    private static class CustomUpdatePastReviewAsyncTask extends AsyncTask<Long, Void, Void> {
+        private PastReviewDao pastReviewDao;
+
+        private CustomUpdatePastReviewAsyncTask(PastReviewDao pastReviewDao) {
+            this.pastReviewDao = pastReviewDao;
+        }
+
+        @Override
+        protected Void doInBackground(Long... ended) {
+            pastReviewDao.updateReviewHasEnded(ended[0]);
             return null;
         }
     }

@@ -29,6 +29,10 @@ public abstract class PastReviewDao {
     public abstract void deleteAllPastReviews();
 
     //get the five latest reviews
-    @Query("SELECT * FROM pastReview_table ORDER BY ended DESC LIMIT 5")
+    @Query("SELECT * FROM (SELECT * FROM pastreview_table WHERE ended >0 ORDER BY ended DESC LIMIT 5) ORDER BY pastreviewid ASC")
     public abstract LiveData<List<PastReview>> getFiveLatestReviews();
+
+    //get the five latest reviews
+    @Query("UPDATE pastReview_table SET ended = :ended WHERE ended = 0")
+    public abstract void updateReviewHasEnded(long ended);
 }

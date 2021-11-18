@@ -42,7 +42,7 @@ public class ShowDiagram {
             int textColor = getAttributeColor(R.attr.textColor);
             int cardReviewColor = getAttributeColor(R.attr.cardReviewColor);
             // add entries to dataset and give label a meaningful name;
-            BarDataSet dataSet = new BarDataSet(entries, "Items Reviewed");
+            BarDataSet dataSet = new BarDataSet(entries, "Items reviewed");
 
             //set color for bar of chart and text displayed on top of them
             dataSet.setColor(cardReviewColor);
