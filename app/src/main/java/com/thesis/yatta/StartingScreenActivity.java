@@ -1,24 +1,42 @@
 package com.thesis.yatta;
 
+import androidx.core.content.ContextCompat;
 import androidx.lifecycle.ViewModelProvider;
 import android.app.job.JobInfo;
 import android.app.job.JobScheduler;
 import android.content.ComponentName;
 import android.content.Intent;
+import android.content.res.Resources;
+import android.content.res.TypedArray;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.os.PersistableBundle;
 import android.util.Log;
+import android.util.TypedValue;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Toast;
 
+import com.github.mikephil.charting.components.XAxis;
+import com.github.mikephil.charting.components.YAxis;
+import com.github.mikephil.charting.data.BarData;
+import com.github.mikephil.charting.data.BarDataSet;
+import com.github.mikephil.charting.data.BarEntry;
+import com.github.mikephil.charting.data.Entry;
+import com.github.mikephil.charting.data.LineData;
+import com.github.mikephil.charting.data.LineDataSet;
+import com.github.mikephil.charting.highlight.BarHighlighter;
 import com.thesis.yatta.databinding.ActivityStartingScreenBinding;
 import com.thesis.yatta.listeners.onClick.StartActivityListener;
 import com.thesis.yatta.model.entity.FlashCard;
 import com.thesis.yatta.viewmodel.StartingScreenViewModel;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+
 import static com.thesis.yatta.constants.ConstantsHolder.*;
 
 public class StartingScreenActivity extends BaseActivity {
@@ -32,6 +50,40 @@ public class StartingScreenActivity extends BaseActivity {
         setContentView(binding.getRoot());
 
         showReviewItemCount();
+
+        //display chart
+        List<Double> dataList = new ArrayList<>();
+        List<BarEntry> entries = new ArrayList<>();
+
+        //input data
+        for(int i = 0; i < 6; i++)
+            dataList.add(i * 10.1);
+
+        for (int i=0; i<dataList.size(); i++)
+            entries.add(new BarEntry(i,dataList.get(i).floatValue()));
+
+        TypedValue typedValue = new TypedValue();
+        getTheme().resolveAttribute(R.attr.textColor, typedValue, true);
+        int color = typedValue.data;
+
+        BarDataSet dataSet = new BarDataSet(entries, "Items Reviewed"); // add entries to dataset;
+        dataSet.setColor(Color.parseColor("#533f6e"));
+
+        BarData barData = new BarData(dataSet);
+        barData.setBarWidth(0.9f);
+        binding.chart.setData(barData);
+        binding.chart.setFitBars(true);
+        binding.chart.getDescription().setEnabled(false);
+        XAxis xAxis = binding.chart.getXAxis();
+        xAxis.setTextColor(color);
+        xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
+        xAxis.setDrawGridLines(false);
+        YAxis leftYAxis = binding.chart.getAxisLeft();
+        leftYAxis.setTextColor(color);
+        YAxis rightYAxis = binding.chart.getAxisRight();
+        rightYAxis.setEnabled(false);
+        binding.chart.invalidate(); // refresh
+
 
         //launch the review
         binding.btnStartReview.setOnClickListener(
