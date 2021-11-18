@@ -30,16 +30,12 @@ public class ShowDiagram {
 
         boolean diagram_enabled = PrefManager.get(pref_value, true);
         if (diagram_enabled) {
-            //fake data
-            List<Double> dataList = new ArrayList<>();
             //chart data
             List<BarEntry> entries = new ArrayList<>();
 
-            for (int i = 0; i < 6; i++)
-                dataList.add(i * 10.1);
 
-            for (int i = 0; i < dataList.size(); i++)
-                entries.add(new BarEntry(i, dataList.get(i).floatValue()));
+            for (int i = 0; i < state.getPastReviews().size(); i++)
+                entries.add(new BarEntry(i, state.getPastReviews().get(i).getItemCount()));
 
 
             //get the right colors from current Theme

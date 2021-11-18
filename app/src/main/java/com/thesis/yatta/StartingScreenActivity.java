@@ -44,7 +44,9 @@ import static com.thesis.yatta.constants.ConstantsHolder.*;
 
 public class StartingScreenActivity extends BaseActivity {
     private static final String TAG = "StartingScreenActivity";
+
     private ActivityStartingScreenBinding binding;
+    private StartingScreenViewModel model;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,15 +56,19 @@ public class StartingScreenActivity extends BaseActivity {
 
         showReviewItemCount();
 
+        model.getPastReviews().observe(this, pastReviews ->{
+            Commander.init();
+            Commander.setCommand(PREFS_SHOW_DIAGRAM,new ShowDiagramCommand());
+            Commander.setState(PREFS_SHOW_DIAGRAM, ShowDiagramState.builder()
+                    .binding(binding)
+                    .context(this)
+                    .pastReviews(new ArrayList<>(pastReviews))
+                    .build()
+            );
+            Commander.run(PREFS_SHOW_DIAGRAM);
+        });
+
         //Show diagram
-        Commander.init();
-        Commander.setCommand(PREFS_SHOW_DIAGRAM,new ShowDiagramCommand());
-        Commander.setState(PREFS_SHOW_DIAGRAM, ShowDiagramState.builder()
-                .binding(binding)
-                .context(this)
-                .build()
-        );
-        Commander.run(PREFS_SHOW_DIAGRAM);
 
         //launch the review
         binding.btnStartReview.setOnClickListener(
@@ -111,7 +117,7 @@ public class StartingScreenActivity extends BaseActivity {
         List<FlashCard> previousFlashCards = PrefManager.getFlashCards(PREFS_REMAINING_NOTES);
 
         if (previousFlashCards == null || previousFlashCards.size() == 0) {
-            StartingScreenViewModel model = new ViewModelProvider(this).get(StartingScreenViewModel.class);
+            model = new ViewModelProvider(this).get(StartingScreenViewModel.class);
             model.getFlashCards().observe(this, item -> {
                 int flashCardCount = model.getFlashCardsCount();
                 binding.tvReviewItemCount.setText("Review: " + flashCardCount);

@@ -11,19 +11,23 @@ import androidx.room.TypeConverters;
 import androidx.sqlite.db.SupportSQLiteDatabase;
 
 import com.thesis.yatta.model.dao.FlashCardDao;
+import com.thesis.yatta.model.dao.PastReviewDao;
 import com.thesis.yatta.model.dataconverter.DataConverter;
 import com.thesis.yatta.model.entity.FlashCard;
+import com.thesis.yatta.model.entity.PastReview;
+import com.thesis.yatta.toolbox.TimeProvider;
 
 import java.util.ArrayList;
 
 
-@Database(entities = {FlashCard.class}, version = 1)
+@Database(entities = {FlashCard.class, PastReview.class}, version = 1)
 @TypeConverters({DataConverter.class})
 public abstract class FlashCardDatabase extends RoomDatabase {
 
     private static FlashCardDatabase instance;
 
     public abstract FlashCardDao flashCardDao();
+    public abstract PastReviewDao pastReviewDao();
 
     public static synchronized FlashCardDatabase getInstance(Context context) {
         if (instance == null) {
@@ -45,9 +49,11 @@ public abstract class FlashCardDatabase extends RoomDatabase {
 
     private static class PopulateDbAsyncTask extends AsyncTask<Void, Void, Void> {
         private FlashCardDao flashCardDao;
+        private PastReviewDao pastReviewDao;
 
         private PopulateDbAsyncTask(FlashCardDatabase db) {
             flashCardDao = db.flashCardDao();
+            pastReviewDao = db.pastReviewDao();
         }
 
         @Override
@@ -57,8 +63,13 @@ public abstract class FlashCardDatabase extends RoomDatabase {
             flashCardDao.insert(FlashCard.builder().prompt("church").meaning("kirche").build());
             flashCardDao.insert(FlashCard.builder().prompt("plant").meaning("pflanze").build());
             flashCardDao.insert(FlashCard.builder().prompt("water").meaning("wasser").build());
-//            flashCardDao.insertFlashCardWithMetaData(new FlashCard("FlashCard", "with status", 10),
-//                    new MetaData("now"));
+
+            pastReviewDao.insert(PastReview.builder().ended(TimeProvider.now()).itemCount(23).build());
+            pastReviewDao.insert(PastReview.builder().ended(TimeProvider.now()).itemCount(5).build());
+            pastReviewDao.insert(PastReview.builder().ended(TimeProvider.now()).itemCount(10).build());
+            pastReviewDao.insert(PastReview.builder().ended(TimeProvider.now()).itemCount(40).build());
+            pastReviewDao.insert(PastReview.builder().ended(TimeProvider.now()).itemCount(16).build());
+
             return null;
         }
     }
