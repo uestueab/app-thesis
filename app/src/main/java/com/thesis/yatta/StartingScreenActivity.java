@@ -28,6 +28,9 @@ import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.LineDataSet;
 import com.github.mikephil.charting.highlight.BarHighlighter;
+import com.thesis.yatta.commander.Commander;
+import com.thesis.yatta.commander.commands.ShowDiagramCommand;
+import com.thesis.yatta.commander.state.ShowDiagramState;
 import com.thesis.yatta.databinding.ActivityStartingScreenBinding;
 import com.thesis.yatta.listeners.onClick.StartActivityListener;
 import com.thesis.yatta.model.entity.FlashCard;
@@ -51,39 +54,15 @@ public class StartingScreenActivity extends BaseActivity {
 
         showReviewItemCount();
 
-        //display chart
-        List<Double> dataList = new ArrayList<>();
-        List<BarEntry> entries = new ArrayList<>();
-
-        //input data
-        for(int i = 0; i < 6; i++)
-            dataList.add(i * 10.1);
-
-        for (int i=0; i<dataList.size(); i++)
-            entries.add(new BarEntry(i,dataList.get(i).floatValue()));
-
-        TypedValue typedValue = new TypedValue();
-        getTheme().resolveAttribute(R.attr.textColor, typedValue, true);
-        int color = typedValue.data;
-
-        BarDataSet dataSet = new BarDataSet(entries, "Items Reviewed"); // add entries to dataset;
-        dataSet.setColor(Color.parseColor("#533f6e"));
-
-        BarData barData = new BarData(dataSet);
-        barData.setBarWidth(0.9f);
-        binding.chart.setData(barData);
-        binding.chart.setFitBars(true);
-        binding.chart.getDescription().setEnabled(false);
-        XAxis xAxis = binding.chart.getXAxis();
-        xAxis.setTextColor(color);
-        xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
-        xAxis.setDrawGridLines(false);
-        YAxis leftYAxis = binding.chart.getAxisLeft();
-        leftYAxis.setTextColor(color);
-        YAxis rightYAxis = binding.chart.getAxisRight();
-        rightYAxis.setEnabled(false);
-        binding.chart.invalidate(); // refresh
-
+        //Show diagram
+        Commander.init();
+        Commander.setCommand(PREFS_SHOW_DIAGRAM,new ShowDiagramCommand());
+        Commander.setState(PREFS_SHOW_DIAGRAM, ShowDiagramState.builder()
+                .binding(binding)
+                .context(this)
+                .build()
+        );
+        Commander.run(PREFS_SHOW_DIAGRAM);
 
         //launch the review
         binding.btnStartReview.setOnClickListener(
@@ -91,7 +70,6 @@ public class StartingScreenActivity extends BaseActivity {
                         .currentActivity(this)
                         .targetActivity(ReviewActivity.class)
                         .build());
-
 
         scheduleJob(NOTIFY_DEFAULT_DELAY_TIME);
     }

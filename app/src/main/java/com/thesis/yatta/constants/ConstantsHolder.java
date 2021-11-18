@@ -33,6 +33,7 @@ public final class ConstantsHolder {
     public static final String PREFS_REVIEW_HAPTIC = "prefs_review_haptic";
     public static final String PREFS_REVIEW_MISMATCH_TOAST = "prefs_review_mismatch_toast";
     public static final String PREFS_REVIEW_SHUFFLE = "prefs_review_shuffle";
+    public static final String PREFS_SHOW_DIAGRAM = "prefs_show_diagram";
 
     public static final String PREFS_FEEDBACK = "prefs_feedback";
 
