@@ -42,10 +42,10 @@ public class StartingScreenActivity extends BaseActivity {
         binding = ActivityStartingScreenBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
-
         model = new ViewModelProvider(this).get(StartingScreenViewModel.class);
         showReviewItemCount();
 
+        //observe livedata for diagram
         model.getPastReviews().observe(this, pastReviews ->{
             Commander.init();
             Commander.setCommand(PREFS_SHOW_DIAGRAM,new ShowDiagramCommand());
@@ -57,8 +57,6 @@ public class StartingScreenActivity extends BaseActivity {
             );
             Commander.run(PREFS_SHOW_DIAGRAM);
         });
-
-        //Show diagram
 
         //launch the review
         binding.btnStartReview.setOnClickListener(
@@ -116,15 +114,15 @@ public class StartingScreenActivity extends BaseActivity {
                     binding.btnStartReview.setVisibility(View.VISIBLE);
                     model.insert(PastReview.builder().itemCount(flashCardCount).build());
                 }
-                else{ // when there are no review flashCards available, there is no point in moving to review activity.
+                else{ //when there are no review flashCards available, there is no point in moving to review activity.
                     binding.btnStartReview.setVisibility(View.GONE);
+                    //any review here is passed completely, that's why we can give the review an end date
                     model.updateReviewHasEnded(TimeProvider.now());
                 }
             });
         } else {
             binding.tvReviewItemCount.setText("Review: " + previousFlashCards.size());
         }
-
     }
 
     /*

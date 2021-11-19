@@ -109,10 +109,17 @@ public class OnboardingActivity extends BaseActivity {
         public void onPageSelected(int position) {
             setupIndicator(position);
 
-            if (position > 0)
+            if (position > 0){
                 binding.backbtn.setVisibility(View.VISIBLE);
-            else
+                //Last slide should say 'DONE' instead of "NEXT"
+                if (position ==  3)
+                    binding.nextbtn.setText("DONE");
+                else
+                    binding.nextbtn.setText("NEXT");
+            }
+            else{
                 binding.backbtn.setVisibility(View.INVISIBLE);
+            }
 
 
         }

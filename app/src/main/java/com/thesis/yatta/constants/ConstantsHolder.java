@@ -76,8 +76,8 @@ public final class ConstantsHolder {
     /*
         URI
      */
-    public static final String URI_REPO = "https://github.com/uestueab/thesis";
-    public static final String URI_REPO_ISSUES = "https://github.com/uestueab/thesis/issues";
+    public static final String URI_REPO = "https://github.com/uestueab/app-thesis";
+    public static final String URI_REPO_ISSUES = "https://github.com/uestueab/app-thesis/issues";
 
     /*
         FEATURES
