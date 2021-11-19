@@ -10,7 +10,6 @@ import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
-import android.os.Environment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -27,8 +26,7 @@ import com.thesis.yatta.listeners.onClick.NextReviewItemListener;
 import com.thesis.yatta.sm2.Review;
 import com.thesis.yatta.viewmodel.SharedViewModel;
 
-import java.io.File;
-import java.io.IOException;
+import java.util.List;
 
 import static com.thesis.yatta.constants.ConstantsHolder.*;
 public class ReviewDetailedResultFragment extends Fragment {
@@ -77,16 +75,27 @@ public class ReviewDetailedResultFragment extends Fragment {
             binding.tvAnswerResult.setBackgroundColor(
                     ContextCompat.getColor(getActivity(),R.color.correct)
             );
-
-            //Prepare play of pronunciation
-            Commander.setState(PREFS_PLAY_PRONUNCIATION,
-                    PlayPronunciationState.builder()
-                            .contextWrapper(new ContextWrapper(getContext()))
-                            .flashCard(review.getFlashCard())
-                            .build()
-            );
-            Commander.run(PREFS_PLAY_PRONUNCIATION);
         }
+        String synonyms = "";
+        List<String> synonymList = review.getFlashCard().getSynonyms();
+        if(synonymList.size() > 0){
+
+            for (String synonym : synonymList)
+                synonyms += "- " + synonym + "\n";
+        }
+
+        //show consecutive correct count as streak
+        binding.tvStreakValue.setText(String.valueOf(review.getFlashCard().getConsecutiveCorrectCount()));
+        binding.tvMySynonym.setText(synonyms);
+
+        //Prepare play of pronunciation
+        Commander.setState(PREFS_PLAY_PRONUNCIATION,
+                PlayPronunciationState.builder()
+                        .contextWrapper(new ContextWrapper(getContext()))
+                        .flashCard(review.getFlashCard())
+                        .build()
+        );
+        Commander.run(PREFS_PLAY_PRONUNCIATION);
 
         //FEATURE: Play review animation
         Commander.setState(PREFS_DISPLAY_ANIMATION,

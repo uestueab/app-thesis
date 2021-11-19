@@ -18,6 +18,7 @@ import com.thesis.yatta.model.entity.PastReview;
 import com.thesis.yatta.toolbox.TimeProvider;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 
 
 @Database(entities = {FlashCard.class, PastReview.class}, version = 1)
@@ -59,7 +60,7 @@ public abstract class FlashCardDatabase extends RoomDatabase {
         @Override
         protected Void doInBackground(Void... voids) {
             flashCardDao.insert(FlashCard.builder()
-                    .prompt("light").meaning("licht").synonyms( new ArrayList<String>() { { add("hell"); } } ).build());
+                    .prompt("light").meaning("licht").synonyms( new ArrayList<String>(Arrays.asList("hell","leicht"))).build());
             flashCardDao.insert(FlashCard.builder().prompt("church").meaning("kirche").build());
             flashCardDao.insert(FlashCard.builder().prompt("plant").meaning("pflanze").build());
             flashCardDao.insert(FlashCard.builder().prompt("water").meaning("wasser").build());
