@@ -37,9 +37,11 @@ public class StartingScreenActivity extends BaseActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
         super.onCreate(savedInstanceState);
         binding = ActivityStartingScreenBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
+
 
         model = new ViewModelProvider(this).get(StartingScreenViewModel.class);
         showReviewItemCount();
