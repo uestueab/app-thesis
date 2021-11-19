@@ -2,6 +2,7 @@ package com.thesis.yatta;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Environment;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -20,6 +21,8 @@ import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import com.thesis.yatta.callbacks.SwipeRecyclerViewTouchHelper;
 import com.thesis.yatta.callbacks.backToManageFlashCardCallback;
 import com.thesis.yatta.databinding.ActivityManageFlashcardBinding;
@@ -27,11 +30,18 @@ import com.thesis.yatta.listeners.onClick.AddFlashCardListener;
 import com.thesis.yatta.listeners.onQueryTextListener.SearchViewTextListener;
 import com.thesis.yatta.model.entity.FlashCard;
 import com.thesis.yatta.viewmodel.ManageFlashCardViewModel;
+import com.thesis.yatta.viewmodel.StartingScreenViewModel;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.io.Serializable;
+import java.lang.reflect.Type;
 import java.util.List;
 
 import static com.thesis.yatta.constants.ConstantsHolder.*;
+
 public class ManageFlashCardActivity extends BaseActivity {
 
     private ActivityManageFlashcardBinding binding;
@@ -73,7 +83,7 @@ public class ManageFlashCardActivity extends BaseActivity {
                         .context(this)
                         .viewModel(flashCardViewModel)
                         .build()
-                );
+        );
 
         binding.buttonAddFlashCard.setOnClickListener(
                 AddFlashCardListener.builder()
@@ -85,22 +95,24 @@ public class ManageFlashCardActivity extends BaseActivity {
 
         //Make the RecyclerView react to swipes
         new ItemTouchHelper(new SwipeRecyclerViewTouchHelper(0, ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT,
-                adapter,flashCardViewModel,binding,this,addEditFlashCardResultLauncher)
+                adapter, flashCardViewModel, binding, this, addEditFlashCardResultLauncher)
         ).attachToRecyclerView(binding.recyclerView);
 
         //Edit flashCard on click
         adapter.setOnItemClickListener(new FlashCardAdapter.OnItemclickListener() {
             @Override
-            public void onItemClick(FlashCard flashCard) { editFlashCard(flashCard); }
+            public void onItemClick(FlashCard flashCard) {
+                editFlashCard(flashCard);
+            }
         });
     }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater menuInflater = getMenuInflater();
-        menuInflater.inflate(R.menu.manage_flashcards_menu,menu);
+        menuInflater.inflate(R.menu.manage_flashcards_menu, menu);
 
-        MenuItem actionSearch= menu.findItem( R.id.search_cards);
+        MenuItem actionSearch = menu.findItem(R.id.search_cards);
         final SearchView searchViewEditText = (SearchView) actionSearch.getActionView();
         searchViewEditText.setQueryHint("search flashCards...");
         searchViewEditText.setOnSearchClickListener(new View.OnClickListener() {
@@ -135,26 +147,58 @@ public class ManageFlashCardActivity extends BaseActivity {
 
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        switch(item.getItemId()){
+        switch (item.getItemId()) {
             case android.R.id.home:
                 this.finish();
                 return true;
-            case R.id.delete_all_flashCards:
-//                flashCardViewModel.deleteAllFlashCards();
-                Toast.makeText(this, "[fake]: all flashCards deleted", Toast.LENGTH_SHORT).show();
+            case R.id.export_all_flashCards:
+                exportFlashCards();
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
         }
     }
 
-    private void editFlashCard(FlashCard flashCard){
+    private void editFlashCard(FlashCard flashCard) {
         Intent intent = new Intent(ManageFlashCardActivity.this, AddEditFlashCardActivity.class);
         Bundle bundle = new Bundle();
         bundle.putInt(REQUEST_CODE, EDIT_NOTE_REQUEST);
         bundle.putSerializable(BUNDLE_EDIT_NOTE, (Serializable) flashCard);
-        intent.putExtra(EXTRA_EDIT_NOTE,bundle);
+        intent.putExtra(EXTRA_EDIT_NOTE, bundle);
 
         addEditFlashCardResultLauncher.launch(intent);
+    }
+
+    private void exportFlashCards() {
+
+        ManageFlashCardViewModel model = new ViewModelProvider(this).get(ManageFlashCardViewModel.class);
+        //make a database call and observe data
+        model.getAllFlashCards().observe(this, flashCards -> {
+            Gson gson = new Gson();
+
+            //prepare value
+            Type type = new TypeToken<List<FlashCard>>() {
+            }.getType();
+            //transform data to json string
+            String json = gson.toJson(flashCards, type);
+
+            //define location of export file
+            File file = new File(getExternalFilesDir(Environment.DIRECTORY_DOCUMENTS), "Yatta-FlashCards.json");
+            //let user be aware of location through toast
+            Toast.makeText(this, "Path: " + file.getPath(), Toast.LENGTH_SHORT).show();
+
+            //write file to storage
+            try {
+                FileOutputStream stream = new FileOutputStream(file);
+                try {
+                    stream.write(json.getBytes());
+                    stream.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            } catch (FileNotFoundException e) {
+                e.printStackTrace();
+            }
+        });
     }
 }

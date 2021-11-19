@@ -1,9 +1,12 @@
 package com.thesis.yatta;
 
 import androidx.lifecycle.ViewModelProvider;
+
+import android.app.AlertDialog;
 import android.app.job.JobInfo;
 import android.app.job.JobScheduler;
 import android.content.ComponentName;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.PersistableBundle;
@@ -14,6 +17,8 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
 
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import com.thesis.yatta.commander.Commander;
 import com.thesis.yatta.commander.commands.ShowDiagramCommand;
 import com.thesis.yatta.commander.state.ShowDiagramState;
@@ -24,6 +29,7 @@ import com.thesis.yatta.model.entity.PastReview;
 import com.thesis.yatta.toolbox.TimeProvider;
 import com.thesis.yatta.viewmodel.StartingScreenViewModel;
 
+import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -57,6 +63,7 @@ public class StartingScreenActivity extends BaseActivity {
             );
             Commander.run(PREFS_SHOW_DIAGRAM);
         });
+
 
         //launch the review
         binding.btnStartReview.setOnClickListener(
