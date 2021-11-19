@@ -16,9 +16,9 @@ public class OnboardingViewPagerAdapter extends PagerAdapter  {
     Context context;
     int images[] = {
             R.drawable.ic_yatta_logo,
-            R.drawable.ic_onboarding_image2,
-            R.drawable.ic_onboarding_image3,
-            R.drawable.ic_onboarding_image4
+            R.drawable.ic_onboarding_progressive_app,
+            R.drawable.ic_onboarding_predictive_analytics,
+            R.drawable.ic_onboarding_japan
     };
 
     int headings[] = {
