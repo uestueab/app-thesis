@@ -32,6 +32,7 @@ import com.thesis.yatta.viewmodel.StartingScreenViewModel;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Observable;
 
 import static com.thesis.yatta.constants.ConstantsHolder.*;
 
@@ -112,6 +113,7 @@ public class StartingScreenActivity extends BaseActivity {
         PrefManager.init(this);
         List<FlashCard> previousFlashCards = PrefManager.getFlashCards(PREFS_REMAINING_FLASH_CARDS);
 
+        Boolean reviewExists = PrefManager.get("ReviewExists",false);
         //no left over cards means: -> check if there are new cards due for the review
         if (previousFlashCards == null || previousFlashCards.size() == 0) {
             model.getFlashCards().observe(this, item -> {
@@ -119,12 +121,17 @@ public class StartingScreenActivity extends BaseActivity {
                 binding.tvReviewItemCount.setText("Review: " + flashCardCount);
                 if(flashCardCount > 0){
                     binding.btnStartReview.setVisibility(View.VISIBLE);
-                    model.insert(PastReview.builder().itemCount(flashCardCount).build());
+
+                    if (!reviewExists){
+                        model.insert(PastReview.builder().itemCount(flashCardCount).build());
+                        PrefManager.set("ReviewExists",true);
+                    }
                 }
                 else{ //when there are no review flashCards available, there is no point in moving to review activity.
                     binding.btnStartReview.setVisibility(View.GONE);
                     //any review here is passed completely, that's why we can give the review an end date
                     model.updateReviewHasEnded(TimeProvider.now());
+                    PrefManager.set("ReviewExists",false);
                 }
             });
         } else {
