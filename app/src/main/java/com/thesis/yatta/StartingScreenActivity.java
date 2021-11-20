@@ -2,11 +2,9 @@ package com.thesis.yatta;
 
 import androidx.lifecycle.ViewModelProvider;
 
-import android.app.AlertDialog;
 import android.app.job.JobInfo;
 import android.app.job.JobScheduler;
 import android.content.ComponentName;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.PersistableBundle;
@@ -15,13 +13,13 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Toast;
 
-import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
 import com.thesis.yatta.commander.Commander;
 import com.thesis.yatta.commander.commands.ShowDiagramCommand;
+import com.thesis.yatta.commander.commands.ShowNotificationCommand;
+import com.thesis.yatta.commander.receiver.ShowNotification;
 import com.thesis.yatta.commander.state.ShowDiagramState;
+import com.thesis.yatta.commander.state.ShowNotificationState;
 import com.thesis.yatta.databinding.ActivityStartingScreenBinding;
 import com.thesis.yatta.listeners.onClick.StartActivityListener;
 import com.thesis.yatta.model.entity.FlashCard;
@@ -29,10 +27,8 @@ import com.thesis.yatta.model.entity.PastReview;
 import com.thesis.yatta.toolbox.TimeProvider;
 import com.thesis.yatta.viewmodel.StartingScreenViewModel;
 
-import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Observable;
 
 import static com.thesis.yatta.constants.ConstantsHolder.*;
 
@@ -52,7 +48,12 @@ public class StartingScreenActivity extends BaseActivity {
         model = new ViewModelProvider(this).get(StartingScreenViewModel.class);
         showReviewItemCount();
 
+        //Initialize PrefManager and Commander
         PrefManager.init(this);
+        Commander.init();
+        Commander.setCommand(PREFS_SHOW_DIAGRAM,new ShowDiagramCommand());
+        Commander.setCommand(PREFS_GENERAL_NOTIFICATIONS,new ShowNotificationCommand());
+
         //defaultValues less than 0L implies first launch, in any other case get date of last usage
         Long lastLaunched = PrefManager.get(PREFS_LAST_LAUNCHED, -1L);
 
@@ -61,12 +62,8 @@ public class StartingScreenActivity extends BaseActivity {
          else
             binding.tvLastLaunchedInfo.setText("Welcome, nice to meet you!");
 
-
-
         //observe livedata for diagram
         model.getPastReviews().observe(this, pastReviews ->{
-            Commander.init();
-            Commander.setCommand(PREFS_SHOW_DIAGRAM,new ShowDiagramCommand());
             Commander.setState(PREFS_SHOW_DIAGRAM, ShowDiagramState.builder()
                     .binding(binding)
                     .context(this)
@@ -83,35 +80,9 @@ public class StartingScreenActivity extends BaseActivity {
                         .targetActivity(ReviewActivity.class)
                         .build());
 
-        scheduleJob(NOTIFY_DEFAULT_DELAY_TIME);
-    }
-
-
-    public void scheduleJob(long delayInMilliSec) {
-
-        PersistableBundle bundle = new PersistableBundle();
-        bundle.putLong(NOTIFY_DELAY_TIME, delayInMilliSec);
-
-        ComponentName componentName = new ComponentName(this, NotificationJobService.class);
-        JobInfo info = new JobInfo.Builder(123, componentName)
-                .setExtras(bundle)
-                .setPersisted(true)
-                .setPeriodic(delayInMilliSec)
-                .build();
-
-        JobScheduler scheduler = (JobScheduler) getSystemService(JOB_SCHEDULER_SERVICE);
-        int resultCode = scheduler.schedule(info);
-        if (resultCode == JobScheduler.RESULT_SUCCESS) {
-            Log.d(TAG, "Job scheduled");
-        } else {
-            Log.d(TAG, "Job scheduling failed");
-        }
-    }
-
-    public void cancelJob(View v) {
-        JobScheduler scheduler = (JobScheduler) getSystemService(JOB_SCHEDULER_SERVICE);
-        scheduler.cancel(123);
-        Log.d(TAG, "Job cancelled");
+        //Notifications (after some time of inactivity)
+        Commander.setState(PREFS_GENERAL_NOTIFICATIONS, new ShowNotificationState(StartingScreenActivity.this));
+        Commander.run(PREFS_GENERAL_NOTIFICATIONS);
     }
 
     /*
@@ -176,21 +147,7 @@ public class StartingScreenActivity extends BaseActivity {
                 startActivity(intentManageFlashCard);
                 return true;
             case R.id.menu_item_allow_sound:
-                PrefManager.init(this);
-                if(!PrefManager.contains(PREFS_PLAY_PRONUNCIATION)){
-                    //Never pressed the sound icon, so initially press should disable sound and switch icons accordingly
-                    PrefManager.set(PREFS_PLAY_PRONUNCIATION, false);
-                    item.setIcon(R.drawable.no_play_sound);
-                }else{
-                    Boolean sound_enabled = PrefManager.get(PREFS_PLAY_PRONUNCIATION,false);
-                    if(sound_enabled){
-                        PrefManager.set(PREFS_PLAY_PRONUNCIATION, false);
-                        item.setIcon(R.drawable.no_play_sound);
-                    }else{
-                        PrefManager.set(PREFS_PLAY_PRONUNCIATION, true);
-                        item.setIcon(R.drawable.play_sound);
-                    }
-                }
+                toggleSound(item);
                 return true;
             default:
                 super.onOptionsItemSelected(item);
@@ -210,6 +167,25 @@ public class StartingScreenActivity extends BaseActivity {
         super.onPause();
         Log.d(TAG, "onPause: ");
         PrefManager.init(this);
+        //updates the textview info about when the app was launched last
         PrefManager.set(PREFS_LAST_LAUNCHED,TimeProvider.now());
+    }
+
+    private void toggleSound(MenuItem item){
+        PrefManager.init(this);
+        if(!PrefManager.contains(PREFS_PLAY_PRONUNCIATION)){
+            //Never pressed the sound icon, so initially press should disable sound and switch icons accordingly
+            PrefManager.set(PREFS_PLAY_PRONUNCIATION, false);
+            item.setIcon(R.drawable.no_play_sound);
+        }else{
+            Boolean sound_enabled = PrefManager.get(PREFS_PLAY_PRONUNCIATION,false);
+            if(sound_enabled){
+                PrefManager.set(PREFS_PLAY_PRONUNCIATION, false);
+                item.setIcon(R.drawable.no_play_sound);
+            }else{
+                PrefManager.set(PREFS_PLAY_PRONUNCIATION, true);
+                item.setIcon(R.drawable.play_sound);
+            }
+        }
     }
 }

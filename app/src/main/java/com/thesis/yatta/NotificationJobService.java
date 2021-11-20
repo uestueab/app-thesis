@@ -35,7 +35,7 @@ public class NotificationJobService extends JobService {
                     Make the notification appear after inactivity. (inactivity = closed time + x_days?)
                     Get the time the app was closed. (second parameter is to prohibit premature execution)
                  */
-                long app_closed_at = PrefManager.get(APP_CLOSED_AT, Long.MAX_VALUE);
+                Long app_closed_at = PrefManager.get(APP_CLOSED_AT, Long.MAX_VALUE);
                 long notificationDelay = params.getExtras().getLong(NOTIFY_DELAY_TIME);
 
                 if(System.currentTimeMillis() - notificationDelay > app_closed_at) {
@@ -53,7 +53,7 @@ public class NotificationJobService extends JobService {
                     NotificationCompat.Builder notification = new NotificationCompat.Builder(getApplicationContext(), "channel1");
                     //notification.setAutoCancel(true);
                     notification.setContentTitle("Hang in there!");
-                    notification.setContentText("Don't forget to taking your reviews");
+                    notification.setContentText("New reviews available.");
                     notification.setSmallIcon(R.drawable.ic_launcher_foreground);
 
                     //make the notification manager to issue a notification on the notification's channel

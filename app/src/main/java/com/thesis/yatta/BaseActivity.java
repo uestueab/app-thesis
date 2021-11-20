@@ -45,4 +45,11 @@ public abstract class BaseActivity extends AppCompatActivity {
 
     }
 
+    @Override
+    protected void onPause() {
+        super.onPause();
+        PrefManager.init(this);
+        PrefManager.set(APP_CLOSED_AT,System.currentTimeMillis());
+    }
+
 }

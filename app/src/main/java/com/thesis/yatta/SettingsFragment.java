@@ -44,6 +44,7 @@ public class SettingsFragment extends PreferenceFragmentCompat {
                     prefs_general_notifications.setIcon(R.drawable.notifications_off);
                 }
                 PrefManager.set(PREFS_GENERAL_NOTIFICATIONS, notifications_enabled);
+
                 return true;
             }
         });

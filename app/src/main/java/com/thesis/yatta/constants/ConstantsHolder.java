@@ -92,7 +92,7 @@ public final class ConstantsHolder {
     // public static final long NOTIFY_DEFAULT_DELAY_TIME = 86400000;
 
     // 15-Min in milliseconds: 15 * 60 * 1000;
-     public static final long NOTIFY_DEFAULT_DELAY_TIME = 900000;
+     public static final long NOTIFY_DEFAULT_DELAY_TIME = 900000L;
 
     public static final String PREFS_LAST_LAUNCHED = "prefs_last_launched";
 }
