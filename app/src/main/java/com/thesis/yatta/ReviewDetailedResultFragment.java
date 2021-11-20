@@ -31,8 +31,6 @@ import java.util.List;
 import static com.thesis.yatta.constants.ConstantsHolder.*;
 public class ReviewDetailedResultFragment extends Fragment {
 
-    //make communication between fragments possible
-    private SharedViewModel model;
     //view binding of fragment
     private ReviewDetailedResultFragmentBinding binding;
 
@@ -53,7 +51,8 @@ public class ReviewDetailedResultFragment extends Fragment {
     public void onResume() {
         super.onResume();
 
-        model = new ViewModelProvider(requireActivity()).get(SharedViewModel.class);
+        //make communication between fragments possible
+        SharedViewModel model = new ViewModelProvider(requireActivity()).get(SharedViewModel.class);
 
         //Prepare all features associated with this particular fragment
         Commander.init();
@@ -64,7 +63,7 @@ public class ReviewDetailedResultFragment extends Fragment {
         //Update the UI.
         Review review = model.getMostRecentReview();
         binding.tvQuestion.setText(review.getFlashCard().getPrompt());
-        binding.tvReviewProgress.setText(model.getCorrectCount(true)+"/"+model.getTotalFlashCards());
+        binding.tvReviewProgress.setText(model.getCorrectCount(true)+"/"+ model.getTotalFlashCards());
         if (review.hasFailed()) {
             binding.tvAnswerResult.setText("wrong");
             binding.tvAnswerResult.setBackgroundColor(
@@ -76,17 +75,11 @@ public class ReviewDetailedResultFragment extends Fragment {
                     ContextCompat.getColor(getActivity(),R.color.correct)
             );
         }
-        String synonyms = "";
-        List<String> synonymList = review.getFlashCard().getSynonyms();
-        if(synonymList.size() > 0){
 
-            for (String synonym : synonymList)
-                synonyms += "- " + synonym + "\n";
-        }
-
+        String synonyms = prepareSynonyms(review);
+        binding.tvMySynonym.setText(synonyms);
         //show consecutive correct count as streak
         binding.tvStreakValue.setText(String.valueOf(review.getFlashCard().getConsecutiveCorrectCount()));
-        binding.tvMySynonym.setText(synonyms);
 
         //Prepare play of pronunciation
         Commander.setState(PREFS_PLAY_PRONUNCIATION,
@@ -134,6 +127,21 @@ public class ReviewDetailedResultFragment extends Fragment {
     public void onDestroyView() {
         super.onDestroyView();
         binding = null;
+    }
+
+    private String prepareSynonyms(Review review){
+        String synonyms = "";
+        List<String> synonymList = review.getFlashCard().getSynonyms();
+        if(synonymList.size() > 0){
+            for (int i=0; i<synonymList.size(); i++){
+                //no comma at last synonym
+                if(i<synonymList.size()-1)
+                    synonyms += synonymList.get(i) +", ";
+                else
+                    synonyms += synonymList.get(i);
+            }
+        }
+        return synonyms;
     }
 }
 

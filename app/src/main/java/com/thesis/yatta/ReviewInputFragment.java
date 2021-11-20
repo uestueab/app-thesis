@@ -66,13 +66,13 @@ public class ReviewInputFragment extends Fragment {
                 binding.tvQuestion.setText(currentFlashCard.getPrompt());
                 binding.tvReviewProgress.setText(model.getCorrectCount(false)+"/"+model.getTotalFlashCards());
 
+                //Show mnemonics if there are any, or show Toast information
                 binding.btnNotKnow.setOnClickListener(
                         NotKnowListener.builder()
                                 .context(getContext())
                                 .mnemonic(currentFlashCard.getMnemonic())
                                 .build()
                 );
-
             }
         });
 

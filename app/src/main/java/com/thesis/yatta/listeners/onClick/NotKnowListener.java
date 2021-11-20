@@ -39,12 +39,13 @@ public class NotKnowListener implements View.OnClickListener {
             String theme =  PrefManager.get(PREFS_DISPLAY_THEME,THEME_LIGHT);
             int dialogTheme;
 
+            //ATTENTION:
+            //modify this block when introducing more themes!!!
             if(theme.equals(THEME_GRUVBOX)){
                 dialogTheme = R.style.gruvbox_dialogTheme;
             }else {
                 dialogTheme = R.style.light_dialogTheme;
             }
-
 
             AlertDialog alert = new AlertDialog.Builder(getContext(), dialogTheme)
                     .setTitle("Mnemonic:")
@@ -62,8 +63,6 @@ public class NotKnowListener implements View.OnClickListener {
                 alert.getButton(AlertDialog.BUTTON_POSITIVE).setTextColor(getAttributeColor(R.attr.textColor));
             });
             alert.show();
-
-
         }
     }
 
