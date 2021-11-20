@@ -61,8 +61,8 @@ public abstract class FlashCardDatabase extends RoomDatabase {
         protected Void doInBackground(Void... voids) {
             flashCardDao.insert(FlashCard.builder()
                     .prompt("light").meaning("licht").synonyms( new ArrayList<String>(Arrays.asList("hell","leicht","hell","leicht","hell","leicht"))).build());
-            flashCardDao.insert(FlashCard.builder().prompt("church").meaning("kirche").build());
-            flashCardDao.insert(FlashCard.builder().prompt("plant").meaning("pflanze").build());
+            flashCardDao.insert(FlashCard.builder().prompt("church").mnemonic("Ein Gotteshaus").meaning("kirche").build());
+            flashCardDao.insert(FlashCard.builder().prompt("plant").mnemonic("Denke an Flora, Botanik, Vegetation...").meaning("pflanze").build());
             flashCardDao.insert(FlashCard.builder().prompt("water").meaning("wasser").build());
 
             pastReviewDao.insert(PastReview.builder().ended(TimeProvider.now()).itemCount(23).build());

@@ -113,25 +113,26 @@ public class StartingScreenActivity extends BaseActivity {
         PrefManager.init(this);
         List<FlashCard> previousFlashCards = PrefManager.getFlashCards(PREFS_REMAINING_FLASH_CARDS);
 
-        Boolean reviewExists = PrefManager.get("ReviewExists",false);
+        Boolean reviewExists = PrefManager.get("PREFS_REVIEW_EXISTS",false);
         //no left over cards means: -> check if there are new cards due for the review
         if (previousFlashCards == null || previousFlashCards.size() == 0) {
             model.getFlashCards().observe(this, item -> {
-                int flashCardCount = model.getFlashCardsCount();
+                int flashCardCount = item.size();
                 binding.tvReviewItemCount.setText("Review: " + flashCardCount);
                 if(flashCardCount > 0){
                     binding.btnStartReview.setVisibility(View.VISIBLE);
 
+                    //makes sure there is only ONE record in pastReviews table that has no end date yet.
                     if (!reviewExists){
                         model.insert(PastReview.builder().itemCount(flashCardCount).build());
-                        PrefManager.set("ReviewExists",true);
+                        PrefManager.set("PREFS_REVIEW_EXISTS",true);
                     }
                 }
                 else{ //when there are no review flashCards available, there is no point in moving to review activity.
                     binding.btnStartReview.setVisibility(View.GONE);
                     //any review here is passed completely, that's why we can give the review an end date
                     model.updateReviewHasEnded(TimeProvider.now());
-                    PrefManager.set("ReviewExists",false);
+                    PrefManager.set("PREFS_REVIEW_EXISTS",false);
                 }
             });
         } else {

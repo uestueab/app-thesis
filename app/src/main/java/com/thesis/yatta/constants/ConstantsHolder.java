@@ -23,6 +23,7 @@ public final class ConstantsHolder {
     public static final String PREFS_FILE = "prefs_file";
     public static final String PREFS_REMAINING_FLASH_CARDS = "prefs_remaining_flashCards";
     public static final  String PREFS_ONBOARDING_PASSED = "prefs_onboarding_passed";
+    public static final  String PREFS_REVIEW_EXISTS = "prefs_review_exists";
 
     public static final String PREFS_ADVANCED_EXPERIMENTAL = "prefs_advanced_experimental";
     public static final String PREFS_DISPLAY_ANIMATION = "prefs_display_animation";

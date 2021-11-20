@@ -15,6 +15,7 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 
 import com.thesis.yatta.databinding.ReviewInputFragmentBinding;
+import com.thesis.yatta.listeners.onClick.NotKnowListener;
 import com.thesis.yatta.listeners.onClick.ReviewAnswerSubmittedListener;
 import com.thesis.yatta.listeners.onEditorChange.SubmitWithKeyboardListener;
 import com.thesis.yatta.model.entity.FlashCard;
@@ -64,6 +65,14 @@ public class ReviewInputFragment extends Fragment {
             if(currentFlashCard != null){
                 binding.tvQuestion.setText(currentFlashCard.getPrompt());
                 binding.tvReviewProgress.setText(model.getCorrectCount(false)+"/"+model.getTotalFlashCards());
+
+                binding.btnNotKnow.setOnClickListener(
+                        NotKnowListener.builder()
+                                .context(getContext())
+                                .mnemonic(currentFlashCard.getMnemonic())
+                                .build()
+                );
+
             }
         });
 
