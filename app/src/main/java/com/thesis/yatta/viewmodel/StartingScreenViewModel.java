@@ -4,6 +4,7 @@ import android.app.Application;
 
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
+import androidx.lifecycle.MutableLiveData;
 
 import com.thesis.yatta.model.entity.PastReview;
 import com.thesis.yatta.model.repository.FlashCardRepository;
@@ -19,7 +20,6 @@ public class StartingScreenViewModel extends AndroidViewModel {
 
     private final PastReviewRepository pastReviewRepository;
     private final LiveData<List<PastReview>> pastReviews;
-
 
     public StartingScreenViewModel(Application application) {
         super(application);
@@ -45,6 +45,7 @@ public class StartingScreenViewModel extends AndroidViewModel {
     public void updateReviewHasEnded(long dateEnded){
         pastReviewRepository.updateReviewHasEnded(dateEnded);
     }
+
 }
 
 

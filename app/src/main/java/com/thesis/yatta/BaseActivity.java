@@ -5,6 +5,8 @@ import android.os.Bundle;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.thesis.yatta.toolbox.TimeProvider;
+
 import static com.thesis.yatta.constants.ConstantsHolder.*;
 
 /*
@@ -42,4 +44,5 @@ public abstract class BaseActivity extends AppCompatActivity {
         }
 
     }
+
 }

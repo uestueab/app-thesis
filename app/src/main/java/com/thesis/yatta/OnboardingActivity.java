@@ -27,7 +27,7 @@ public class OnboardingActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
 
         PrefManager.init(getApplicationContext());
-        boolean onboardingPassed = PrefManager.get(PREFS_ONBOARDING_PASSED, false);
+        Boolean onboardingPassed = PrefManager.get(PREFS_ONBOARDING_PASSED, false);
         //move to starting screen, if starting screen was shown in the past
         if (onboardingPassed) {
             Intent startingScreenIntent = new Intent(OnboardingActivity.this, StartingScreenActivity.class);

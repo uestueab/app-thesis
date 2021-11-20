@@ -15,7 +15,7 @@ public class TimeProvider {
 
     @SuppressLint("SimpleDateFormat")
     public static String toHumanReadableDate(long epoch){
-        return new java.text.SimpleDateFormat("dd/MM/yyyy HH:mm:ss")
+        return new java.text.SimpleDateFormat("dd/MM/yyyy HH:mm")
                 .format(new java.util.Date(epoch));
     }
 

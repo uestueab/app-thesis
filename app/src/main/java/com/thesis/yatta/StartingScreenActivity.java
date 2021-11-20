@@ -52,6 +52,17 @@ public class StartingScreenActivity extends BaseActivity {
         model = new ViewModelProvider(this).get(StartingScreenViewModel.class);
         showReviewItemCount();
 
+        PrefManager.init(this);
+        //defaultValues less than 0L implies first launch, in any other case get date of last usage
+        Long lastLaunched = PrefManager.get(PREFS_LAST_LAUNCHED, -1L);
+
+        if(lastLaunched > 0L)
+            binding.tvLastLaunchedInfo.setText("Last visited: \t" + TimeProvider.toHumanReadableDate(lastLaunched));
+         else
+            binding.tvLastLaunchedInfo.setText("Welcome, nice to meet you!");
+
+
+
         //observe livedata for diagram
         model.getPastReviews().observe(this, pastReviews ->{
             Commander.init();
@@ -64,7 +75,6 @@ public class StartingScreenActivity extends BaseActivity {
             );
             Commander.run(PREFS_SHOW_DIAGRAM);
         });
-
 
         //launch the review
         binding.btnStartReview.setOnClickListener(
@@ -129,6 +139,7 @@ public class StartingScreenActivity extends BaseActivity {
                     }
                 }
                 else{ //when there are no review flashCards available, there is no point in moving to review activity.
+                    binding.tvReviewItemCount.setText("No reviews available yet.");
                     binding.btnStartReview.setVisibility(View.GONE);
                     //any review here is passed completely, that's why we can give the review an end date
                     model.updateReviewHasEnded(TimeProvider.now());
@@ -199,7 +210,6 @@ public class StartingScreenActivity extends BaseActivity {
         super.onPause();
         Log.d(TAG, "onPause: ");
         PrefManager.init(this);
-        PrefManager.set(APP_CLOSED_AT,System.currentTimeMillis());
-        Log.d(TAG, APP_CLOSED_AT + " value is set");
+        PrefManager.set(PREFS_LAST_LAUNCHED,TimeProvider.now());
     }
 }
