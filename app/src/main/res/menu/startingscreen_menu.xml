@@ -9,4 +9,9 @@
         android:id="@+id/menu_item_manage_flashCards"
         android:title="Manage flashCards"
         app:showAsAction="never"/>
+    <item
+        android:id="@+id/menu_item_allow_sound"
+        android:title="sound on"
+        android:icon="@drawable/play_sound"
+        app:showAsAction="always"/>
 </menu>

@@ -8,7 +8,7 @@
         android:title="Search"
         app:actionViewClass="android.widget.SearchView" />
     <item
-        android:id="@+id/delete_all_flashCards"
-        android:title="Delete all flashCards"
+        android:id="@+id/export_all_flashCards"
+        android:title="Export flashcards"
         app:showAsAction="never"/>
 </menu>

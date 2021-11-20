@@ -58,11 +58,11 @@
                 android:id="@+id/review_result_animation"
                 android:layout_width="50dp"
                 android:layout_height="50dp"
-                android:layout_marginTop="4dp"
-
                 android:layout_alignParentEnd="true"
+
+                android:layout_marginTop="4dp"
                 app:lottie_autoPlay="true"
-                app:lottie_loop="false"/>
+                app:lottie_loop="false" />
 
         </RelativeLayout>
     </androidx.cardview.widget.CardView>
@@ -74,7 +74,7 @@
         android:layout_marginTop="5dp"
         android:background="?attr/backgroundColor_secondary"
         android:gravity="center"
-        android:text="Vocabulary Meaning"
+        android:text="vocabulary meaning"
         app:layout_constraintTop_toBottomOf="@id/cardView" />
 
     <TextView
@@ -85,35 +85,61 @@
         android:textColor="?attr/textColor"
         app:layout_constraintTop_toBottomOf="@id/tv_voc_meaning" />
 
-    <TextView
-        android:id="@+id/tv_answerBlock"
+    <RelativeLayout
+        android:id="@+id/ll_correctStreakContainer"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="12dp"
         android:background="?attr/backgroundColor_secondary"
         android:padding="14dp"
-        android:text="TEXT"
-        android:textColor="?attr/textColor"
-        android:textSize="18sp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/tv_answerResult" />
+        app:layout_constraintTop_toBottomOf="@id/tv_answerResult">
+
+        <TextView
+            android:id="@+id/tv_streak"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:text="Streak:"
+            android:textColor="?attr/textColor"
+            android:textSize="12sp" />
+
+        <TextView
+            android:id="@+id/tv_streakValue"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/tv_streak"
+            android:layout_centerHorizontal="true"
+            android:background="?attr/backgroundColor_secondary"
+            android:textColor="?attr/textColor"
+            android:textSize="12sp" />
+    </RelativeLayout>
 
     <TextView
         android:id="@+id/tv_answerMeaningField"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginLeft="8dp"
-        app:layout_constraintStart_toEndOf="@id/tv_answerBlock"
-        app:layout_constraintTop_toTopOf="@id/tv_answerBlock" />
+        app:layout_constraintStart_toEndOf="@id/ll_correctStreakContainer"
+        app:layout_constraintTop_toTopOf="@id/ll_correctStreakContainer" />
 
     <TextView
-        android:id="@+id/tv_answerMeaning"
+        android:id="@+id/tv_mySynonymTitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginLeft="6dp"
+        android:text="My synonoyms:"
+        android:textSize="14sp"
+        app:layout_constraintStart_toEndOf="@id/ll_correctStreakContainer"
+        app:layout_constraintTop_toTopOf="@id/ll_correctStreakContainer" />
+
+    <TextView
+        android:id="@+id/tv_mySynonym"
+        android:layout_width="180dp"
+        android:layout_height="wrap_content"
         android:layout_marginTop="4dp"
-        android:text="TEST"
-        app:layout_constraintStart_toStartOf="@id/tv_answerMeaningField"
-        app:layout_constraintTop_toBottomOf="@id/tv_answerMeaningField" />
+        app:layout_constraintStart_toStartOf="@id/tv_mySynonymTitle"
+        app:layout_constraintTop_toBottomOf="@id/tv_mySynonymTitle" />
 
     <androidx.appcompat.widget.AppCompatButton
         android:layout_width="wrap_content"
@@ -125,8 +151,8 @@
         android:padding="6dp"
         android:text="PLAY"
         android:textColor="?attr/cardForegroundColor"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="@id/tv_answerMeaningField" />
+        app:layout_constraintBottom_toBottomOf="@id/ll_correctStreakContainer"
+        app:layout_constraintEnd_toEndOf="parent" />
 
     <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/btn_nextBottom"
@@ -139,5 +165,34 @@
         android:textColor="?attr/textColor_secondary"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
+
+    <!--    horizontal line-->
+    <View
+        android:id="@+id/separator"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginTop="20dp"
+        android:background="?attr/backgroundColor_secondary"
+        app:layout_constraintStart_toStartOf="@id/ll_correctStreakContainer"
+        app:layout_constraintTop_toBottomOf="@id/ll_correctStreakContainer" />
+
+    <TextView
+        android:id="@+id/tv_mnemonicTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:text="Mnemonics:"
+        android:textSize="14sp"
+        app:layout_constraintStart_toStartOf="@+id/separator"
+        app:layout_constraintTop_toTopOf="@id/separator" />
+
+    <TextView
+        android:id="@+id/tv_mnemonic"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="6dp"
+        app:layout_constraintBottom_toBottomOf="@id/tv_mnemonicTitle"
+        app:layout_constraintStart_toEndOf="@id/tv_mnemonicTitle" />
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

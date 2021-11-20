@@ -16,4 +16,7 @@
     <color name="deleteFlashCardOnSwipe">#fb4934</color>
     <color name="editFlashCardOnSwipe">#689d6a</color>
 
+    <color name="inactive">#C4C4C4</color>
+    <color name="active">#bf616a</color>%
+
 </resources>

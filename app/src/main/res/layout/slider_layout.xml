@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    app:flow_horizontalAlign="center"
+    android:padding="20dp"
+    >
+
+    <ImageView
+        android:id="@+id/titleImage"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:adjustViewBounds="true"
+        android:layout_marginTop="10dp"
+        android:src="@drawable/ic_yatta_logo"/>
+
+    <TextView
+        android:id="@+id/texttitle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="50dp"
+        android:fontFamily="@font/montserrat_bold"
+        android:gravity="start"
+        android:text="@string/heading_one"
+        android:textAlignment="gravity"
+        android:textColor="?attr/textColor"
+        android:textSize="28sp" />
+
+    <TextView
+        android:id="@+id/textdeccription"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="31dp"
+        android:text="@string/desc_one"
+        android:gravity="start"
+        android:textAlignment="gravity"
+        android:textColor="?attr/textColor"
+        android:fontFamily="@font/montserrat_regular"
+        android:textSize="16sp"/>
+</LinearLayout>

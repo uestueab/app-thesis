@@ -1,43 +1,47 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    package="com.thesis.yatta" >
+    package="com.thesis.yatta">
 
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"
+    <uses-permission
+        android:name="android.permission.WRITE_EXTERNAL_STORAGE"
         tools:ignore="ScopedStorage" />
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
     <uses-permission android:name="android.permission.VIBRATE" />
-    <uses-permission android:name="android.permission.RECORD_AUDIO"/>
-
+    <uses-permission android:name="android.permission.RECORD_AUDIO" />
 
     <application
         android:allowBackup="false"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
-        android:roundIcon="@mipmap/ic_launcher_round"
         android:requestLegacyExternalStorage="true"
+        android:roundIcon="@mipmap/ic_launcher"
         android:supportsRtl="true"
-        android:theme="@style/Theme.ViewPagerFun" >
-        <activity android:name="com.thesis.yatta.SettingsActivity" android:label="Settings" >
-        </activity>
-        <activity android:name="com.thesis.yatta.StartingScreenActivity" >
+        android:theme="@style/Theme.ViewPagerFun">
+        <activity android:name=".OnboardingActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name="com.thesis.yatta.ReviewActivity" android:label="Review" >
-        </activity>
-        <activity android:name="com.thesis.yatta.ManageFlashCardActivity" android:label="Overview total flashCards">
+        <activity
+            android:name=".SettingsActivity"
+            android:label="Settings"/>
+        <activity android:name=".StartingScreenActivity">
         </activity>
         <activity
-            android:name="com.thesis.yatta.AddEditFlashCardActivity"
-            android:parentActivityName="com.thesis.yatta.ManageFlashCardActivity" >
-        </activity>
+            android:name=".ReviewActivity"
+            android:label="Review"/>
+        <activity
+            android:name=".ManageFlashCardActivity"
+            android:label="Overview total flashCards"/>
+        <activity
+            android:name=".AddEditFlashCardActivity"
+            android:parentActivityName=".ManageFlashCardActivity"/>
 
         <service
-            android:name="com.thesis.yatta.NotificationJobService"
+            android:name=".NotificationJobService"
             android:permission="android.permission.BIND_JOB_SERVICE" />
     </application>
 

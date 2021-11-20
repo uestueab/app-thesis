@@ -1,0 +1,132 @@
+{
+  "formatVersion": 1,
+  "database": {
+    "version": 1,
+    "identityHash": "de7fc1739dae52ace008a31da6d57ff0",
+    "entities": [
+      {
+        "tableName": "flashCard_table",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`flashCardId` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `flashCard_title` TEXT, `meaning` TEXT, `synonyms` TEXT, `mnemonic` TEXT, `pronunciation` TEXT, `consecutiveCorrectCount` INTEGER NOT NULL, `lastReviewedDate` INTEGER NOT NULL, `dueDate` INTEGER NOT NULL, `interval` REAL NOT NULL, `easinessFactor` REAL NOT NULL)",
+        "fields": [
+          {
+            "fieldPath": "flashCardId",
+            "columnName": "flashCardId",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "prompt",
+            "columnName": "flashCard_title",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "meaning",
+            "columnName": "meaning",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "synonyms",
+            "columnName": "synonyms",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "mnemonic",
+            "columnName": "mnemonic",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "pronunciation",
+            "columnName": "pronunciation",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "consecutiveCorrectCount",
+            "columnName": "consecutiveCorrectCount",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "lastReviewedDate",
+            "columnName": "lastReviewedDate",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "dueDate",
+            "columnName": "dueDate",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "interval",
+            "columnName": "interval",
+            "affinity": "REAL",
+            "notNull": true
+          },
+          {
+            "fieldPath": "easinessFactor",
+            "columnName": "easinessFactor",
+            "affinity": "REAL",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "columnNames": [
+            "flashCardId"
+          ],
+          "autoGenerate": true
+        },
+        "indices": [],
+        "foreignKeys": []
+      },
+      {
+        "tableName": "pastReview_table",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`pastReviewId` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `started` INTEGER NOT NULL, `ended` INTEGER NOT NULL, `itemCount` INTEGER NOT NULL)",
+        "fields": [
+          {
+            "fieldPath": "pastReviewId",
+            "columnName": "pastReviewId",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "started",
+            "columnName": "started",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "ended",
+            "columnName": "ended",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "itemCount",
+            "columnName": "itemCount",
+            "affinity": "INTEGER",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "columnNames": [
+            "pastReviewId"
+          ],
+          "autoGenerate": true
+        },
+        "indices": [],
+        "foreignKeys": []
+      }
+    ],
+    "views": [],
+    "setupQueries": [
+      "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, 'de7fc1739dae52ace008a31da6d57ff0')"
+    ]
+  }
+}

@@ -3,6 +3,7 @@
 
     <style name="light" parent="Base.Theme.AppCompat.Light.DarkActionBar">
         <item name="alertDialogTheme">@style/light_dialogTheme</item>
+        <item name="actionBarTheme">@style/light.ActionBarTheme</item> <!-- used for the back arrow on the action bar -->
 
         <!--        Settings Activity -->
         <item name="android:textColor">#2b303b</item>
@@ -16,19 +17,20 @@
 
         <!--        checkboxes, radiobuttons, etc.-->
         <item name="colorAccent">#bf616a</item>
+        <!--        Actionbar text color-->
+        <item name="titleTextColor">#2b303b</item>
+        <item name="subtitleTextColor">#2b303b</item>
         <!--        Actionbar color-->
-        <item name="colorPrimary">#c0c5ce</item>
-        <item name="colorPrimaryDark">#c0c5ce</item>
-
         <item name="backgroundColor">#eff1f5</item>
         <item name="backgroundColor_secondary">#ccccce</item>
+        <item name="cardBackgroundColor">#ccccce</item>
+        <item name="cardButtonColor">#eff1f5</item>
+        <item name="cardForegroundColor">#2b303b</item>
+        <item name="cardReviewColor">#4f5b66</item>
+        <item name="colorPrimary">#c0c5ce</item>
+        <item name="colorPrimaryDark">#c0c5ce</item>
         <item name="textColor">#2b303b</item>
         <item name="textColor_secondary">#65737e</item>
-
-        <item name="cardBackgroundColor">#ccccce</item>
-        <item name="cardForegroundColor">#2b303b</item>
-        <item name="cardButtonColor">#eff1f5</item>
-        <item name="cardReviewColor">#4f5b66</item>
 
 
         <!--        RecyclerView items-->
@@ -38,10 +40,16 @@
 
         <item name="buttonColor">#c0c5ce</item>
 
+        <!--        SearchView-->
+        <item name="android:editTextColor">#2b303b</item>
+        <!-- Hint text color -->
+        <item name="android:textColorHint">#2b303b</item>
+
     </style>
 
     <style name="gruvbox" parent="Base.Theme.AppCompat.Light.DarkActionBar">
         <item name="alertDialogTheme">@style/gruvbox_dialogTheme</item>
+        <item name="actionBarTheme">@style/gruvbox.ActionBarTheme</item> <!-- used for the back arrow on the action bar -->
 
         <item name="android:textColor">#ebdbb2</item>
         <item name="android:textColorSecondary">#928374</item>
@@ -50,25 +58,22 @@
         <item name="android:itemBackground">#928374</item>
 
         <!--        Actionbar text color-->
-        <item name="titleTextColor">#ebdbb2</item>
-        <item name="subtitleTextColor">#ebdbb2</item>
-
-        <item name="android:statusBarColor">#282828</item>
         <item name="android:navigationBarColor">#1a1a1a</item>
-
+        <item name="android:statusBarColor">#282828</item>
         <item name="colorAccent">#cc241d</item>
-        <!--        Actionbar color-->
-        <item name="colorPrimary">#282828</item>
-        <item name="colorPrimaryDark">#282828</item>
+        <item name="subtitleTextColor">#ebdbb2</item>
+        <item name="titleTextColor">#ebdbb2</item>
 
+        <!--        Actionbar color-->
         <item name="backgroundColor">#1a1a1a</item>
         <item name="backgroundColor_secondary">#282828</item>
-        <item name="textColor">#ebdbb2</item>
-        <item name="textColor_secondary">#000000</item>
-
         <item name="cardBackgroundColor">#1a1a1a</item>
         <item name="cardForegroundColor">#928374</item>
         <item name="cardReviewColor">#d79921</item>
+        <item name="colorPrimary">#282828</item>
+        <item name="colorPrimaryDark">#282828</item>
+        <item name="textColor">#ebdbb2</item>
+        <item name="textColor_secondary">#000000</item>
 
         <!--        RecyclerView items-->
         <item name="listItemBackgroundColor">#282828</item>
@@ -77,16 +82,22 @@
 
         <item name="buttonColor">#98971a</item>
 
+        <!--        SearchView-->
+        <item name="android:editTextColor">#ebdbb2</item>
+        <!-- Hint text color -->
+        <item name="android:textColorHint">#ebdbb2</item>
+
     </style>
 
     <!--    Dialog Themes-->
-    <style name="light_dialogTheme" parent="Theme.AppCompat.Light.Dialog.Alert">
+    <style name="light_dialogTheme" parent="Base.Theme.AppCompat.Light.Dialog.Alert">
         <item name="android:colorBackground">#eff1f5</item>
         <item name="android:textColor">#2b303b</item>
         <item name="android:textColorPrimary">#2b303b</item>
         <item name="android:textColorSecondary">#65737e</item>
-        <item name="textColorAlertDialogListItem">#65737e</item>
+        <item name="android:windowBackground">#eff1f5</item>
         <item name="colorAccent">#bf616a</item>
+        <item name="textColorAlertDialogListItem">#65737e</item>
     </style>
 
     <style name="gruvbox_dialogTheme" parent="Theme.AppCompat.Light.Dialog.Alert">
@@ -94,9 +105,32 @@
         <item name="android:textColor">#928374</item>
         <item name="android:textColorPrimary">#928374</item>
         <item name="android:textColorSecondary">#928374</item>
-        <item name="textColorAlertDialogListItem">#ebdbb2</item>
+        <item name="android:windowBackground">#282828</item>
         <item name="colorAccent">#cc241d</item>
+        <item name="textColorAlertDialogListItem">#ebdbb2</item>
     </style>
-    
+
+    <!-- Icons of actionBar and overflow menu, etc..-->
+    <style name="light.ActionBarTheme" parent="@style/ThemeOverlay.AppCompat.ActionBar">
+        <!-- THIS is where you can color the arrow and the overflow button! -->
+        <item name="colorControlNormal">#2b303b</item> <!-- sets the color for the back arrow -->
+        <item name="actionOverflowButtonStyle">@style/light.actionOverflowButtonStyle</item> <!-- sets the style for the overflow button -->
+    </style>
+
+    <!-- This style is where you define the tint color of your overflow menu button -->
+    <style name="light.actionOverflowButtonStyle" parent="@style/Widget.AppCompat.ActionButton.Overflow">
+        <item name="android:tint">#2b303b</item>
+    </style>
+
+    <style name="gruvbox.ActionBarTheme" parent="@style/ThemeOverlay.AppCompat.ActionBar">
+        <!-- THIS is where you can color the arrow and the overflow button! -->
+        <item name="colorControlNormal">#928374</item> <!-- sets the color for the back arrow -->
+        <item name="actionOverflowButtonStyle">@style/gruvbox.actionOverflowButtonStyle</item> <!-- sets the style for the overflow button -->
+    </style>
+
+    <!-- This style is where you define the tint color of your overflow menu button -->
+    <style name="gruvbox.actionOverflowButtonStyle" parent="@style/Widget.AppCompat.ActionButton.Overflow">
+        <item name="android:tint">#928374</item>
+    </style>
 
 </resources>
