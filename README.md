@@ -15,5 +15,32 @@ _Showcase of a review exercise (temp. preview)_
 ## What is it?
 Yatta<span>&#169;</span> is an open-source flashcards based language learning app using spaced repetition, which is founded on the thesis of the authors final semester, during his attendance in <code>Albstadt-Sigmaringen University</code>. The algorithm is heavily influenced by SuperMemo's SM-2 and follows best practices using Android Architecture Components provided by Google.
 
+## App features (among others):
+
+* selectable themes
+* randomize order of flashcard during review
+
+* review animation for visual feedback
+
+* "sligtly-off" toast when answer submitted is not quiet correct
+
+* haptic feedback when submitting an empty answer 
+
+* record pronunciation (and play when answered correctly during review)
+
+* double press "back-button" to exit review 
+
+* auto focus input field
+
+* display diagrams to show how many review items have been taken
+
+* swipe gesture to delete/modify existing flashcards
+
+* swipe gestures to easily delete/modify existing flashcards
+
+* search a specific flashcard
+
+* export flashcards to JSON
+
 ## Install
 in the making..
