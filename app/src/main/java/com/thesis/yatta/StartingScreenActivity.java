@@ -48,12 +48,7 @@ public class StartingScreenActivity extends BaseActivity {
         model = new ViewModelProvider(this).get(StartingScreenViewModel.class);
         showReviewItemCount();
 
-        //Initialize PrefManager and Commander
         PrefManager.init(this);
-        Commander.init();
-        Commander.setCommand(PREFS_SHOW_DIAGRAM,new ShowDiagramCommand());
-        Commander.setCommand(PREFS_GENERAL_NOTIFICATIONS,new ShowNotificationCommand());
-
         //defaultValues less than 0L implies first launch, in any other case get date of last usage
         Long lastLaunched = PrefManager.get(PREFS_LAST_LAUNCHED, -1L);
 
@@ -64,6 +59,8 @@ public class StartingScreenActivity extends BaseActivity {
 
         //observe livedata for diagram
         model.getPastReviews().observe(this, pastReviews ->{
+            Commander.init();
+            Commander.setCommand(PREFS_SHOW_DIAGRAM,new ShowDiagramCommand());
             Commander.setState(PREFS_SHOW_DIAGRAM, ShowDiagramState.builder()
                     .binding(binding)
                     .context(this)
@@ -81,6 +78,8 @@ public class StartingScreenActivity extends BaseActivity {
                         .build());
 
         //Notifications (after some time of inactivity)
+        Commander.init();
+        Commander.setCommand(PREFS_GENERAL_NOTIFICATIONS,new ShowNotificationCommand());
         Commander.setState(PREFS_GENERAL_NOTIFICATIONS, new ShowNotificationState(StartingScreenActivity.this));
         Commander.run(PREFS_GENERAL_NOTIFICATIONS);
     }
