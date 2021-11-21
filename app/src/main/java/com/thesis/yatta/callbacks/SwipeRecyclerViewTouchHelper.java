@@ -75,7 +75,6 @@ public class SwipeRecyclerViewTouchHelper extends ItemTouchHelper.SimpleCallback
                                 flashCardViewModel.insert(finalCloneFlashCard);
                             }
                         }).show();
-                Toast.makeText(activity, "FlashCard deleted: " + deletedFlashCardTitle, Toast.LENGTH_SHORT).show();
                 break;
             case ItemTouchHelper.RIGHT:
                 editFlashCard(adapter.getFlashCardAt(position));

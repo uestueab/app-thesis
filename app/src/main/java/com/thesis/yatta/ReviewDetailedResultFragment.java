@@ -78,6 +78,7 @@ public class ReviewDetailedResultFragment extends Fragment {
 
         String synonyms = prepareSynonyms(review);
         binding.tvMySynonym.setText(synonyms);
+        binding.tvMnemonic.setText(review.getFlashCard().getMnemonic());
         //show consecutive correct count as streak
         binding.tvStreakValue.setText(String.valueOf(review.getFlashCard().getConsecutiveCorrectCount()));
 
