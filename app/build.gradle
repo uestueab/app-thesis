@@ -68,6 +68,4 @@ dependencies {
 
 
     testImplementation 'junit:junit:4.+'
-    androidTestImplementation 'androidx.thesis.ext:junit:1.1.3'
-    androidTestImplementation 'androidx.thesis.espresso:espresso-core:3.4.0'
 }
