@@ -3,15 +3,19 @@
   <p align="center">Flashcards based language learning app using spaced repetition.</p>
   <p align="center">
     <a href="LICENSE.md"><img alt="Software License" src="https://img.shields.io/badge/License-GPLv3-blue.svg"></a>
+      <a href="LICENSE.md"><img alt="Software License" src="https://forthebadge.com/images/badges/built-for-android.svg"></a>
   </p>
 </p>
 
----
+
+<hr style="border:2px solid red"> </hr>
 <p align="center">
 <img alt="Gif" src="https://user-images.githubusercontent.com/16192241/142272529-b94e50d9-01c7-4277-816e-0a4fd265091c.gif" width="25%" />
 </p>
 
 _Showcase of a review exercise (temp. preview)_
+
+
 ## What is it?
 Yatta<span>&#169;</span> is an open-source flashcards based language learning app using spaced repetition, which is founded on the thesis of the authors final semester, during his attendance in <code>Albstadt-Sigmaringen University</code>. The algorithm is heavily influenced by SuperMemo's SM-2 and follows best practices using Android Architecture Components provided by Google.
 
