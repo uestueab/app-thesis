@@ -1,0 +1,4 @@
+"Don't know"-Button now shows mnemonics. Mnemonics also appear on detail fragment. Minor
+layout changes.
+
+For details see https://github.com/uestueab/app-thesis/releases/tag/v0.3.2
