@@ -21,7 +21,7 @@ public class SharedViewModel extends AndroidViewModel {
     private int totalFlashCards;
     private final MutableLiveData<Review> mostRecentReview = new MutableLiveData<>();
     private final MutableLiveData<Session> session = new MutableLiveData<>(new Session());
-    private int correctCount;
+    private final MutableLiveData<Integer> correctCount = new MutableLiveData<>(0);
 
     //constructor for loading from database
     public SharedViewModel(Application application) {
@@ -64,37 +64,25 @@ public class SharedViewModel extends AndroidViewModel {
     public Review getMostRecentReview() { return mostRecentReview.getValue(); }
     public void setMostRecentReview(Review review){ mostRecentReview.setValue(review); }
 
-
     // Session
     public Session getSession(){ return session.getValue();}
     public void applyReview(Review review){ session.getValue().applyReview(review); }
-
-    public int getCorrectCount(boolean onDetails) {
-        if (mostRecentReview.getValue() == null){
-            correctCount = 0;
-        }else{
-            if (!getMostRecentReview().hasFailed())
-                //Increment counter only when focus is on input fragment
-                if (onDetails)
-                    correctCount++;
-        }
-
-        return correctCount;
-    }
+    public void resetSession(){session.setValue(new Session());}
 
     // Database
     public void insert(FlashCard flashCard) {
         repository.insert(flashCard);
     }
-
     public void update(FlashCard flashCard) {
         repository.update(flashCard);
     }
-
     public void delete(FlashCard flashCard) {
         repository.delete(flashCard);
     }
 
+    // Helper
+    public int getCorrectCount() { return correctCount.getValue();}
+    public void incrementCorrectCount() { correctCount.setValue(correctCount.getValue() +1);}
 }
 
 
