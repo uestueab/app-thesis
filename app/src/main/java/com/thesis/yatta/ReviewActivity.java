@@ -129,6 +129,7 @@ public class ReviewActivity extends BaseActivity {
         for (FlashCard flashCard : session.getFlashCardStatistics().keySet())
             model.update(flashCard);
 
+        model.resetSession();
     }
 
     @Override
