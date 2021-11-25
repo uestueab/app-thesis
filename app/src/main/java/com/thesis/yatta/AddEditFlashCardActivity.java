@@ -30,9 +30,16 @@ import com.thesis.yatta.model.entity.FlashCard;
 import java.io.File;
 import java.io.IOException;
 import java.io.Serializable;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
+
+import lombok.SneakyThrows;
 
 import static com.thesis.yatta.constants.ConstantsHolder.*;
 
@@ -51,7 +58,7 @@ public class AddEditFlashCardActivity extends BaseActivity {
     private MediaPlayer mediaPlayer;
 
     private boolean recordingExists = false;
-    private String temp_recordingName = "rec_" + UUID.randomUUID().toString() + ".ogg";
+    private String temp_recordingName = "temp_" + UUID.randomUUID().toString() + ".ogg";
     private String flashCardPronunciation;
 
     @Override
@@ -88,6 +95,7 @@ public class AddEditFlashCardActivity extends BaseActivity {
             //fill in all the fields
             binding.editTextTitle.setText(flashCard.getPrompt());
             binding.editTextMeaning.setText(flashCard.getMeaning());
+            binding.editTextMnemonics.setText(flashCard.getMnemonic());
 
             //get the pronunciation of flashCard and store globally
             flashCardPronunciation = flashCard.getPronunciation();
@@ -236,6 +244,7 @@ public class AddEditFlashCardActivity extends BaseActivity {
         //get input of edittext fields
         String title = binding.editTextTitle.getText().toString();
         String meaning = binding.editTextMeaning.getText().toString();
+        String mnemonics = binding.editTextMnemonics.getText().toString();
 
         //restrict that some fields may not be empty
         if (title.trim().isEmpty() || meaning.trim().isEmpty()) {
@@ -252,11 +261,13 @@ public class AddEditFlashCardActivity extends BaseActivity {
             flashCard = FlashCard.builder()
                     .prompt(title)
                     .meaning(meaning)
+                    .mnemonic(mnemonics)
                     .synonyms(synonyms)
                     .build();
         } else if (requestCode == EDIT_NOTE_REQUEST) {
             flashCard.setPrompt(title);
             flashCard.setMeaning(meaning);
+            flashCard.setMnemonic(mnemonics);
             flashCard.setSynonyms(synonyms);
         }
 
@@ -391,6 +402,35 @@ public class AddEditFlashCardActivity extends BaseActivity {
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
+        }
+    }
+
+    @SneakyThrows
+    @Override
+    protected void onPause() {
+        super.onPause();
+        List<String> files = findTempRecordings(getExternalFilesDir(Environment.DIRECTORY_MUSIC).getPath(), "temp_");
+        for (String path : files){
+            File file = new File(path);
+            if(file.delete())
+                Toast.makeText(this, "Temporary recordings cleared!", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    public List<String> findTempRecordings(String path, String searchString) throws Exception{
+        Stream<Path> paths = Files.walk(Paths.get(path));
+        try{
+            List<String> files = paths
+                    .filter(Files::isRegularFile)
+                    .filter(p -> p.getFileName().toString().toLowerCase().contains(searchString))
+                    .map(p -> p.toString())
+                    .collect(Collectors.toList());
+
+            return files;
+        }finally{
+            if(null != paths){
+                paths.close();
+            }
         }
     }
 }
