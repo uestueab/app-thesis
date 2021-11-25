@@ -64,7 +64,7 @@ public class ReviewInputFragment extends Fragment {
             FlashCard currentFlashCard = model.getFlashCard();
             if(currentFlashCard != null){
                 binding.tvQuestion.setText(currentFlashCard.getPrompt());
-                binding.tvReviewProgress.setText(model.getCorrectCount(false)+"/"+model.getTotalFlashCards());
+                binding.tvReviewProgress.setText(model.getCorrectCount()+"/"+model.getTotalFlashCards());
 
                 //Show mnemonics if there are any, or show Toast information
                 binding.btnNotKnow.setOnClickListener(
