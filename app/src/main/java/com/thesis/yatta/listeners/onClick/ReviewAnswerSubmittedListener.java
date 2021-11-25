@@ -51,7 +51,6 @@ public class ReviewAnswerSubmittedListener implements View.OnClickListener{
 
         long timeSpend = (System.currentTimeMillis() - startTime) / 1000;
 
-
         String rawUserResponse = binding.etReviewAnswer.getText().toString();
         String response = StringProvider.toComparable(rawUserResponse);
 
@@ -62,8 +61,6 @@ public class ReviewAnswerSubmittedListener implements View.OnClickListener{
         Commander.init();
         Commander.setCommand(PREFS_REVIEW_HAPTIC, new HapticFeedbackCommand());
         Commander.setCommand(PREFS_REVIEW_MISMATCH_TOAST, new MismatchToastCommand());
-
-
 
         if (response.length() == 0) {
             v.performHapticFeedback(HapticFeedbackConstants.LONG_PRESS);
@@ -84,6 +81,7 @@ public class ReviewAnswerSubmittedListener implements View.OnClickListener{
             else { // hesitated, adjust score
                 score = 2;
             }
+            model.incrementCorrectCount();
         }else{ score = 1; }
 
         review = new Review(flashCard,score);
