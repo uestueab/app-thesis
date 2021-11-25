@@ -39,7 +39,11 @@ public abstract class BaseActivity extends AppCompatActivity {
         current_theme =  PrefManager.get(PREFS_DISPLAY_THEME,THEME_LIGHT);
         if (current_theme.equals(THEME_GRUVBOX)) {
             setTheme(R.style.gruvbox);
-        } else {
+        }
+        else if (current_theme.equals(THEME_BREEZE)){
+            setTheme(R.style.breeze);
+        }
+        else {
             setTheme(R.style.light);
         }
 
