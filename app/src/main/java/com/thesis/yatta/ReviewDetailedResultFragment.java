@@ -63,7 +63,7 @@ public class ReviewDetailedResultFragment extends Fragment {
         //Update the UI.
         Review review = model.getMostRecentReview();
         binding.tvQuestion.setText(review.getFlashCard().getPrompt());
-        binding.tvReviewProgress.setText(model.getCorrectCount(true)+"/"+ model.getTotalFlashCards());
+        binding.tvReviewProgress.setText(model.getCorrectCount()+"/"+ model.getTotalFlashCards());
         if (review.hasFailed()) {
             binding.tvAnswerResult.setText("wrong");
             binding.tvAnswerResult.setBackgroundColor(
@@ -101,15 +101,18 @@ public class ReviewDetailedResultFragment extends Fragment {
             This causes the review to be finished only if all items have passed correctly.
          */
         model.getFlashCards().observe(getViewLifecycleOwner(), flashCards -> {
-            if(flashCards.size() > 0)
+            if(flashCards.size() > 0){
                 flashCards.remove(0);
 
-            if (review.hasFailed()){
-                flashCards.add(review.getFlashCard());
-                //FEATURE: Shuffle based on preference
-                Commander.setState(PREFS_REVIEW_SHUFFLE,flashCards);
-                Commander.run(PREFS_REVIEW_SHUFFLE);
+                if (review.hasFailed()){
+                    flashCards.add(review.getFlashCard());
+                    //FEATURE: Shuffle based on preference
+                    Commander.setState(PREFS_REVIEW_SHUFFLE,flashCards);
+                    Commander.run(PREFS_REVIEW_SHUFFLE);
+                }
+
             }
+
         });
 
         //Decides finishing the review, or showing next item in queue.
