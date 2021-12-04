@@ -1,9 +1,10 @@
 <p align="center">
-  <img alt="Coc Logo" src="https://user-images.githubusercontent.com/16192241/142265550-4df6826c-e4c7-4bca-b3ee-93cb503d10ef.png" width="340" />
-  <p align="center">Flashcards based language learning app using spaced repetition.</p>
+  <img alt="Yatta Logo" src="https://user-images.githubusercontent.com/16192241/144708558-714bb033-921c-4c6f-812c-75c3f9b3f9f5.png" width="30%" />
+  <p align="center">Flashcards based language learning app using spaced repetition. 
+    <span>    <a href="LICENSE.md"><img alt="Software License" src="https://img.shields.io/badge/License-GPLv3-blue.svg"></a> </span>
+  </p>
   <p align="center">
-    <a href="LICENSE.md"><img alt="Software License" src="https://img.shields.io/badge/License-GPLv3-blue.svg"></a>
-      <a href="LICENSE.md"><img alt="Software License" src="https://forthebadge.com/images/badges/built-for-android.svg"></a>
+      <img alt="built for android" src="https://forthebadge.com/images/badges/built-for-android.svg">
   </p>
 </p>
 
@@ -47,4 +48,10 @@ Yatta<span>&#169;</span> is an open-source flashcards based language learning ap
 * export flashcards to JSON
 
 ## Install
-in the making..
+* For the [latest apk](https://github.com/uestueab/app-thesis/releases) check out our releases on GitHub.
+* Press the badge below to get the app from F-Droid:
+
+<a href="https://f-droid.org/en/packages/com.thesis.yatta/">
+  <img src="https://gitlab.com/fdroid/artwork/-/raw/master/badge/get-it-on-en-us.png" width=30%></img>
+</a>
+
