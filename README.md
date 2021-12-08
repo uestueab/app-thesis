@@ -1,5 +1,5 @@
 <p align="center">
-  <img alt="Yokatta Logo" src="https://user-images.githubusercontent.com/16192241/144708558-714bb033-921c-4c6f-812c-75c3f9b3f9f5.png" width="30%" />
+  <img alt="Yokatta Logo" src="https://user-images.githubusercontent.com/16192241/145204680-31b00c49-4d5b-4a33-928f-64ebee609602.png" width="30%" />
   <p align="center">Flashcards based language learning app using spaced repetition. 
     <span>    <a href="LICENSE.md"><img alt="Software License" src="https://img.shields.io/badge/License-GPLv3-blue.svg"></a> </span>
   </p>
