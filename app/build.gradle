@@ -7,10 +7,10 @@ android {
     buildToolsVersion "30.0.3"
 
     defaultConfig {
-        applicationId "com.thesis.yatta"
+        applicationId "com.thesis.yokatta"
         minSdkVersion 29
         targetSdkVersion 29
-        versionCode 2
+        versionCode 3
         versionName "v0.3.2"
 
         testInstrumentationRunner "androidx.thesis.runner.AndroidJUnitRunner"

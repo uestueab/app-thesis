@@ -14,7 +14,7 @@
         android:layout_height="wrap_content"
         android:adjustViewBounds="true"
         android:layout_marginTop="10dp"
-        android:src="@drawable/ic_yatta_logo"/>
+        android:src="@drawable/ic_yokatta_logo"/>
 
     <TextView
         android:id="@+id/texttitle"

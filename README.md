@@ -1,5 +1,5 @@
 <p align="center">
-  <img alt="Yatta Logo" src="https://user-images.githubusercontent.com/16192241/144708558-714bb033-921c-4c6f-812c-75c3f9b3f9f5.png" width="30%" />
+  <img alt="Yokatta Logo" src="https://user-images.githubusercontent.com/16192241/144708558-714bb033-921c-4c6f-812c-75c3f9b3f9f5.png" width="30%" />
   <p align="center">Flashcards based language learning app using spaced repetition. 
     <span>    <a href="LICENSE.md"><img alt="Software License" src="https://img.shields.io/badge/License-GPLv3-blue.svg"></a> </span>
   </p>
@@ -20,7 +20,7 @@ The app will be rebranded under a different name soon!
 ## What is it?
 
 <div style="display:flex;">
-Yatta<span>&#169;</span> is an open-source flashcards based language learning app using spaced repetition, which is founded on the thesis of the authors final semester, during his attendance in <code>Albstadt-Sigmaringen University</code>. The algorithm is heavily influenced by SuperMemo's SM-2 and follows best practices using Android Architecture Components provided by Google.
+Yokatta<span>&#169;</span> is an open-source flashcards based language learning app using spaced repetition, which is founded on the thesis of the authors final semester, during his attendance in <code>Albstadt-Sigmaringen University</code>. The algorithm is heavily influenced by SuperMemo's SM-2 and follows best practices using Android Architecture Components provided by Google.
 
 </div>
 
@@ -56,7 +56,7 @@ Yatta<span>&#169;</span> is an open-source flashcards based language learning ap
 * For the [latest apk](https://github.com/uestueab/app-thesis/releases) check out our releases on GitHub.
 * Press the badge below to get the app from F-Droid:
 
-<a href="https://f-droid.org/en/packages/com.thesis.yatta/">
+<a href="https://f-droid.org/en/packages/com.thesis.yokatta/">
   <img src="https://gitlab.com/fdroid/artwork/-/raw/master/badge/get-it-on-en-us.png" width=30%></img>
 </a>
 
