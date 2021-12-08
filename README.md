@@ -12,6 +12,11 @@
 
 <img src="https://user-images.githubusercontent.com/16192241/142272529-b94e50d9-01c7-4277-816e-0a4fd265091c.gif" align="right" width="25%" height="100%"></img>
 
+
+## Info:
+The app will be rebranded under a different name soon!
+
+
 ## What is it?
 
 <div style="display:flex;">
