@@ -10,8 +10,8 @@ android {
         applicationId "com.thesis.yokatta"
         minSdkVersion 29
         targetSdkVersion 29
-        versionCode 3
-        versionName "v0.3.2"
+        versionCode 4
+        versionName "v0.3.4"
 
         testInstrumentationRunner "androidx.thesis.runner.AndroidJUnitRunner"
     }
