@@ -20,7 +20,7 @@ The app will be rebranded under a different name soon!
 ## What is it?
 
 <div style="display:flex;">
-Yokatta<span>&#169;</span> is an open-source flashcards based language learning app using spaced repetition, which is founded on the thesis of the authors final semester, during his attendance in <code>Albstadt-Sigmaringen University</code>. The algorithm is heavily influenced by SuperMemo's SM-2 and follows best practices using Android Architecture Components provided by Google.
+Yokatta<span>&#169;</span> is an open-source flashcards based language learning app using spaced repetition. The algorithm is heavily influenced by SuperMemo's SM-2 and follows best practices using Android Architecture Components provided by Google.
 
 </div>
 
